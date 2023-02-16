@@ -23,4 +23,9 @@ export default class Database {
         return rows[0]['LAST_INSERT_ID()'];
     }
 
+    public static nonQuery = async (stmt: string, ...params: string[]): Promise<string> => {
+        const db = this.getPool();
+        await db.execute(stmt, params);
+        return this.getLastID();
+    }
 }
