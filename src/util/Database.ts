@@ -1,4 +1,4 @@
-import { createPool, Pool } from "mysql2/promise";
+import { createPool, OkPacket, Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 export class Database {
     private static connection: Pool;
@@ -13,8 +13,14 @@ export class Database {
         return this.connection;
     }
 
-    public static query = async (stmt: string, ...params: string[]) => {
+    public static query = async (stmt: string, ...params: string[]): Promise<any[]> => {
         const db = this.getPool();
         return db.execute(stmt, params);
     }
+
+    public static getLastID = async (): Promise<string> => {
+        let [rows] = await Database.query("SELECT LAST_INSERT_ID();");
+        return rows[0]['LAST_INSERT_ID()'];
+    }
+
 }

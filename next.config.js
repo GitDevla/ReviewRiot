@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    databaseHost: "172.17.160.1",
+    databaseHost: "172.21.96.1",
     databaseUser: "root",
     databasePassword: "",
     databaseDatabase: "reviewriot"
