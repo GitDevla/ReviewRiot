@@ -1,4 +1,4 @@
-import { Database } from "@/util/Database"
+import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
 
 export class UserModel {

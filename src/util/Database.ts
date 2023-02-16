@@ -1,6 +1,6 @@
 import { createPool, OkPacket, Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
-export class Database {
+export default class Database {
     private static connection: Pool;
 
     private static getPool = () => {

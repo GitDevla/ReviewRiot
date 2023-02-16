@@ -1,23 +1,17 @@
 import { createNewUserService } from '@/service/UserService';
-import { returnResponse, throwServerError, throwUnknowMethod, throwValidationError } from '@/util/ApiResponses';
+import { returnResponse, throwValidationError } from '@/util/ApiResponses';
 import { isEmptyString } from '@/util/Checks';
+import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
-    try {
-        switch (req.method) {
-            case "POST":
-                return userPostHandler(req, res);
-
-            default:
-                return throwUnknowMethod(res);
-        }
-    } catch (error: any) {
-        return throwServerError(res, error.message);
-    }
+    const methodMap = {
+        "POST": userPostHandler
+    };
+    await MethodRouter(req, res, methodMap);
 }
 
 interface userRequestBody {
@@ -42,10 +36,7 @@ async function userPostHandler(
         return throwValidationError(res, error);
 
     let { username, password, email }: userRequestBody = req.body;
-    try {
-        await createNewUserService(username, password, email);
-    } catch (error: any) {
-        return throwServerError(res, error.message);
-    }
+    await createNewUserService(username, password, email);
+
     return returnResponse(res, { message: `User ${username} created` })
 }
