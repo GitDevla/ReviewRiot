@@ -36,7 +36,7 @@ async function userPostHandler(
         return throwValidationError(res, error);
 
     let { username, password, email }: userRequestBody = req.body;
-    await createNewUserService(username, password, email);
+    await createNewUserService(username, email, password);
 
     return returnResponse(res, { message: `User ${username} created` })
 }
