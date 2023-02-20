@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 07:38 PM
+-- Generation Time: Feb 20, 2023 at 03:08 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -37,6 +37,13 @@ CREATE TABLE `auth` (
   `password_hash` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `auth`
+--
+
+INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
+(1, 1, 'admin', '$2b$10$bp81UrXZs.gBcXgvhR/9y.Eq12VIbqCFJUUn782x0XMPUD7u95wKe');
+
 -- --------------------------------------------------------
 
 --
@@ -52,6 +59,44 @@ CREATE TABLE `follow` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `genre`
+--
+
+DROP TABLE IF EXISTS `genre`;
+CREATE TABLE `genre` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `movie`
+--
+
+DROP TABLE IF EXISTS `movie`;
+CREATE TABLE `movie` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `release_date` date NOT NULL,
+  `image_path` varchar(256) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `movie_genre`
+--
+
+DROP TABLE IF EXISTS `movie_genre`;
+CREATE TABLE `movie_genre` (
+  `movie_id` int(10) UNSIGNED NOT NULL,
+  `genre_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `permission`
 --
 
@@ -59,6 +104,31 @@ DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `permission`
+--
+
+INSERT INTO `permission` (`id`, `name`) VALUES
+(1, 'User'),
+(2, 'Admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review`
+--
+
+DROP TABLE IF EXISTS `review`;
+CREATE TABLE `review` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `author_id` int(10) UNSIGNED NOT NULL,
+  `movie_id` int(10) UNSIGNED NOT NULL,
+  `rating` tinyint(3) UNSIGNED NOT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `create_date` date NOT NULL DEFAULT current_timestamp(),
+  `is_public` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -78,6 +148,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `name`, `created_at`, `description`, `picture_path`, `permission_id`) VALUES
+(1, 'admin', '2023-02-20', NULL, NULL, 2);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -94,13 +171,44 @@ ALTER TABLE `auth`
 --
 ALTER TABLE `follow`
   ADD PRIMARY KEY (`who_id`,`whom_id`),
-  ADD KEY `whom_id` (`whom_id`);
+  ADD KEY `whom_id` (`whom_id`),
+  ADD KEY `who_id` (`who_id`);
+
+--
+-- Indexes for table `genre`
+--
+ALTER TABLE `genre`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `256` (`name`);
+
+--
+-- Indexes for table `movie`
+--
+ALTER TABLE `movie`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `movie_genre`
+--
+ALTER TABLE `movie_genre`
+  ADD PRIMARY KEY (`movie_id`,`genre_id`),
+  ADD KEY `genre_id` (`genre_id`),
+  ADD KEY `movie_id` (`movie_id`);
 
 --
 -- Indexes for table `permission`
 --
 ALTER TABLE `permission`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author_id` (`author_id`),
+  ADD KEY `movie_id` (`movie_id`);
 
 --
 -- Indexes for table `user`
@@ -118,19 +226,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `auth`
 --
 ALTER TABLE `auth`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `genre`
+--
+ALTER TABLE `genre`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `movie`
+--
+ALTER TABLE `movie`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `review`
+--
+ALTER TABLE `review`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -148,6 +274,20 @@ ALTER TABLE `auth`
 ALTER TABLE `follow`
   ADD CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`who_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`whom_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `movie_genre`
+--
+ALTER TABLE `movie_genre`
+  ADD CONSTRAINT `movie_genre_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
+  ADD CONSTRAINT `movie_genre_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
+
+--
+-- Constraints for table `review`
+--
+ALTER TABLE `review`
+  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
 
 --
 -- Constraints for table `user`
