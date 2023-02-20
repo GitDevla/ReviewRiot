@@ -38,5 +38,6 @@ async function userPostHandler(
     let { username, password, email }: userRequestBody = req.body;
     await createNewUserService(username, email, password);
 
+
     return returnResponse(res, { message: `User ${username} created` })
 }

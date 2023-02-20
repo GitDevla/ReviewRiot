@@ -1,5 +1,5 @@
 import { UserModel } from "@/model/UserModel"
-import bcrypt from 'bcrypt';
+import { generateToken } from "./TokenService";
 
 export const createNewUserService = async (username: string, email: string, password: string) => {
     let userWithSameName = await UserModel.getWithName(username);
@@ -15,5 +15,6 @@ export const authUserService = async (username: string, password: string) => {
     if (!user) return false;
     const res = await UserModel.auth(username, password);
     if (!res) return false;
-    return true;
+
+    return generateToken(user["id"]);
 }
