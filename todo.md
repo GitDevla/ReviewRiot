@@ -1,8 +1,9 @@
 # ToDo
+- [X] Init script
 ## Backend:
 - [ ] User
     - [X] CREATE
     - [ ] UPDATE
-- [ ] Auth
+- [X] Auth
 - [ ] Movie
 - [ ] Review

@@ -1,4 +1,4 @@
-import { createPool, OkPacket, Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { createPool, Pool } from "mysql2/promise";
 
 export default class Database {
     private static connection: Pool;
