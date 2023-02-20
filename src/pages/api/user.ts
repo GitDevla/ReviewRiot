@@ -1,6 +1,6 @@
 import { createNewUserService } from '@/service/UserService';
 import { returnResponse, throwValidationError } from '@/util/ApiResponses';
-import { isEmptyString } from '@/util/Checks';
+import { isEmptyString, lengthBetween, validateEmail } from '@/util/Checks';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -21,9 +21,12 @@ interface userRequestBody {
 }
 
 function validateBody(body: userRequestBody) {
-    if (isEmptyString(body.username)) return "The username cant be empty";
-    if (isEmptyString(body.email)) return "The email cant be empty";
-    if (isEmptyString(body.password)) return "The password cant be empty";
+    if (isEmptyString(body.username)) return "The username cannot be empty";
+    if (isEmptyString(body.email)) return "The email cannot be empty";
+    if (isEmptyString(body.password)) return "The password cannot be empty";
+    if (!lengthBetween(body.username, 1, 32)) return "The username length has to be between 1 - 32";
+    if (!lengthBetween(body.password, 8, 55)) return "The password length has to be between 1 - 32";
+    if (!validateEmail(body.email)) return "The email provided is not an email";
     return;
 }
 
