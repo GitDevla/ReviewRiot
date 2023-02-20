@@ -2,7 +2,6 @@ const config = require('./next.config.js');
 const db = require('mysql2/promise');
 const fs = require('fs');
 const crypto = require('crypto');
-const path = require('path')
 
 async function initalizeDatabase() {
     console.log("Initalizing database");
