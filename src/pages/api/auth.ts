@@ -1,9 +1,10 @@
-import { authUserService, createNewUserService } from '@/service/UserService';
-import { returnResponse, throwServerError, throwValidationError } from '@/util/ApiResponses';
+import { authUserService } from '@/service/UserService';
+import { UnauthorizedError } from '@/util/Errors';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getCookies, getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import { validateToken } from '@/service/TokenService';
+import { returnResponse } from '@/util/ApiResponses';
 
 export default async (
     req: NextApiRequest,
@@ -41,9 +42,9 @@ async function authGetHandler(
     res: NextApiResponse
 ) {
     const a = getCookie("token", { req });
-    if (!a) return throwServerError(res, "Not logged in")
+    if (!a) throw new UnauthorizedError("Not logged in")
     var user = await validateToken(a.toString());
-    if (!user) return throwServerError(res, "Not logged in")
+    if (!user) throw new UnauthorizedError("Not logged in")
 
     return returnResponse(res, { message: "Logged in" })
 }

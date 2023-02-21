@@ -1,8 +1,9 @@
 import { createNewUserService } from '@/service/UserService';
-import { returnResponse, throwValidationError } from '@/util/ApiResponses';
+import { BadRequestError } from '@/util/Errors';
 import { isEmptyString, lengthBetween, validateEmail } from '@/util/Checks';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { returnResponse } from '@/util/ApiResponses';
 
 export default async (
     req: NextApiRequest,
@@ -36,7 +37,7 @@ async function userPostHandler(
 ) {
     let error = validateBody(req.body);
     if (error)
-        return throwValidationError(res, error);
+        throw new BadRequestError(error);
 
     let { username, password, email }: userRequestBody = req.body;
     await createNewUserService(username, email, password);
