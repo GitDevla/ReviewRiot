@@ -1,5 +1,4 @@
 import Database from "@/util/Database"
-import bcrypt from 'bcrypt';
 
 export class MovieModel {
     public static getWithID = async (id: number) => {

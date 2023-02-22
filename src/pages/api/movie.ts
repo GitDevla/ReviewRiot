@@ -1,7 +1,6 @@
-import { authUserService, checkAdminPermission } from '@/service/UserService';
+import { checkAdminPermission } from '@/service/UserService';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { setCookie } from 'cookies-next';
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
 import { BadRequestError, ForbiddenError } from '@/util/Errors';
