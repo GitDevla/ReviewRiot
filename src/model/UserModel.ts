@@ -20,26 +20,26 @@ export class UserModel {
     }
 
     public static getWithID = async (id: number) => {
-        let res = (await Database.query("SELECT * FROM `user` WHERE `id` = ?;", id.toString()))[0];
+        const res = (await Database.query("SELECT * FROM `user` WHERE `id` = ?;", id.toString()))[0];
         if (!res[0]) return null;
         return new UserModel(res[0]);
     }
 
     public static getWithName = async (name: string) => {
-        let res = (await Database.query("SELECT * FROM `user` WHERE `name` = ?;", name))[0];
+        const res = (await Database.query("SELECT * FROM `user` WHERE `name` = ?;", name))[0];
         if (!res[0]) return null;
         return new UserModel(res[0]);
     }
 
     public static getWithMail = async (mail: string) => {
-        let res = (await Database.query("SELECT * FROM `auth` WHERE `email` = ?;", mail))[0];
+        const res = (await Database.query("SELECT * FROM `auth` WHERE `email` = ?;", mail))[0];
         if (!res[0]) return null;
         return new UserModel(res[0]);
     }
 
     public static create = async (name: string, email: string, password: string) => {
-        let hash = await bcrypt.hash(password, 10);
-        let userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);
+        const hash = await bcrypt.hash(password, 10);
+        const userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);
         await Database.nonQuery("INSERT INTO `auth` (`user_id`, `email`, `password_hash`) VALUES (?, ?, ?);", userId, email, hash);
     }
 

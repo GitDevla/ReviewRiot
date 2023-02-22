@@ -19,7 +19,7 @@ export default class Database {
     }
 
     public static getLastID = async (): Promise<string> => {
-        let [rows] = await Database.query("SELECT LAST_INSERT_ID();");
+        const [rows] = await Database.query("SELECT LAST_INSERT_ID();");
         return rows[0]['LAST_INSERT_ID()'];
     }
 

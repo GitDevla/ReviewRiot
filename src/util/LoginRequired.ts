@@ -7,7 +7,7 @@ import { UnauthorizedError } from "./Errors";
 export default async (req: NextApiRequest) => {
     const cookie = getCookie("token", { req });
     if (!cookie) throw new UnauthorizedError()
-    var token = await validateToken(cookie.toString());
+    const token = await validateToken(cookie.toString());
     if (!token) throw new UnauthorizedError()
 
     return UserModel.getWithID(token.userId);

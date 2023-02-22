@@ -1,4 +1,4 @@
-import { authUserService } from '@/service/UserService';
+import { authUser } from '@/service/UserService';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'cookies-next';
@@ -25,8 +25,8 @@ async function authPostHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    let { username, password }: authRequestBody = req.body;
-    const jwt = await authUserService(username, password);
+    const { username, password }: authRequestBody = req.body;
+    const jwt = await authUser(username, password);
     if (!jwt)
         return returnResponse(res, { message: `Nope` })
 
@@ -38,6 +38,6 @@ async function authGetHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    let user = await LoginRequired(req);
-    return returnResponse(res, { message: "Logged in as " + user["name"] })
+    const user = await LoginRequired(req);
+    return returnResponse(res, { message: "Logged in as " + user!.name })
 }

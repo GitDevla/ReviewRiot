@@ -2,16 +2,16 @@ import { UserModel } from "@/model/UserModel"
 import { ConflictError } from "@/util/Errors";
 import { generateToken } from "./TokenService";
 
-export const createNewUserService = async (username: string, email: string, password: string) => {
-    let userWithSameName = await UserModel.getWithName(username);
+export const createNewUser = async (username: string, email: string, password: string) => {
+    const userWithSameName = await UserModel.getWithName(username);
     if (userWithSameName) throw new ConflictError("Username Exists");
-    let userWithSameMail = await UserModel.getWithMail(email);
+    const userWithSameMail = await UserModel.getWithMail(email);
     if (userWithSameMail) throw new ConflictError("Email Exists");
 
     UserModel.create(username, email, password);
 }
 
-export const authUserService = async (username: string, password: string) => {
+export const authUser = async (username: string, password: string) => {
     const user = await UserModel.getWithName(username);
     if (!user) return false;
     const res = await UserModel.auth(username, password);
