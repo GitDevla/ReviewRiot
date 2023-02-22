@@ -17,9 +17,9 @@ export const authUserService = async (username: string, password: string) => {
     const res = await UserModel.auth(username, password);
     if (!res) return false;
 
-    return generateToken(user["id"]);
+    return generateToken(user.id);
 }
 
-export const checkAdminPermission = (user: any) => {
-    return user["permission_id"] == "2";
+export const checkAdminPermission = (user: UserModel) => {
+    return user.permissionID == 2;
 }

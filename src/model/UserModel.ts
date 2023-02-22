@@ -2,19 +2,39 @@ import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
 
 export class UserModel {
+    public readonly id: number;
+    public readonly name: string;
+    public readonly created: Date;
+    public readonly description: string;
+    public readonly picturePath: string;
+    public readonly permissionID: number;
+
+    private constructor(dbRes: any) {
+        const { id, name, created_at, description, picture_path, permission_id } = dbRes;
+        this.id = parseInt(id);
+        this.name = name;
+        this.created = new Date(created_at);
+        this.description = description;
+        this.picturePath = picture_path;
+        this.permissionID = parseInt(permission_id);
+    }
+
     public static getWithID = async (id: number) => {
         let res = (await Database.query("SELECT * FROM `user` WHERE `id` = ?;", id.toString()))[0];
-        return res[0];
+        if (!res[0]) return null;
+        return new UserModel(res[0]);
     }
 
     public static getWithName = async (name: string) => {
         let res = (await Database.query("SELECT * FROM `user` WHERE `name` = ?;", name))[0];
-        return res[0];
+        if (!res[0]) return null;
+        return new UserModel(res[0]);
     }
 
     public static getWithMail = async (mail: string) => {
         let res = (await Database.query("SELECT * FROM `auth` WHERE `email` = ?;", mail))[0];
-        return res[0];
+        if (!res[0]) return null;
+        return new UserModel(res[0]);
     }
 
     public static create = async (name: string, email: string, password: string) => {
