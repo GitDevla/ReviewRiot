@@ -3,32 +3,45 @@ const db = require('mysql2/promise');
 const fs = require('fs');
 const crypto = require('crypto');
 
-async function initalizeDatabase() {
-    console.log("Initalizing database");
-    const dataSql = fs.readFileSync('./reviewriot.sql').toString();
+async function queryDatabase(query) {
     const conn = await db.createConnection({
         host: config.env.databaseHost,
         user: config.env.databaseUser,
         password: config.env.databasePassword,
-        database: config.env.databaseDatabase,
         multipleStatements: true
     })
-
-    await conn.query(dataSql);
-    console.log("Database initalized");
+    await conn.query(query);
     conn.end();
 }
 
-function generateEnvfile() {
+async function nukeDatabase() {
+    console.log("Droping database");
+    await queryDatabase("DROP DATABASE IF EXISTS reviewriot;");
+    console.log("Database droped");
+}
+
+async function initalizeDatabase() {
+    console.log("Initalizing database");
+    const dataSql = fs.readFileSync('./reviewriot.sql').toString();
+    await queryDatabase(dataSql);
+    console.log("Database initalized");
+}
+
+async function generateEnvfile() {
     fs.writeFileSync(".env.local", "");
 }
 
-function generateSecret(name, strength = 32) {
+async function generateSecret(name, strength = 32) {
     console.log("Generating " + name + " secret");
     const secret = crypto.randomBytes(strength).toString('hex');
     fs.appendFileSync(".env.local", `${name}=${secret}`);
 }
 
-initalizeDatabase();
-generateEnvfile();
-generateSecret("JWT_TOKEN", 32);
+async function start() {
+    await nukeDatabase();
+    initalizeDatabase();
+    await generateEnvfile();
+    generateSecret("JWT_TOKEN", 32);
+}
+
+start();
