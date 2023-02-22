@@ -15,14 +15,14 @@ export class BadRequestError extends HTTPError {
 }
 
 export class UnauthorizedError extends HTTPError {
-    constructor(message: string) {
-        super(message, 401);
+    constructor() {
+        super("This method requires a login", 401);
     }
 }
 
 export class ForbiddenError extends HTTPError {
-    constructor(message: string) {
-        super(message, 402);
+    constructor() {
+        super("You are not allowed to to do this", 402);
     }
 }
 

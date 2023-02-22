@@ -19,3 +19,7 @@ export const authUserService = async (username: string, password: string) => {
 
     return generateToken(user["id"]);
 }
+
+export const checkAdminPermission = async (user: any) => {
+    return user["permission_id"] == "2";
+}
