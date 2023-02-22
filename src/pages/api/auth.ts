@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie, setCookie } from 'cookies-next';
 import { validateToken } from '@/service/TokenService';
 import { returnResponse } from '@/util/ApiResponses';
+import { UserModel } from '@/model/UserModel';
 
 export default async (
     req: NextApiRequest,
@@ -35,16 +36,16 @@ async function authPostHandler(
     return returnResponse(res, { message: jwt })
 }
 
-
-
 async function authGetHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const a = getCookie("token", { req });
-    if (!a) throw new UnauthorizedError("Not logged in")
-    var user = await validateToken(a.toString());
-    if (!user) throw new UnauthorizedError("Not logged in")
+    // This is just a test path
+    const cookie = getCookie("token", { req });
+    if (!cookie) throw new UnauthorizedError("Not logged in")
+    var token = await validateToken(cookie.toString());
+    if (!token) throw new UnauthorizedError("Not logged in")
 
-    return returnResponse(res, { message: "Logged in" })
+    let user = await UserModel.getWithID(token.userId)
+    return returnResponse(res, { message: "Logged in as " + user["name"] })
 }

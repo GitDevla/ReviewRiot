@@ -2,6 +2,11 @@ import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
 
 export class UserModel {
+    public static getWithID = async (id: number) => {
+        let res = (await Database.query("SELECT * FROM `user` WHERE `id` = ?;", id.toString()))[0];
+        return res[0];
+    }
+
     public static getWithName = async (name: string) => {
         let res = (await Database.query("SELECT * FROM `user` WHERE `name` = ?;", name))[0];
         return res[0];
