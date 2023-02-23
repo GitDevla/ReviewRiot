@@ -2,7 +2,7 @@ import Database from "@/util/Database"
 
 export class MovieModel {
     public static getWithID = async (id: number) => {
-        const res = (await Database.query("SELECT * FROM `movie` WHERE `id` = ?;", id.toString()))[0];
+        const res = (await Database.query("SELECT * FROM `movie` WHERE `id` = ?;", id))[0];
         return res[0];
     }
 

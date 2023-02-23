@@ -13,7 +13,7 @@ export default class Database {
         return this.connection;
     }
 
-    public static query = async (stmt: string, ...params: string[]): Promise<any[]> => {
+    public static query = async (stmt: string, ...params: (string | number)[]): Promise<any[]> => {
         const db = this.getPool();
         return db.execute(stmt, params);
     }
@@ -23,7 +23,7 @@ export default class Database {
         return rows[0]['LAST_INSERT_ID()'];
     }
 
-    public static nonQuery = async (stmt: string, ...params: string[]): Promise<string> => {
+    public static nonQuery = async (stmt: string, ...params: (string | number)[]): Promise<string> => {
         const db = this.getPool();
         await db.execute(stmt, params);
         return this.getLastID();
