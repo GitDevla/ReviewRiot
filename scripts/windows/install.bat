@@ -1,5 +1,5 @@
 @echo off
 
-npm install
-npm run init
+call npm install
+call npm run init
 PAUSE

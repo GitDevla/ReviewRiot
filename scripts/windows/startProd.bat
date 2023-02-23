@@ -1,4 +1,4 @@
 @echo off
 
-npm run start
+call npm run start
 PAUSE
