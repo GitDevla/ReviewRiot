@@ -2,6 +2,7 @@ import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
 
 export class UserModel {
+    public readonly id: number;
     public readonly name: string;
     public readonly created: Date;
     public readonly description: string;
@@ -9,7 +10,8 @@ export class UserModel {
     public readonly permissionID: number;
 
     private constructor(dbRes: any) {
-        const { name, created_at, description, picture_path, permission_id } = dbRes;
+        const { id, name, created_at, description, picture_path, permission_id } = dbRes;
+        this.id = parseInt(id);
         this.name = name;
         this.created = new Date(created_at);
         this.description = description;
@@ -18,21 +20,21 @@ export class UserModel {
     }
 
     public static getWithID = async (id: number) => {
-        const res = (await Database.query("SELECT * FROM `user` WHERE `id` = ?;", id))[0];
-        if (!res[0]) return null;
-        return new UserModel(res[0]);
+        const res = await Database.single("SELECT * FROM `user` WHERE `id` = ?;", id);
+        if (!res) return null;
+        return new UserModel(res);
     }
 
     public static getWithName = async (name: string) => {
-        const res = (await Database.query("SELECT * FROM `user` WHERE `name` = ?;", name))[0];
-        if (!res[0]) return null;
-        return new UserModel(res[0]);
+        const res = await Database.single("SELECT * FROM `user` WHERE `name` = ?;", name);
+        if (!res) return null;
+        return new UserModel(res);
     }
 
     public static getWithMail = async (mail: string) => {
-        const res = (await Database.query("SELECT * FROM `auth` WHERE `email` = ?;", mail))[0];
-        if (!res[0]) return null;
-        return new UserModel(res[0]);
+        const res = await Database.single("SELECT * FROM `auth` WHERE `email` = ?;", mail);
+        if (!res) return null;
+        return new UserModel(res);
     }
 
     public static create = async (name: string, email: string, password: string) => {
@@ -42,7 +44,7 @@ export class UserModel {
     }
 
     public static auth = async (username: string, plainPassword: string) => {
-        const hash = (await Database.query("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))[0][0]["password_hash"];
+        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))["password_hash"];
         return bcrypt.compare(plainPassword, hash);
     }
 }

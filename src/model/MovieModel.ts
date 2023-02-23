@@ -19,13 +19,15 @@ export class MovieModel {
     }
 
     public static getWithID = async (id: number) => {
-        const res = (await Database.query("SELECT * FROM `movie` WHERE `id` = ?;", id))[0];
-        return res[0];
+        const res = await Database.single("SELECT * FROM `movie` WHERE `id` = ?;", id);
+        if (!res) return null;
+        return new MovieModel(res);
     }
 
     public static getWithName = async (name: string) => {
-        const res = (await Database.query("SELECT * FROM `movie` WHERE `name` = ?;", name))[0];
-        return res[0];
+        const res = await Database.single("SELECT * FROM `movie` WHERE `name` = ?;", name);
+        if (!res) return null;
+        return new MovieModel(res);
     }
 
     public static create = async (name: string, release_date: Date) => {
@@ -33,12 +35,12 @@ export class MovieModel {
     }
 
     public static fetchOrderedByName = async (page: number, max: number) => {
-        const res = (await Database.query("SELECT * from `movie` ORDER by `name` ASC limit ?,?;", page * max, max))[0];
+        const res = await Database.query("SELECT * from `movie` ORDER by `name` ASC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 
     public static fetchOrderedByNewest = async (page: number, max: number) => {
-        const res = (await Database.query("SELECT * from `movie` ORDER by `release_date` DESC limit ?,?;", page * max, max))[0];
+        const res = await Database.query("SELECT * from `movie` ORDER by `release_date` DESC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 

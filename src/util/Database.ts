@@ -15,17 +15,21 @@ export default class Database {
 
     public static query = async (stmt: string, ...params: (string | number)[]): Promise<any[]> => {
         const db = this.getPool();
-        return db.execute(stmt, params);
+        return (await <any>db.execute(stmt, params))[0];
+    }
+
+    public static single = async (stmt: string, ...params: (string | number)[]): Promise<any> => {
+        const res = await Database.query(stmt, ...params);
+        return res[0];
     }
 
     public static getLastID = async (): Promise<string> => {
-        const [rows] = await Database.query("SELECT LAST_INSERT_ID();");
-        return rows[0]['LAST_INSERT_ID()'];
+        const row = await Database.single("SELECT LAST_INSERT_ID();");
+        return row['LAST_INSERT_ID()'];
     }
 
     public static nonQuery = async (stmt: string, ...params: (string | number)[]): Promise<string> => {
-        const db = this.getPool();
-        await db.execute(stmt, params);
+        await Database.query(stmt, ...params)
         return this.getLastID();
     }
 }
