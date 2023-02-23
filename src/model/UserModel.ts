@@ -2,7 +2,6 @@ import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
 
 export class UserModel {
-    public readonly id: number;
     public readonly name: string;
     public readonly created: Date;
     public readonly description: string;
@@ -10,8 +9,7 @@ export class UserModel {
     public readonly permissionID: number;
 
     private constructor(dbRes: any) {
-        const { id, name, created_at, description, picture_path, permission_id } = dbRes;
-        this.id = parseInt(id);
+        const { name, created_at, description, picture_path, permission_id } = dbRes;
         this.name = name;
         this.created = new Date(created_at);
         this.description = description;

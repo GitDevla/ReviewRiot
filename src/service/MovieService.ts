@@ -7,3 +7,16 @@ export const createNewMovie = async (name: string, date: Date) => {
 
     MovieModel.create(name, date);
 }
+
+export const listMovies = async (page: number, max: number, order: string) => {
+    switch (order) {
+        case "name":
+            return MovieModel.fetchOrderedByName(page, max);
+
+        case "date":
+            return MovieModel.fetchOrderedByNewest(page, max);
+
+        default:
+            break;
+    }
+}
