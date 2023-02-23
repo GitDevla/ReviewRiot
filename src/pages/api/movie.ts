@@ -34,7 +34,7 @@ async function moviePostHandler(
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
-    if (!checkAdminPermission(user!)) throw new ForbiddenError();
+    if (!(await checkAdminPermission(user!))) throw new ForbiddenError();
 
     const error = validateBody(req.body);
     if (error)

@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'cookies-next';
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
+import { UnauthorizedError } from '@/util/Errors';
 
 export default async (
     req: NextApiRequest,
@@ -27,8 +28,7 @@ async function authPostHandler(
 ) {
     const { username, password }: authRequestBody = req.body;
     const jwt = await authUser(username, password);
-    if (!jwt)
-        return returnResponse(res, { message: `Nope` })
+    if (!jwt) throw new UnauthorizedError("Invalid Username or Password");
 
     setCookie('token', jwt.token, { res, req, maxAge: 60 * 60 * 24 * 90 });
     return returnResponse(res, { message: jwt })

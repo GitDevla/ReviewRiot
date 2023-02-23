@@ -1,3 +1,4 @@
+import { PermissionModel } from "@/model/PermissionModel";
 import { UserModel } from "@/model/UserModel"
 import { ConflictError } from "@/util/Errors";
 import { generateToken } from "./TokenService";
@@ -20,6 +21,8 @@ export const authUser = async (username: string, password: string) => {
     return generateToken(user.id);
 }
 
-export const checkAdminPermission = (user: UserModel) => {
-    return user.permissionID == 2;
+export const checkAdminPermission = async (user: UserModel) => {
+    const userLevel = await PermissionModel.getLevelFromID(user.permissionID);
+    const adminLevel = await PermissionModel.getLevelFromName("Admin");
+    return userLevel! >= adminLevel!;
 }

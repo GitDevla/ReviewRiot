@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2023 at 03:08 PM
+-- Generation Time: Feb 23, 2023 at 04:56 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -29,7 +29,6 @@ USE `reviewriot`;
 -- Table structure for table `auth`
 --
 
-DROP TABLE IF EXISTS `auth`;
 CREATE TABLE `auth` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
@@ -42,7 +41,8 @@ CREATE TABLE `auth` (
 --
 
 INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
-(1, 1, 'admin', '$2b$10$bp81UrXZs.gBcXgvhR/9y.Eq12VIbqCFJUUn782x0XMPUD7u95wKe');
+(1, 1, 'admin', '$2b$10$bp81UrXZs.gBcXgvhR/9y.Eq12VIbqCFJUUn782x0XMPUD7u95wKe'),
+(2, 2, 'guest@gmail.com', '$2b$10$jq/0EnvARwAdTzDctfjwgeXH/lMkI9INsRn/3IER17f0TiPDCWYZC');
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,6 @@ INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
 -- Table structure for table `follow`
 --
 
-DROP TABLE IF EXISTS `follow`;
 CREATE TABLE `follow` (
   `who_id` int(10) UNSIGNED NOT NULL,
   `whom_id` int(10) UNSIGNED NOT NULL
@@ -62,7 +61,6 @@ CREATE TABLE `follow` (
 -- Table structure for table `genre`
 --
 
-DROP TABLE IF EXISTS `genre`;
 CREATE TABLE `genre` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(256) NOT NULL
@@ -74,7 +72,6 @@ CREATE TABLE `genre` (
 -- Table structure for table `movie`
 --
 
-DROP TABLE IF EXISTS `movie`;
 CREATE TABLE `movie` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(256) NOT NULL,
@@ -88,7 +85,6 @@ CREATE TABLE `movie` (
 -- Table structure for table `movie_genre`
 --
 
-DROP TABLE IF EXISTS `movie_genre`;
 CREATE TABLE `movie_genre` (
   `movie_id` int(10) UNSIGNED NOT NULL,
   `genre_id` int(10) UNSIGNED NOT NULL
@@ -100,19 +96,20 @@ CREATE TABLE `movie_genre` (
 -- Table structure for table `permission`
 --
 
-DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(16) NOT NULL
+  `name` varchar(16) NOT NULL,
+  `level` tinyint(3) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `permission`
 --
 
-INSERT INTO `permission` (`id`, `name`) VALUES
-(1, 'User'),
-(2, 'Admin');
+INSERT INTO `permission` (`id`, `name`, `level`) VALUES
+(1, 'User', 0),
+(2, 'Admin', 255),
+(3, 'Moderator', 128);
 
 -- --------------------------------------------------------
 
@@ -120,7 +117,6 @@ INSERT INTO `permission` (`id`, `name`) VALUES
 -- Table structure for table `review`
 --
 
-DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(10) UNSIGNED NOT NULL,
   `author_id` int(10) UNSIGNED NOT NULL,
@@ -137,7 +133,6 @@ CREATE TABLE `review` (
 -- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(36) NOT NULL,
@@ -152,7 +147,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `created_at`, `description`, `picture_path`, `permission_id`) VALUES
-(1, 'admin', '2023-02-20', NULL, NULL, 2);
+(1, 'admin', '2023-02-20', NULL, NULL, 2),
+(2, 'guest', '2023-02-23', NULL, NULL, 1);
 
 --
 -- Indexes for dumped tables
@@ -226,7 +222,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `auth`
 --
 ALTER TABLE `auth`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `genre`
@@ -244,7 +240,7 @@ ALTER TABLE `movie`
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `review`
@@ -256,7 +252,7 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
