@@ -6,4 +6,5 @@
     - [ ] UPDATE
 - [X] Auth
 - [ ] Movie
+    - [X] CREATE
 - [ ] Review
