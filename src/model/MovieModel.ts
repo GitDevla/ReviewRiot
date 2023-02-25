@@ -1,11 +1,13 @@
 import Database from "@/util/Database"
 
 export class MovieModel {
+    public readonly id: number;
     public readonly name: string;
     public readonly release: Date;
 
     constructor(dbRes: any) {
-        const { name, release_date } = dbRes;
+        const { id, name, release_date } = dbRes;
+        this.id = id;
         this.name = name;
         this.release = release_date;
     }

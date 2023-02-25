@@ -13,12 +13,12 @@ export default class Database {
         return this.connection;
     }
 
-    public static query = async (stmt: string, ...params: (string | number)[]): Promise<any[]> => {
+    public static query = async (stmt: string, ...params: (string | number | boolean)[]): Promise<any[]> => {
         const db = this.getPool();
         return (await <any>db.execute(stmt, params))[0];
     }
 
-    public static single = async (stmt: string, ...params: (string | number)[]): Promise<any> => {
+    public static single = async (stmt: string, ...params: (string | number | boolean)[]): Promise<any> => {
         const res = await Database.query(stmt, ...params);
         return res[0];
     }
@@ -28,7 +28,7 @@ export default class Database {
         return row['LAST_INSERT_ID()'];
     }
 
-    public static nonQuery = async (stmt: string, ...params: (string | number)[]): Promise<string> => {
+    public static nonQuery = async (stmt: string, ...params: (string | number | boolean)[]): Promise<string> => {
         await Database.query(stmt, ...params)
         return this.getLastID();
     }

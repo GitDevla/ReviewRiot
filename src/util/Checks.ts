@@ -13,3 +13,7 @@ export const validateEmail = (email: string) => {
 export const validateDate = (date: string) => {
     return new Date(date).toDateString() != "Invalid Date";
 }
+
+export const isNumeric = (n: any) => {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
