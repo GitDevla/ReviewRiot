@@ -3,9 +3,9 @@ import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
-import { BadRequestError, ForbiddenError } from '@/util/Errors';
-import { isEmptyString, validateDate } from '@/util/Checks';
+import { ForbiddenError } from '@/util/Errors';
 import { createNewMovie, listMovies } from '@/service/MovieService';
+import { Validate } from '@/util/Validator';
 
 export default async (
     req: NextApiRequest,
@@ -18,16 +18,9 @@ export default async (
     await MethodRouter(req, res, methodMap);
 }
 
-interface movieRequestBody {
-    name: string;
-    date: string;
-}
-
-function validatePostBody(body: movieRequestBody) {
-    if (isEmptyString(body.name)) return "The name cannot be empty";
-    if (isEmptyString(body.date)) return "The date cannot be empty";
-    if (!validateDate(body.date)) return "The date is not real";
-    return;
+function validatePostBody(body: any) {
+    Validate(body.name).required("Name missing").notEmpty("The name cannot be empty");
+    Validate(body.date).required("Date missing").date("The date is not real");
 }
 
 async function moviePostHandler(
@@ -37,9 +30,7 @@ async function moviePostHandler(
     const user = await LoginRequired(req);
     if (!(await checkAdminPermission(user!))) throw new ForbiddenError();
 
-    const error = validatePostBody(req.body);
-    if (error)
-        throw new BadRequestError(error);
+    validatePostBody(req.body);
 
     let { name, date } = req.body;
 

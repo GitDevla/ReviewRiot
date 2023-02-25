@@ -1,9 +1,8 @@
 import { createNewUser } from '@/service/UserService';
-import { BadRequestError } from '@/util/Errors';
-import { isEmptyString, lengthBetween, validateEmail } from '@/util/Checks';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
+import { Validate } from '@/util/Validator';
 
 export default async (
     req: NextApiRequest,
@@ -15,31 +14,28 @@ export default async (
     await MethodRouter(req, res, methodMap);
 }
 
-interface userRequestBody {
-    username: string;
-    password: string;
-    email: string;
-}
 
-function validateBody(body: userRequestBody) {
-    if (isEmptyString(body.username)) return "The username cannot be empty";
-    if (isEmptyString(body.email)) return "The email cannot be empty";
-    if (isEmptyString(body.password)) return "The password cannot be empty";
-    if (!lengthBetween(body.username, 1, 32)) return "The username length has to be between 1 - 32";
-    if (!lengthBetween(body.password, 8, 55)) return "The password length has to be between 1 - 32";
-    if (!validateEmail(body.email)) return "The email provided is not an email";
-    return;
+function validateBody(body: any) {
+    Validate(body.username)
+        .required("Username required")
+        .notEmpty("The username cannot be empty")
+        .lengthBetween(6, 32, "The username length has to be between 6 - 32")
+    Validate(body.email)
+        .required("Email required")
+        .email("The email provided is not an email")
+    Validate(body.password)
+        .required("Password required")
+        .notEmpty("The password cannot be empty")
+        .lengthBetween(8, 55, "The password length has to be between 8 - 55")
 }
 
 async function userPostHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const error = validateBody(req.body);
-    if (error)
-        throw new BadRequestError(error);
+    validateBody(req.body);
 
-    const { username, password, email }: userRequestBody = req.body;
+    const { username, password, email } = req.body;
     await createNewUser(username, email, password);
 
 
