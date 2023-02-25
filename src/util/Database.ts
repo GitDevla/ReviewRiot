@@ -1,5 +1,5 @@
 import { createPool, Pool } from "mysql2/promise";
-
+type param = string | number | boolean | undefined | null;
 export default class Database {
     private static connection: Pool;
 
@@ -13,12 +13,16 @@ export default class Database {
         return this.connection;
     }
 
-    public static query = async (stmt: string, ...params: (string | number | boolean)[]): Promise<any[]> => {
+
+
+    public static query = async (stmt: string, ...params: param[]): Promise<any[]> => {
+        for (let i = 0; i < params.length; i++)
+            if (params[i] == undefined) params[i] = null;
         const db = this.getPool();
         return (await <any>db.execute(stmt, params))[0];
     }
 
-    public static single = async (stmt: string, ...params: (string | number | boolean)[]): Promise<any> => {
+    public static single = async (stmt: string, ...params: param[]): Promise<any> => {
         const res = await Database.query(stmt, ...params);
         return res[0];
     }
@@ -28,7 +32,7 @@ export default class Database {
         return row['LAST_INSERT_ID()'];
     }
 
-    public static nonQuery = async (stmt: string, ...params: (string | number | boolean)[]): Promise<string> => {
+    public static nonQuery = async (stmt: string, ...params: param[]): Promise<string> => {
         await Database.query(stmt, ...params)
         return this.getLastID();
     }
