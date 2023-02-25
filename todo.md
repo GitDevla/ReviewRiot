@@ -7,4 +7,9 @@
 - [X] Auth
 - [ ] Movie
     - [X] CREATE
+    - [X] List
 - [ ] Review
+    - [X] Create
+    - [ ] List
+    - [ ] Update
+    - [ ] Delete
