@@ -47,4 +47,15 @@ export class UserModel {
         const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))["password_hash"];
         return bcrypt.compare(plainPassword, hash);
     }
+
+    public static followExists = async (who: UserModel, whom: UserModel) => {
+        return await Database.single("SELECT * FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", who.id, whom.id);
+    }
+
+    public follow = async (whom: UserModel) => {
+        await Database.nonQuery("INSERT INTO `follow` (`who_id`, `whom_id`) VALUES (?, ?);", this.id, whom.id);
+    }
+    public unfollow = async (whom: UserModel) => {
+        await Database.nonQuery("DELETE FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", this.id, whom.id);
+    }
 }

@@ -26,6 +26,12 @@ export class ForbiddenError extends HTTPError {
     }
 }
 
+export class NotFoundError extends HTTPError {
+    constructor(message: string) {
+        super(message, 404);
+    }
+}
+
 export class UnknowMethodError extends HTTPError {
     constructor(message: string) {
         super(message, 405);

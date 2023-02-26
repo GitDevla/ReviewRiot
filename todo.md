@@ -4,6 +4,7 @@
 - [ ] User
     - [X] CREATE
     - [ ] UPDATE
+    - [X] Follow
 - [X] Auth
 - [ ] Movie
     - [X] CREATE

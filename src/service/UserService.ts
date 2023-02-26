@@ -1,6 +1,6 @@
 import { PermissionModel } from "@/model/PermissionModel";
 import { UserModel } from "@/model/UserModel"
-import { ConflictError } from "@/util/Errors";
+import { BadRequestError, ConflictError, NotFoundError } from "@/util/Errors";
 import { generateToken } from "./TokenService";
 
 export const createNewUser = async (username: string, email: string, password: string) => {
@@ -25,4 +25,27 @@ export const checkAdminPermission = async (user: UserModel) => {
     const userLevel = await PermissionModel.getLevelFromID(user.permissionID);
     const adminLevel = await PermissionModel.getLevelFromName("Admin");
     return userLevel! >= adminLevel!;
+}
+
+export const followUser = async (who: UserModel, whomID: number) => {
+    if (who.id == whomID) throw new BadRequestError("You cant follow yourself");
+    const whom = await UserModel.getWithID(whomID);
+    if (!whom) throw new NotFoundError("User with ID doesn't exist");
+    if (await UserModel.followExists(who, whom))
+        throw new ConflictError("Follow already exists");
+
+    await who.follow(whom);
+    return whom;
+}
+
+export const unfollowUser = async (who: UserModel, whomID: number) => {
+    if (who.id == whomID) throw new BadRequestError("You cant unmfollow yourself");
+    const whom = await UserModel.getWithID(whomID);
+    if (!whom) throw new NotFoundError("User with ID doesn't exist");
+
+    if (!await UserModel.followExists(who, whom))
+        throw new ConflictError("Follow doesn't exist");
+
+    await who.unfollow(whom);
+    return whom;
 }
