@@ -60,6 +60,14 @@ export class UserModel {
         await Database.nonQuery("DELETE FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", this.id, whom.id);
     }
 
+    public static listFollows = async (who: number) => {
+        const res = await Database.query("SELECT * FROM `follow` JOIN `user` ON `user`.`id`=`follow`.`whom_id` WHERE `follow`.`who_id` = ?;", who);
+        let arr = [];
+        for (const q of res)
+            arr.push(new UserModel(q))
+        return arr;
+    }
+
     public covertToSafe() {
         return {
             "id": this.id,

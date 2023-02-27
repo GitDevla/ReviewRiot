@@ -49,3 +49,10 @@ export const unfollowUser = async (who: UserModel, whomID: number) => {
     await who.unfollow(whom);
     return whom;
 }
+
+export const listUserFollows = async (whoId: number) => {
+    const user = await UserModel.getWithID(whoId);
+    if (!user) throw new NotFoundError("User with ID doesn't exist");
+
+    return UserModel.listFollows(whoId);
+}
