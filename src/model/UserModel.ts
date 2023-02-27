@@ -55,7 +55,18 @@ export class UserModel {
     public follow = async (whom: UserModel) => {
         await Database.nonQuery("INSERT INTO `follow` (`who_id`, `whom_id`) VALUES (?, ?);", this.id, whom.id);
     }
+
     public unfollow = async (whom: UserModel) => {
         await Database.nonQuery("DELETE FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", this.id, whom.id);
+    }
+
+    public covertToSafe() {
+        return {
+            "id": this.id,
+            "username": this.name,
+            "created": this.created,
+            "description": this.description,
+            "picture": this.picturePath,
+        }
     }
 }

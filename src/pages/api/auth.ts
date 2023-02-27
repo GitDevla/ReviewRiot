@@ -39,5 +39,5 @@ async function authGetHandler(
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
-    return returnResponse(res, { message: "Logged in as " + user!.name })
+    return returnResponse(res, { message: "Logged in as " + user!.name, user: user!.covertToSafe() })
 }
