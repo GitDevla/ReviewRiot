@@ -36,12 +36,12 @@ export class MovieModel {
         return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
     }
 
-    public static fetchOrderedByName = async (page: number, max: number) => {
+    public static listByName = async (page: number, max: number) => {
         const res = await Database.query("SELECT * from `movie` ORDER by `name` ASC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 
-    public static fetchOrderedByNewest = async (page: number, max: number) => {
+    public static listByNewest = async (page: number, max: number) => {
         const res = await Database.query("SELECT * from `movie` ORDER by `release_date` DESC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }

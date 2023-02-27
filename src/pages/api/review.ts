@@ -2,7 +2,7 @@ import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
-import { createNewReview } from '@/service/ReviewService';
+import { createReview } from '@/service/ReviewService';
 import { Validate } from '@/util/Validator';
 
 export default async (
@@ -40,6 +40,6 @@ async function reviewPostHandler(
     validatePostBody(req.body);
 
     const { movieID, rating, description, isPublic } = req.body;
-    await createNewReview(user!, movieID, rating, description, isPublic)
+    await createReview(user!, movieID, rating, description, isPublic)
     return returnResponse(res, { message: "New review created" })
 }

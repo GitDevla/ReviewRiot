@@ -1,4 +1,4 @@
-import { createNewUser } from '@/service/UserService';
+import { createUser } from '@/service/UserService';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
@@ -36,7 +36,7 @@ async function userPostHandler(
     validateBody(req.body);
 
     const { username, password, email } = req.body;
-    await createNewUser(username, email, password);
+    await createUser(username, email, password);
 
 
     return returnResponse(res, { message: `User ${username} created` })

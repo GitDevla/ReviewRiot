@@ -3,7 +3,7 @@ import { UserModel } from "@/model/UserModel"
 import { BadRequestError, ConflictError, NotFoundError } from "@/util/Errors";
 import { generateToken } from "./TokenService";
 
-export const createNewUser = async (username: string, email: string, password: string) => {
+export const createUser = async (username: string, email: string, password: string) => {
     const userWithSameName = await UserModel.getWithName(username);
     if (userWithSameName) throw new ConflictError("Username Exists");
     const userWithSameMail = await UserModel.getWithMail(email);

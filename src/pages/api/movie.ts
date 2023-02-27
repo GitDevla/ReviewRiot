@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
 import { ForbiddenError } from '@/util/Errors';
-import { createNewMovie, listMovies } from '@/service/MovieService';
+import { createMovie, listMovies } from '@/service/MovieService';
 import { Validate } from '@/util/Validator';
 
 export default async (
@@ -35,7 +35,7 @@ async function moviePostHandler(
     let { name, date } = req.body;
 
     date = new Date(date);
-    await createNewMovie(name, date);
+    await createMovie(name, date);
     return returnResponse(res, { message: "New movie Added" })
 }
 
