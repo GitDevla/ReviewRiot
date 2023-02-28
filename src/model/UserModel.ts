@@ -72,7 +72,7 @@ export class UserModel {
     public covertToSafe() {
         return {
             "id": this.id,
-            "username": this.name,
+            "name": this.name,
             "created": this.created,
             "description": this.description,
             "picture": this.picturePath,
