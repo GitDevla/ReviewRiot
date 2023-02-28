@@ -44,7 +44,8 @@ export class UserModel {
     }
 
     public static auth = async (username: string, plainPassword: string) => {
-        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))["password_hash"];
+        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))?.password_hash;
+        if (!hash) return false;
         return bcrypt.compare(plainPassword, hash);
     }
 
