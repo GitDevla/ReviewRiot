@@ -18,6 +18,7 @@ export default async (
 function validateBody(body: any) {
     Validate(body.username)
         .required("Username required")
+        .string("Username has to be a string")
         .notEmpty("The username cannot be empty")
         .lengthBetween(6, 32, "The username length has to be between 6 - 32")
     Validate(body.email)
@@ -25,6 +26,7 @@ function validateBody(body: any) {
         .email("The email provided is not an email")
     Validate(body.password)
         .required("Password required")
+        .string("Password has to be a string")
         .notEmpty("The password cannot be empty")
         .lengthBetween(8, 55, "The password length has to be between 8 - 55")
 }
