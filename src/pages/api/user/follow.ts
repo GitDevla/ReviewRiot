@@ -29,9 +29,10 @@ async function followGetHandler(
     res: NextApiResponse
 ) {
     const user = LoginRequired(req);
-    const userID = req.body["user"] ?? (await user)!.id;
+    let userID = parseInt(req.query["user"] as string);
+    if (isNaN(userID)) userID = (await user)!.id
 
-    let whomUser = (await listUserFollows(userID)).map(i => i.covertToSafe());
+    const whomUser = (await listUserFollows(userID)).map(i => i.covertToSafe());
     return returnResponse(res, whomUser)
 }
 
