@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react'
 
-function LoginPage() {
+function login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
@@ -47,4 +47,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage
+export default login
