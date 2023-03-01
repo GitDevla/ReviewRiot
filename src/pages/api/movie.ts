@@ -5,7 +5,7 @@ import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
 import { ForbiddenError } from '@/util/Errors';
 import { createMovie, listMovies } from '@/service/MovieService';
-import { Validate } from '@/util/Validator';
+import { validateMovieCreate } from '@/validator/movieValidator';
 
 export default async (
     req: NextApiRequest,
@@ -18,20 +18,13 @@ export default async (
     await MethodRouter(req, res, methodMap);
 }
 
-function validatePostBody(body: any) {
-    Validate(body.name).required("Name missing").notEmpty("The name cannot be empty");
-    Validate(body.date).required("Date missing").date("The date is not real");
-}
-
 async function moviePostHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
     if (!(await checkAdminPermission(user!))) throw new ForbiddenError();
-
-    validatePostBody(req.body);
-
+    validateMovieCreate(req.body);
     let { name, date } = req.body;
 
     date = new Date(date);
