@@ -15,13 +15,13 @@ export class BadRequestError extends HTTPError {
 }
 
 export class UnauthorizedError extends HTTPError {
-    constructor(message = "This method requires a login") {
+    constructor(message = "Belépés Kötelező ehez a metódushoz") {
         super(message, 401);
     }
 }
 
 export class ForbiddenError extends HTTPError {
-    constructor(message = "You are not allowed to to do this") {
+    constructor(message = "Nincs elág jogod ehez a metódushoz") {
         super(message, 402);
     }
 }

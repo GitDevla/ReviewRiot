@@ -25,7 +25,7 @@ async function authPostHandler(
     validateAuthBody(req.body);
     const { username, password } = req.body;
     const jwt = await authUser(username, password);
-    if (!jwt) throw new UnauthorizedError("Invalid Username or Password");
+    if (!jwt) throw new UnauthorizedError("Hibás felhasználónév vagy jelszó");
 
     setCookie('token', jwt.token, { res, req, maxAge: 60 * 60 * 24 * 90 });
     return returnResponse(res, { message: jwt })

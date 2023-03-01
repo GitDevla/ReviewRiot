@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse, methodMap: any)
     } catch (error) {
         if (error instanceof HTTPError)
             return returnError(res, error);
-        returnError(res, new ServerError("Unknown Error"));
+        returnError(res, new ServerError("Ismeretlen szerver hiba történt"));
         throw error;
     }
 }

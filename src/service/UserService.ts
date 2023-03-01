@@ -5,9 +5,9 @@ import { generateToken } from "./TokenService";
 
 export const createUser = async (username: string, email: string, password: string) => {
     const userWithSameName = await UserModel.getWithName(username);
-    if (userWithSameName) throw new ConflictError("Username Exists");
+    if (userWithSameName) throw new ConflictError("Ez a felhasználónév már létezik");
     const userWithSameMail = await UserModel.getWithMail(email);
-    if (userWithSameMail) throw new ConflictError("Email Exists");
+    if (userWithSameMail) throw new ConflictError("Ez a email már létezik");
 
     UserModel.create(username, email, password);
 }
@@ -28,23 +28,23 @@ export const checkAdminPermission = async (user: UserModel) => {
 }
 
 export const followUser = async (who: UserModel, whomID: number) => {
-    if (who.id == whomID) throw new BadRequestError("You cant follow yourself");
+    if (who.id == whomID) throw new BadRequestError("Magadat nem követheted be");
     const whom = await UserModel.getWithID(whomID);
-    if (!whom) throw new NotFoundError("User with ID doesn't exist");
+    if (!whom) throw new NotFoundError("Ez a felhasználó nem létezik");
     if (await UserModel.followExists(who, whom))
-        throw new ConflictError("Follow already exists");
+        throw new ConflictError("Ezt a felhasználót már bekövetted");
 
     await who.follow(whom);
     return whom;
 }
 
 export const unfollowUser = async (who: UserModel, whomID: number) => {
-    if (who.id == whomID) throw new BadRequestError("You cant unmfollow yourself");
+    if (who.id == whomID) throw new BadRequestError("Magadat nem követheted be");
     const whom = await UserModel.getWithID(whomID);
-    if (!whom) throw new NotFoundError("User with ID doesn't exist");
+    if (!whom) throw new NotFoundError("Ez a felhasználó nem létezik");
 
     if (!await UserModel.followExists(who, whom))
-        throw new ConflictError("Follow doesn't exist");
+        throw new ConflictError("Ezt a felhasználót nem követted");
 
     await who.unfollow(whom);
     return whom;
@@ -52,7 +52,7 @@ export const unfollowUser = async (who: UserModel, whomID: number) => {
 
 export const listUserFollows = async (whoId: number) => {
     const user = await UserModel.getWithID(whoId);
-    if (!user) throw new NotFoundError("User with ID doesn't exist");
+    if (!user) throw new NotFoundError("Ez a felhasználó nem létezik");
 
     return UserModel.listFollows(whoId);
 }

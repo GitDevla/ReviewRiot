@@ -16,12 +16,15 @@ function LoginPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
             });
+            const json = await response.json();
+            console.log(json);
+
             if (!response.ok)
-                throw new Error(response.status.toString());
+                throw new Error(json.error);
             router.push('/home');
         } catch (error) {
-            if (error instanceof Error && error.message == "401")
-                setErrorMessage("Hibás jelszó vagy felhasználónév");
+            if (error instanceof Error)
+                setErrorMessage(error.message);
             else
                 setErrorMessage('Ismeretlen hiba történt');
         }

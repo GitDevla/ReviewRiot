@@ -3,7 +3,7 @@ import { ConflictError } from "@/util/Errors";
 
 export const createMovie = async (name: string, date: Date) => {
     const userWithSameName = await MovieModel.getWithName(name);
-    if (userWithSameName) throw new ConflictError("Movie already exists");
+    if (userWithSameName) throw new ConflictError("Ez a film már létezik");
 
     MovieModel.create(name, date);
 }
