@@ -16,6 +16,12 @@ export const listMovies = async (page: number, max: number, order: string) => {
         case "date":
             return MovieModel.listByNewest(page, max);
 
+        case "popularity":
+            return MovieModel.listByPopularity(page, max);
+
+        case "hot":
+            return MovieModel.listByHot(page, max);
+
         default:
             break;
     }

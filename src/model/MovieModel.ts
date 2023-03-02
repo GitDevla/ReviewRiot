@@ -4,12 +4,16 @@ export class MovieModel {
     public readonly id: number;
     public readonly name: string;
     public readonly release: Date;
+    public readonly rating: number;
+    public readonly imagePath: string;
 
     constructor(dbRes: any) {
-        const { id, name, release_date } = dbRes;
+        const { id, name, release_date, avgRating, image_path } = dbRes;
         this.id = id;
         this.name = name;
         this.release = release_date;
+        this.rating = avgRating;
+        this.imagePath = image_path;
     }
 
     private static createArray(dbRes: any) {
@@ -37,13 +41,22 @@ export class MovieModel {
     }
 
     public static listByName = async (page: number, max: number) => {
-        const res = await Database.query("SELECT * from `movie` ORDER by `name` ASC limit ?,?;", page * max, max);
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `name` DESC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 
     public static listByNewest = async (page: number, max: number) => {
-        const res = await Database.query("SELECT * from `movie` ORDER by `release_date` DESC limit ?,?;", page * max, max);
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` DESC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 
+    public static listByPopularity = async (page: number, max: number) => {
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER BY avgRating DESC limit ?,?;", page * max, max);
+        return MovieModel.createArray(res);
+    }
+
+    public static listByHot = async (page: number, max: number) => {
+        const res = await Database.query("SELECT movie.id, movie.name, movie.release_date, movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id WHERE review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) GROUP BY movie.id ORDER BY avgRating DESC limit ?,?;", page * max, max);
+        return MovieModel.createArray(res);
+    }
 }

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 23, 2023 at 04:56 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2023. Már 02. 16:57
+-- Kiszolgáló verziója: 10.4.22-MariaDB
+-- PHP verzió: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `reviewriot`
+-- Adatbázis: `reviewriot`
 --
 CREATE DATABASE IF NOT EXISTS `reviewriot` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `reviewriot`;
@@ -26,9 +26,10 @@ USE `reviewriot`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auth`
+-- Tábla szerkezet ehhez a táblához `auth`
 --
 
+DROP TABLE IF EXISTS `auth`;
 CREATE TABLE `auth` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE `auth` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `auth`
+-- A tábla adatainak kiíratása `auth`
 --
 
 INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
@@ -47,9 +48,10 @@ INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `follow`
+-- Tábla szerkezet ehhez a táblához `follow`
 --
 
+DROP TABLE IF EXISTS `follow`;
 CREATE TABLE `follow` (
   `who_id` int(10) UNSIGNED NOT NULL,
   `whom_id` int(10) UNSIGNED NOT NULL
@@ -58,20 +60,69 @@ CREATE TABLE `follow` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `genre`
+-- Tábla szerkezet ehhez a táblához `genre`
 --
 
+DROP TABLE IF EXISTS `genre`;
 CREATE TABLE `genre` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- A tábla adatainak kiíratása `genre`
+--
+
+INSERT INTO `genre` (`id`, `name`) VALUES
+(1, 'Akció'),
+(12, 'Animáció'),
+(21, 'Anime'),
+(14, 'Családi'),
+(47, 'Disztópia'),
+(13, 'Dokumentum'),
+(3, 'Dráma'),
+(28, 'Életrajzi'),
+(7, 'Fantasy'),
+(39, 'Fekete komédia'),
+(48, 'Film noir'),
+(52, 'Futurisztikus'),
+(37, 'Gasztro'),
+(53, 'Gengszter'),
+(18, 'Háborús'),
+(4, 'Horror'),
+(35, 'Iskolai'),
+(6, 'Kaland'),
+(29, 'Katasztrófafilm'),
+(27, 'Képregényfilm'),
+(55, 'Középkori'),
+(10, 'Krimi'),
+(20, 'Misztikus'),
+(45, 'Mockumentary'),
+(15, 'Musical'),
+(5, 'Romantikus'),
+(11, 'Sci-fi'),
+(56, 'Sci-fi kaland'),
+(16, 'Sport'),
+(22, 'Szatirikus'),
+(36, 'Szépirodalmi adaptáció'),
+(41, 'Színházi adaptáció'),
+(30, 'Szuperhős'),
+(46, 'Táncfilm'),
+(50, 'Természetfilm'),
+(9, 'Thriller'),
+(8, 'Történelmi'),
+(2, 'Vígjáték'),
+(17, 'Western'),
+(40, 'Zenei'),
+(26, 'Zombis');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `movie`
+-- Tábla szerkezet ehhez a táblához `movie`
 --
 
+DROP TABLE IF EXISTS `movie`;
 CREATE TABLE `movie` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(256) NOT NULL,
@@ -82,9 +133,10 @@ CREATE TABLE `movie` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `movie_genre`
+-- Tábla szerkezet ehhez a táblához `movie_genre`
 --
 
+DROP TABLE IF EXISTS `movie_genre`;
 CREATE TABLE `movie_genre` (
   `movie_id` int(10) UNSIGNED NOT NULL,
   `genre_id` int(10) UNSIGNED NOT NULL
@@ -93,9 +145,10 @@ CREATE TABLE `movie_genre` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `permission`
+-- Tábla szerkezet ehhez a táblához `permission`
 --
 
+DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(16) NOT NULL,
@@ -103,7 +156,7 @@ CREATE TABLE `permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `permission`
+-- A tábla adatainak kiíratása `permission`
 --
 
 INSERT INTO `permission` (`id`, `name`, `level`) VALUES
@@ -114,9 +167,10 @@ INSERT INTO `permission` (`id`, `name`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `review`
+-- Tábla szerkezet ehhez a táblához `review`
 --
 
+DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(10) UNSIGNED NOT NULL,
   `author_id` int(10) UNSIGNED NOT NULL,
@@ -130,9 +184,10 @@ CREATE TABLE `review` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Tábla szerkezet ehhez a táblához `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(36) NOT NULL,
@@ -143,7 +198,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- A tábla adatainak kiíratása `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `created_at`, `description`, `picture_path`, `permission_id`) VALUES
@@ -151,11 +206,11 @@ INSERT INTO `user` (`id`, `name`, `created_at`, `description`, `picture_path`, `
 (2, 'guest', '2023-02-23', NULL, NULL, 1);
 
 --
--- Indexes for dumped tables
+-- Indexek a kiírt táblákhoz
 --
 
 --
--- Indexes for table `auth`
+-- A tábla indexei `auth`
 --
 ALTER TABLE `auth`
   ADD PRIMARY KEY (`id`),
@@ -163,7 +218,7 @@ ALTER TABLE `auth`
   ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `follow`
+-- A tábla indexei `follow`
 --
 ALTER TABLE `follow`
   ADD PRIMARY KEY (`who_id`,`whom_id`),
@@ -171,21 +226,21 @@ ALTER TABLE `follow`
   ADD KEY `who_id` (`who_id`);
 
 --
--- Indexes for table `genre`
+-- A tábla indexei `genre`
 --
 ALTER TABLE `genre`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `256` (`name`);
 
 --
--- Indexes for table `movie`
+-- A tábla indexei `movie`
 --
 ALTER TABLE `movie`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `movie_genre`
+-- A tábla indexei `movie_genre`
 --
 ALTER TABLE `movie_genre`
   ADD PRIMARY KEY (`movie_id`,`genre_id`),
@@ -193,13 +248,13 @@ ALTER TABLE `movie_genre`
   ADD KEY `movie_id` (`movie_id`);
 
 --
--- Indexes for table `permission`
+-- A tábla indexei `permission`
 --
 ALTER TABLE `permission`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `review`
+-- A tábla indexei `review`
 --
 ALTER TABLE `review`
   ADD PRIMARY KEY (`id`),
@@ -207,7 +262,7 @@ ALTER TABLE `review`
   ADD KEY `movie_id` (`movie_id`);
 
 --
--- Indexes for table `user`
+-- A tábla indexei `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
@@ -215,78 +270,78 @@ ALTER TABLE `user`
   ADD KEY `permission_id` (`permission_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- A kiírt táblák AUTO_INCREMENT értéke
 --
 
 --
--- AUTO_INCREMENT for table `auth`
+-- AUTO_INCREMENT a táblához `auth`
 --
 ALTER TABLE `auth`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `genre`
+-- AUTO_INCREMENT a táblához `genre`
 --
 ALTER TABLE `genre`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT for table `movie`
+-- AUTO_INCREMENT a táblához `movie`
 --
 ALTER TABLE `movie`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `permission`
+-- AUTO_INCREMENT a táblához `permission`
 --
 ALTER TABLE `permission`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `review`
+-- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- Megkötések a kiírt táblákhoz
 --
 
 --
--- Constraints for table `auth`
+-- Megkötések a táblához `auth`
 --
 ALTER TABLE `auth`
   ADD CONSTRAINT `auth_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `follow`
+-- Megkötések a táblához `follow`
 --
 ALTER TABLE `follow`
   ADD CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`who_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`whom_id`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `movie_genre`
+-- Megkötések a táblához `movie_genre`
 --
 ALTER TABLE `movie_genre`
   ADD CONSTRAINT `movie_genre_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`),
   ADD CONSTRAINT `movie_genre_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
 
 --
--- Constraints for table `review`
+-- Megkötések a táblához `review`
 --
 ALTER TABLE `review`
   ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
 
 --
--- Constraints for table `user`
+-- Megkötések a táblához `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`);
