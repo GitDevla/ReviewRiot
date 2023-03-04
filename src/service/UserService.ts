@@ -21,10 +21,9 @@ export const authUser = async (username: string, password: string) => {
     return generateToken(user.id);
 }
 
-export const checkAdminPermission = async (user: UserModel) => {
+export const checkPermission = async (user: UserModel, minLevel: number) => {
     const userLevel = await PermissionModel.getLevelFromID(user.permissionID);
-    const adminLevel = await PermissionModel.getLevelFromName("Admin");
-    return userLevel! >= adminLevel!;
+    return userLevel! >= minLevel;
 }
 
 export const followUser = async (who: UserModel, whomID: number) => {

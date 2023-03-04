@@ -1,4 +1,4 @@
-import { checkAdminPermission } from '@/service/UserService';
+import { checkPermission } from '@/service/UserService';
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
@@ -23,7 +23,7 @@ async function moviePostHandler(
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
-    if (!(await checkAdminPermission(user!))) throw new ForbiddenError();
+    if (!(await checkPermission(user!, 255))) throw new ForbiddenError();
     validateMovieCreate(req.body);
     let { name, date } = req.body;
 

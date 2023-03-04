@@ -2,7 +2,7 @@ import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/ApiResponses';
 import LoginRequired from '@/util/LoginRequired';
-import { createReview } from '@/service/ReviewService';
+import { createReview, deleteReview } from '@/service/ReviewService';
 import { validateReviewCreate } from '@/validator/reviewValidator';
 
 export default async (
@@ -10,7 +10,8 @@ export default async (
     res: NextApiResponse
 ) => {
     const methodMap = {
-        "POST": reviewPostHandler
+        "POST": reviewPostHandler,
+        "DELETE": reviewDeleteHandler
     };
     await MethodRouter(req, res, methodMap);
 }
@@ -25,4 +26,16 @@ async function reviewPostHandler(
     const { movieID, rating, description, isPublic } = req.body;
     await createReview(user!, movieID, rating, description, isPublic)
     return returnResponse(res, { message: "New review created" })
+}
+
+async function reviewDeleteHandler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    const user = await LoginRequired(req);
+    const { id } = req.query;
+    let reviewId = parseInt(id as string);
+
+    await deleteReview(user!, reviewId)
+    return returnResponse(res, { message: "Review deleted" })
 }

@@ -1,9 +1,21 @@
 import { FeedModel } from "@/model/FeedMode";
 import { ReviewModel } from "@/model/ReviewModel";
 import { UserModel } from "@/model/UserModel";
+import { ForbiddenError, NotFoundError } from "@/util/Errors";
+import { checkPermission } from "./UserService";
 
 export const createReview = async (author: UserModel, movie: number, rating: number, description: string, isPublic: boolean) => {
     return ReviewModel.create(author.id, movie, rating, description, isPublic);
+}
+
+export const deleteReview = async (user: UserModel, reviewID: number) => {
+    const review = await ReviewModel.getWithID(reviewID);
+    if (!review) throw new NotFoundError("Nincs ilyen értékelés");
+    const isModerator = await checkPermission(user, 128);
+    if (review.authorID != user.id && !isModerator)
+        throw new ForbiddenError("A értékelés törléséhez nincs jogod");
+
+    return ReviewModel.delete(review.id);
 }
 
 export const listFeed = async (user: UserModel, page: number, max: number) => {
