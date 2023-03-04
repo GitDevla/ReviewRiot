@@ -13,7 +13,7 @@ export class MovieModel {
         this.name = name;
         this.release = release_date;
         this.rating = avgRating;
-        this.imagePath = image_path;
+        this.imagePath = "/image/movie/" + image_path;
     }
 
     private static createArray(dbRes: any) {

@@ -28,11 +28,10 @@ function movies() {
     }
 
     function handleScroll() {
-
+        const offset = 100;
         if (
-            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 100
+            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
         ) {
-
             if (flag.current && !loading) {
                 flag.current = false;
                 fetchMovies();
@@ -44,7 +43,7 @@ function movies() {
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {movies.map((movie) => (
                 <div key={movie.id}>
-                    <img src={"/movie/" + movie.imagePath} alt="" width="250px" />
+                    <img src={movie.imagePath} alt="" width="250px" />
                     <p>{movie.name}</p>
                 </div>
             ))
