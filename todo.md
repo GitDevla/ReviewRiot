@@ -14,6 +14,6 @@
     - [ ] Update
 - [ ] Review
     - [X] Create
-    - [ ] List
+    - [X] List / per film
     - [ ] Update
-    - [ ] Delete
+    - [X] Delete

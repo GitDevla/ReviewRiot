@@ -36,6 +36,7 @@ export class MovieModel {
         return new MovieModel(res);
     }
 
+
     public static create = async (name: string, release_date: Date) => {
         return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
     }
