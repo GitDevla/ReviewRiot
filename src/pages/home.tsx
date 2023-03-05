@@ -1,4 +1,4 @@
-import { FeedModel } from '@/model/FeedMode';
+import { FeedModel } from '@/model/FeedModel';
 import { UserModel } from '@/model/UserModel';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -32,7 +32,7 @@ function Home() {
             <div id='feed'>
                 {feed.map(i => {
                     return <div key={i.id}>
-                        <p>{i.authorName} a {i.movieName} filmet nézte meg</p>
+                        <p>{i.author.name} a {i.movie.name} filmet nézte meg</p>
                     </div>
                 })}
             </div>

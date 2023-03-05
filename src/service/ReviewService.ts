@@ -1,4 +1,4 @@
-import { FeedModel } from "@/model/FeedMode";
+import { FeedModel } from "@/model/FeedModel";
 import { ReviewModel } from "@/model/ReviewModel";
 import { UserModel } from "@/model/UserModel";
 import { ForbiddenError, NotFoundError } from "@/util/Errors";

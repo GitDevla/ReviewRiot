@@ -9,14 +9,14 @@ export class UserModel {
     public readonly picturePath: string;
     public readonly permissionID: number;
 
-    private constructor(dbRes: any) {
+    constructor(dbRes: any) {
         const { id, name, created_at, description, picture_path, permission_id } = dbRes;
-        this.id = parseInt(id);
+        this.id = id;
         this.name = name;
-        this.created = new Date(created_at);
+        this.created = created_at;
         this.description = description;
         this.picturePath = picture_path;
-        this.permissionID = parseInt(permission_id);
+        this.permissionID = permission_id;
     }
 
     public static getWithID = async (id: number) => {

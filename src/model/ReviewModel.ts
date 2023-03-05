@@ -11,12 +11,12 @@ export class ReviewModel {
 
     constructor(dbRes: any) {
         const { id, author_id, movie_id, rating, description, create_date, is_public } = dbRes;
-        this.id = parseInt(id);
-        this.authorID = parseInt(author_id);
-        this.movieID = parseInt(movie_id);
-        this.rating = parseInt(rating);
+        this.id = id;
+        this.authorID = author_id;
+        this.movieID = movie_id;
+        this.rating = rating;
         this.description = description;
-        this.create = new Date(create_date);
+        this.create = create_date;
         this.isPublic = <boolean>is_public;
     }
 
