@@ -20,16 +20,8 @@ export class FeedModel {
         this.movie = new MovieModel({ name: movie_name, image_path })
     }
 
-    private static createArray(dbRes: any) {
-        let array = [];
-        for (const res of dbRes) {
-            array.push(new FeedModel(res))
-        }
-        return array;
-    }
-
     public static listFeed = async (user: UserModel, page: number, max: number) => {
         const res = await Database.query("SELECT review.id, review.rating, review.description, review.create_date, USER.name, USER.picture_path, movie.name as movie_name, movie.image_path FROM review JOIN USER ON review.author_id = USER.id JOIN movie ON review.movie_id = movie.id WHERE USER.id IN( SELECT whom_id FROM follow WHERE who_id = ? ) ORDER by create_date limit ?,?;", user.id, page, max)
-        return this.createArray(res);
+        return Database.transform(this, res);
     }
 }

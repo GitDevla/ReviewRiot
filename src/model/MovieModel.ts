@@ -16,14 +16,6 @@ export class MovieModel {
         this.imagePath = "/image/movie/" + image_path;
     }
 
-    private static createArray(dbRes: any) {
-        let array = [];
-        for (const movie of dbRes) {
-            array.push(new MovieModel(movie))
-        }
-        return array;
-    }
-
     public static getWithID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `movie` WHERE `id` = ?;", id);
         if (!res) return null;
@@ -36,38 +28,49 @@ export class MovieModel {
         return new MovieModel(res);
     }
 
-
     public static create = async (name: string, release_date: Date) => {
         return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
     }
 
+    private static listMovies = async (orderBy: string, page: number, max: number, filterBy = "1") => {
+        const res = await Database.query(`
+        SELECT movie.id,
+            movie.name,
+            movie.release_date,
+            movie.image_path,
+            Avg(review.rating) AS avgRating
+        FROM   \`movie\`
+                LEFT JOIN review
+                    ON movie.id = review.id
+        WHERE ${filterBy}
+        GROUP  BY movie.id
+        ORDER  BY ${orderBy}
+        LIMIT  ?, ?;`, page * max, max);
+        return Database.transform(this, res);
+    }
+
     public static listByName = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `name` ASC limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        return MovieModel.listMovies("name ASC", page, max)
     }
 
     public static listByNameDesc = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `name` DESC limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        return MovieModel.listMovies("name DESC", page, max)
     }
 
     public static listByNew = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` DESC,name asc limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        return MovieModel.listMovies("release_date DESC", page, max)
     }
 
     public static listByOld = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` ASC,name asc limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        return MovieModel.listMovies("release_date ASC", page, max)
     }
 
     public static listByPopularity = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER BY avgRating DESC limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        return await MovieModel.listMovies("avgRating DESC", page, max)
     }
 
     public static listByHot = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id, movie.name, movie.release_date, movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id WHERE review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) GROUP BY movie.id ORDER BY avgRating DESC limit ?,?;", page * max, max);
-        return MovieModel.createArray(res);
+        const lastWeekFilter = "review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+        return MovieModel.listMovies("avgRating DESC", page, max, lastWeekFilter)
     }
 }

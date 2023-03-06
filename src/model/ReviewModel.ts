@@ -21,13 +21,6 @@ export class ReviewModel {
         this.isPublic = <boolean>is_public;
     }
 
-    private static createArray(dbRes: any) {
-        let array = [];
-        for (const res of dbRes)
-            array.push(new ReviewModel(res))
-        return array;
-    }
-
     public static create = async (authorID: number, movieID: number, rating: number, description: string, isPublic: boolean) => {
         return Database.nonQuery("INSERT INTO `review` (`author_id`, `movie_id`, `rating`, `description`, `is_public`) VALUES (?, ?, ?, ?, ?);",
             authorID, movieID, rating, description, isPublic);
@@ -45,6 +38,6 @@ export class ReviewModel {
 
     public static listReviewsForMovie = async (movie: MovieModel) => {
         const res = await Database.query("SELECT * FROM `review` WHERE `movie_id` = ? ORDER by create_date DESC;", movie.id);
-        return this.createArray(res);
+        return Database.transform(this, res);
     }
 }

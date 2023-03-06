@@ -13,8 +13,6 @@ export default class Database {
         return this.connection;
     }
 
-
-
     public static query = async (stmt: string, ...params: param[]): Promise<any[]> => {
         for (let i = 0; i < params.length; i++)
             if (params[i] == undefined) params[i] = null;
@@ -36,4 +34,7 @@ export default class Database {
         await Database.query(stmt, ...params)
         return this.getLastID();
     }
+
+    public static transform = <T>(type: { new(...args: any[]): T; }, dbRes: any): T[] =>
+        dbRes.map((i: any) => new type(i));
 }
