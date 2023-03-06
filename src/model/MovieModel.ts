@@ -42,12 +42,22 @@ export class MovieModel {
     }
 
     public static listByName = async (page: number, max: number) => {
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `name` ASC limit ?,?;", page * max, max);
+        return MovieModel.createArray(res);
+    }
+
+    public static listByNameDesc = async (page: number, max: number) => {
         const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `name` DESC limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 
-    public static listByNewest = async (page: number, max: number) => {
-        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` DESC limit ?,?;", page * max, max);
+    public static listByNew = async (page: number, max: number) => {
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` DESC,name asc limit ?,?;", page * max, max);
+        return MovieModel.createArray(res);
+    }
+
+    public static listByOld = async (page: number, max: number) => {
+        const res = await Database.query("SELECT movie.id,movie.name,movie.release_date,movie.image_path, AVG(review.rating) AS avgRating FROM `movie` LEFT JOIN review ON movie.id = review.id GROUP BY movie.id ORDER by `release_date` ASC,name asc limit ?,?;", page * max, max);
         return MovieModel.createArray(res);
     }
 

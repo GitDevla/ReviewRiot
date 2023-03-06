@@ -41,8 +41,9 @@ async function movieGetHandler(
     if (isNaN(pageId)) pageId = 0;
     let maxId = parseInt(max as string);
     if (isNaN(maxId)) maxId = 20;
-    let orderBy = order as string ?? "name";
 
+    let orderBy = order as string ?? "name";
     const movies = await listMovies(pageId, maxId, orderBy);
+
     return returnResponse(res, { movies })
 }

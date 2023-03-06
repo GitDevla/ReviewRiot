@@ -461,7 +461,7 @@ INSERT INTO `movie` (`id`, `name`, `release_date`, `image_path`) VALUES
 (326, 'Magic Mike', 2012, 'a1feb72b-a54e-4deb-8d74-7824f7be6246.jpg'),
 (327, 'John Wick', 2014, '2e79d448-19a1-4ba8-b59b-0ec98171b737.jpg'),
 (328, 'Jurassic World: Dominion', 2022, '5a7c4ddc-5962-46e4-a1d8-e2281ed9620a.jpg'),
-(329, 'Killers of the Flower Moon', 0000, 'd225a767-8f58-4af0-a6c5-385da1f7b9c3.jpg'),
+(329, 'Killers of the Flower Moon', 2023, 'd225a767-8f58-4af0-a6c5-385da1f7b9c3.jpg'),
 (330, 'Barbarian', 2022, 'f9329da6-d2aa-4058-935a-b3488db55c2c.jpg'),
 (331, 'Dungeons & Dragons: Honor Among Thieves', 2023, '5cca8ac9-fd3c-4325-981e-5f796d4d1549.jpg'),
 (332, 'Pearl', 2022, '651b14a3-e5ee-41c4-9f10-02f815f6ee5a.jpg'),
