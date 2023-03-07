@@ -1,3 +1,4 @@
+import movieCard from '@/component/movieCard';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -10,7 +11,6 @@ function movies() {
     useEffect(() => {
         fetchMovies();
         window.addEventListener('scroll', handleScroll);
-        console.log("run once");
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -19,7 +19,7 @@ function movies() {
 
     async function fetchMovies() {
         setLoading(true);
-        const response = await fetch(`/api/movie?page=${page.current}&max=20&order=name`);
+        const response = await fetch(`/api/movie?page=${page.current}&max=20&order=dname`);
         const data = await response.json();
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
         setLoading(false);
@@ -28,7 +28,7 @@ function movies() {
     }
 
     function handleScroll() {
-        const offset = 100;
+        const offset = 300;
         if (
             window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
         ) {
@@ -39,17 +39,16 @@ function movies() {
         }
     }
 
-    return (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {movies.map((movie) => (
-                <div key={movie.id}>
-                    <img src={movie.imagePath} alt="" width="250px" />
-                    <p>{movie.name}</p>
-                </div>
-            ))
-            }
+    return (<div>
+        <div>
+
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
+            {movies.map((movie) => movieCard(movie))}
             {loading && <div>Loading...</div>}
         </div >
+    </div>
+
     );
 }
 

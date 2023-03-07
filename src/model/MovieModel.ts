@@ -5,14 +5,18 @@ export class MovieModel {
     public readonly name: string;
     public readonly release: Date;
     public readonly rating: number;
+    public readonly NOReviews: number;
     public readonly imagePath: string;
+    public readonly genres: string[];
 
     constructor(dbRes: any) {
-        const { id, name, release_date, avgRating, image_path } = dbRes;
+        const { id, name, release_date, avgRating, image_path, genres, number_of_reviews } = dbRes;
         this.id = id;
         this.name = name;
         this.release = release_date;
         this.rating = avgRating;
+        this.NOReviews = number_of_reviews
+        this.genres = genres?.split(",") ?? [];
         this.imagePath = "/image/movie/" + image_path;
     }
 
@@ -38,10 +42,16 @@ export class MovieModel {
             movie.name,
             movie.release_date,
             movie.image_path,
-            Avg(review.rating) AS avgRating
+            Avg(review.rating) AS avgRating,
+            COUNT(DISTINCT review.id) as number_of_reviews,
+            GROUP_CONCAT(DISTINCT genre.name) as genres
         FROM   \`movie\`
                 LEFT JOIN review
-                    ON movie.id = review.id
+                    ON movie.id = review.movie_id
+                left join movie_genre
+                	on movie.id = movie_genre.movie_id
+                left join genre
+                	on genre.id = movie_genre.genre_id
         WHERE ${filterBy}
         GROUP  BY movie.id
         ORDER  BY ${orderBy}
