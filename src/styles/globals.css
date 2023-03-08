@@ -6,7 +6,14 @@
     --colorAccent3: #FFFFFF;
 }
 
-body {
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    width: 100%;
+    margin: 0;
     background-color: var(--colorBackground);
     color: var(--colorForeground);
 }

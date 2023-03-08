@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react'
+import styles from '@/styles/login.module.css';
 
 function login() {
     const [username, setUsername] = useState('')
@@ -30,20 +31,14 @@ function login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Felhasználónév:
-                <input type="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </label>
-            <br />
-            <label>
-                Jelszó:
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <br />
-            <button type="submit">Belépés</button>
-            {errorMessage && <p>{errorMessage}</p>}
-        </form>
+        <div className={styles.wrapper}>
+            <form onSubmit={handleSubmit}>
+                <input type="text" placeholder='Felhasználónév' onChange={(e) => setUsername(e.target.value)} />
+                <input type="password" placeholder='Jelszó' onChange={(e) => setPassword(e.target.value)} />
+                <input type="submit" value="Belépés" />
+                {errorMessage && <p>{errorMessage}</p>}
+            </form >
+        </div>
     )
 }
 
