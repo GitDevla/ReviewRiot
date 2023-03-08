@@ -1,21 +1,30 @@
 import movieCard from '@/component/movieCard';
+import { GenreModel } from '@/model/GenreModel';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
 
 function movies() {
     const [movies, setMovies] = useState([] as MovieModel[]);
+    const [genres, setGenres] = useState([] as GenreModel[]);
     const [loading, setLoading] = useState(false);
     const page = useRef(0);
     const flag = useRef(true);
 
     useEffect(() => {
         fetchMovies();
+        fetchGenres();
         window.addEventListener('scroll', handleScroll);
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    async function fetchGenres() {
+        const response = await fetch(`/api/genre`);
+        const data = await response.json();
+        setGenres(data.genres);
+    }
 
     async function fetchMovies() {
         setLoading(true);
@@ -28,7 +37,7 @@ function movies() {
     }
 
     function handleScroll() {
-        const offset = 300;
+        const offset = 400;
         if (
             window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
         ) {
@@ -41,9 +50,25 @@ function movies() {
 
     return (<div>
         <div>
-
+            <div>
+                <label>Név:</label>
+                <input type="text" />
+            </div>
+            <div>
+                <label>Műfaj:</label>
+                <select name="genre" id="">
+                    <option value="0" defaultChecked></option>
+                    {genres.map(i =>
+                        <option key={i.id} value={i.id}>{i.name}</option>
+                    )}
+                </select>
+            </div>
+            <div>
+                <label>Név:</label>
+                <input type="range" min={Math.min(...movies.flatMap(i => (i.release) as any))} max={Math.max(...movies.flatMap(i => (i.release) as any))} name="" id="" />
+            </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: "10px" }}>
             {movies.map((movie) => movieCard(movie))}
             {loading && <div>Loading...</div>}
         </div >
