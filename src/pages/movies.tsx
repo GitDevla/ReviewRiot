@@ -1,4 +1,4 @@
-import movieCard from '@/component/movieCard';
+import MovieCard from '@/component/MovieCard';
 import { GenreModel } from '@/model/GenreModel';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
@@ -69,7 +69,7 @@ function movies() {
             </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: "10px" }}>
-            {movies.map((movie) => movieCard(movie))}
+            {movies.map((movie) => MovieCard(movie))}
             {loading && <div>Loading...</div>}
         </div >
     </div>

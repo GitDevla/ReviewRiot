@@ -1,4 +1,6 @@
-export class HTTPError extends Error {
+export class ExpectedError extends Error { }
+
+export class HTTPError extends ExpectedError {
     status: number;
 
     constructor(message: string, status: number) {
@@ -49,3 +51,4 @@ export class ServerError extends HTTPError {
         super(message, 500);
     }
 }
+
