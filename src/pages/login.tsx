@@ -35,9 +35,12 @@ function login() {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder='Felhasználónév' onChange={(e) => setUsername(e.target.value)} />
                 <input type="password" placeholder='Jelszó' onChange={(e) => setPassword(e.target.value)} />
+                {errorMessage && <p className='error'>{errorMessage}</p>}
                 <input type="submit" value="Belépés" />
-                {errorMessage && <p>{errorMessage}</p>}
             </form >
+            <p>
+                Nincsen még fiókja? <a href="/register">Regisztráljon</a>
+            </p>
         </div>
     )
 }

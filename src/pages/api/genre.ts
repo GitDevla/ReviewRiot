@@ -14,7 +14,7 @@ export default async (
 }
 
 async function feedGetHandler(
-    req: NextApiRequest,
+    _: NextApiRequest,
     res: NextApiResponse
 ) {
     const genres = await listGenres();

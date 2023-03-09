@@ -1,9 +1,8 @@
 .wrapper {
-    width: 50%;
+    width: 100%;
     padding: 2%;
     margin: auto;
-    margin-top: 20%;
-    background-color: var(--colorAccent1);
+    background-color: var(--colorForeground);
 }
 
 .wrapper input {
@@ -13,11 +12,26 @@
     margin-bottom: 10px;
     border-radius: 8px;
     border: 1px solid;
-    color: var(--colorAccent3);
-    border-color: var(--colorAccent3);
+    color: var(--colorAccent1);
+    border-color: var(--colorAccent2);
 }
 
 .wrapper input::placeholder {
-    color: var(--colorAccent3);
+    color: var(--colorAccent2);
+}
 
+
+/*Desktop*/
+@media screen and (min-width: 880px) {
+    .wrapper {
+        width: 50%;
+    }
+}
+
+/*Tablet*/
+@media screen and (min-width: 600px) {
+    .wrapper {
+        width: 70%;
+        margin-top: 10%;
+    }
 }

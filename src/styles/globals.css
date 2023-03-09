@@ -1,9 +1,11 @@
 :root {
     --colorBackground: #3C4F76;
-    --colorForeground: #F5F5F5;
-    --colorAccent1: #00B8A9;
-    --colorAccent2: #FDB813;
-    --colorAccent3: #FFFFFF;
+    --colorForeground: #2C3E50;
+    --colorAccent1: #F4F9FF;
+    --colorAccent2: #B2C7E0;
+    --colorAccent3: #FFB347;
+
+    --red: red;
 }
 
 * {
@@ -15,5 +17,14 @@ html {
     width: 100%;
     margin: 0;
     background-color: var(--colorBackground);
-    color: var(--colorForeground);
+    color: var(--colorAccent1);
+    font-size: 1.1rem;
+}
+
+a {
+    color: var(--colorAccent3);
+}
+
+.error {
+    color: var(--colorAccent3);
 }
