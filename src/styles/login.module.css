@@ -16,6 +16,10 @@
     border-color: var(--colorAccent2);
 }
 
+.wrapper input[type="submit"] {
+    background-color: green;
+}
+
 .wrapper input::placeholder {
     color: var(--colorAccent2);
 }
