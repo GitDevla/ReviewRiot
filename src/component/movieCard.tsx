@@ -7,7 +7,9 @@ function movieCard(movie: MovieModel) {
     return (
         <div key={movie.id} className={styles.card}>
             <div>
-                <img src={movie.imagePath} alt="" />
+                <Image src={movie.imagePath} alt={movie.name} layout="responsive" width={300} height={450}
+                    quality={50}
+                    priority={true} />
             </div>
             <div><>{movie.name} ({movie.release})</></div>
             <div>
