@@ -15,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse, methodMap: any)
         if (error instanceof HTTPError)
             return returnError(res, error);
         returnError(res, new ServerError("Ismeretlen szerver hiba történt"));
-        throw error;
+        if (process.env.NODE_ENV == "development")
+            throw error;
     }
 }

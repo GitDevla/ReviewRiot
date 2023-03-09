@@ -15,14 +15,13 @@ function Home() {
                 return res.json()
             })
             .then(res => setUserdata(res.user))
-            .catch(() => router.push("/login"));
+            .catch(() => router.push("/auth"));
         fetch('/api/feed')
             .then(res => {
                 if (!res.ok) throw new Error()
                 return res.json()
             })
-            .then(res => setFeed(res.feed))
-            .catch(() => router.push("/login"));
+            .then(res => setFeed(res.feed));
         console.log('i fire once');
     }, []);
 
