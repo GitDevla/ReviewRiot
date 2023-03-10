@@ -2,6 +2,7 @@ import movieCard from '@/component/movieCard';
 import { GenreModel } from '@/model/GenreModel';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
+import Layout from '@/component/Layout';
 
 function movies() {
     const [movies, setMovies] = useState([] as MovieModel[]);
@@ -48,7 +49,7 @@ function movies() {
         }
     }
 
-    return (<div>
+    return (<Layout>
         <div>
             <div>
                 <label>Név:</label>
@@ -72,7 +73,7 @@ function movies() {
             {movies.map((movie) => movieCard(movie))}
             {loading && <div>Loading...</div>}
         </div >
-    </div>
+    </Layout>
 
     );
 }

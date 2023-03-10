@@ -28,3 +28,23 @@ a {
 .error {
     color: var(--colorAccent3);
 }
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 17%;
+    background-color: red;
+    height: 100vh;
+}
+
+
+.layout {
+    display: flex;
+}
+
+.layout .content {
+    width: 100%;
+    padding: 10px;
+}
