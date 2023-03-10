@@ -16,7 +16,7 @@ function Home() {
                 return res.json()
             })
             .then(res => setUserdata(res.user))
-            .catch(() => router.push("/login"));
+            .catch(() => router.push("/auth"));
         fetch('/api/feed')
             .then(res => {
                 if (!res.ok) throw new Error()

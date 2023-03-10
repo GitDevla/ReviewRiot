@@ -7,20 +7,22 @@ import RegisterForm from '@/component/RegisterForm';
 function auth() {
     const [isLogin, setIsLogin] = useState(true);
 
+    const toggle = () => setIsLogin(!isLogin);
+
     return (
         <div className={styles.wrapper}>
             {isLogin ? (
                 <>
                     <LoginForm />
                     <p>
-                        Nincsen még fiókja? <a onClick={() => setIsLogin(!isLogin)}>Regisztráljon</a>
+                        Nincsen még fiókja? <a href='#' onClick={toggle}>Regisztráljon</a>
                     </p>
                 </>
             ) : (
                 <>
-                    <RegisterForm />
+                    <RegisterForm next={toggle} />
                     <p>
-                        Van még fiókja? <a onClick={() => setIsLogin(!isLogin)}>Belépés</a>
+                        Van már fiókja? <a href='#' onClick={toggle}>Belépés</a>
                     </p>
                 </>
             )}

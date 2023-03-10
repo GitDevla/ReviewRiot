@@ -1,9 +1,9 @@
 import { MovieModel } from '@/model/MovieModel'
 import React from 'react'
 import Image from 'next/legacy/image';
-import styles from './movieCard.module.css';
+import styles from '@/styles/movieCard.module.css';
 
-function movieCard(movie: MovieModel) {
+function MovieCard(movie: MovieModel) {
     return (
         <div key={movie.id} className={styles.card}>
             <div>
@@ -22,4 +22,4 @@ function movieCard(movie: MovieModel) {
     )
 }
 
-export default movieCard
+export default MovieCard

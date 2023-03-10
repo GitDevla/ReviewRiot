@@ -1,3 +1,5 @@
+import { ExpectedError, HTTPError } from '@/util/Errors';
+import { Fetch } from '@/util/Fetch';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react'
@@ -11,18 +13,12 @@ function LoginForm() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-            const json = await response.json();
-
+            const response = await Fetch.POST('/api/auth', { username, password })
             if (!response.ok)
-                throw new Error(json.error);
+                throw new ExpectedError((await response.json()).error);
             router.push('/home');
         } catch (error) {
-            if (error instanceof Error)
+            if (error instanceof ExpectedError || error instanceof HTTPError)
                 setErrorMessage(error.message);
             else
                 setErrorMessage('Ismeretlen hiba történt');
@@ -31,8 +27,8 @@ function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder='Felhasználónév' onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" placeholder='Jelszó' onChange={(e) => setPassword(e.target.value)} />
+            <input type="text" placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Belépés" />
         </form >
