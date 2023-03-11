@@ -1,7 +1,7 @@
 import Layout from '@/component/Layout';
 import React from 'react'
 
-function Home() {
+function HomePage() {
     return (
         <Layout>
             <div>
@@ -15,4 +15,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default HomePage;

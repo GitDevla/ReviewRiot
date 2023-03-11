@@ -4,7 +4,7 @@ import Layout from '@/component/Layout';
 import React, { useEffect, useState } from 'react'
 import { Fetch } from '@/util/Fetch';
 
-function Feed() {
+function FeedPage() {
     const [feed, setFeed] = useState([] as FeedModel[])
     const router = useRouter();
 
@@ -31,4 +31,4 @@ function Feed() {
     )
 }
 
-export default Feed;
+export default FeedPage;

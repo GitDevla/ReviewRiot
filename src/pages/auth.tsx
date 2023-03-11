@@ -4,7 +4,7 @@ import styles from '@/styles/login.module.css';
 import LoginForm from '@/component/LoginForm';
 import RegisterForm from '@/component/RegisterForm';
 
-function auth() {
+function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
 
     const toggle = () => setIsLogin(!isLogin);
@@ -31,4 +31,4 @@ function auth() {
     )
 }
 
-export default auth
+export default AuthPage

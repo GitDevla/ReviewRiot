@@ -4,7 +4,7 @@ import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
 
-function movies() {
+function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieModel[]);
     const [genres, setGenres] = useState([] as GenreModel[]);
     const [loading, setLoading] = useState(false);
@@ -78,4 +78,4 @@ function movies() {
     );
 }
 
-export default movies
+export default MoviesPage

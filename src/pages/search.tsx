@@ -2,7 +2,7 @@ import Layout from '@/component/Layout';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Fetch } from '@/util/Fetch';
 
-function Search() {
+function SearchPage() {
     const [result, setResult] = useState([] as { id: number, name: string, picture: string, type: string }[])
     const [inputValue, setInputValue] = useState("")
     const timeoutId = useRef(null as NodeJS.Timeout | null);
@@ -41,4 +41,4 @@ function Search() {
     )
 }
 
-export default Search;
+export default SearchPage;
