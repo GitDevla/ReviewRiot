@@ -10,7 +10,7 @@ function Sidebar() {
     useEffect(() => {
         useUser()
             .then(res => setUser(res))
-    })
+    }, [])
 
     return (
         <div className='sidebar'>
@@ -35,7 +35,6 @@ function Sidebar() {
                             src={user.picturePath ?? "/image/user/temp.png"} alt='Profilkép' width={50} height={50} />
                         <span>{user.name}</span>
                     </div>
-
                 }
             </div>
         </div>
