@@ -8,7 +8,9 @@
     --red: red;
 }
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -37,8 +39,39 @@ a {
     width: 17%;
     background-color: red;
     height: 100vh;
+    padding-left: 40px;
 }
 
+.sidebar ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+.sidebar li {
+    list-style-type: none;
+}
+
+.sidebar a:visited,
+.sidebar a:link,
+.sidebar a {
+    text-decoration: none;
+    list-style: none;
+    color: var(--colorAccent2);
+}
+
+.sidebar li::before {
+    content: "";
+    background-color: #2C3E50;
+    display: inline-block;
+    width: 2px;
+    height: 1px;
+    position: relative;
+    left: -20px;
+}
+
+.sidebar li:hover a {
+    color: var(--colorAccent1);
+}
 
 .layout {
     display: flex;
@@ -47,4 +80,13 @@ a {
 .layout .content {
     width: 100%;
     padding: 10px;
+}
+
+.round {
+    border-radius: 50%;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
 }
