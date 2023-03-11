@@ -1,5 +1,6 @@
 import Database from "@/util/Database"
 import bcrypt from 'bcrypt';
+import { ReviewModel } from "./ReviewModel";
 
 export class UserModel {
     public readonly id: number;
@@ -64,6 +65,11 @@ export class UserModel {
     public static listFollows = async (who: number) => {
         const res = await Database.query("SELECT * FROM `follow` JOIN `user` ON `user`.`id`=`follow`.`whom_id` WHERE `follow`.`who_id` = ?;", who);
         return Database.transform(this, res);
+    }
+
+    public static listReviews = async (who: number) => {
+        const res = await Database.query("SELECT * FROM `review` JOIN `user` on review.author_id = user.id WHERE author_id=?;", who);
+        return Database.transform(ReviewModel, res);
     }
 
     public covertToSafe() {

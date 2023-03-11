@@ -55,3 +55,10 @@ export const listUserFollows = async (whoId: number) => {
 
     return UserModel.listFollows(whoId);
 }
+
+export const getUserReviews = async (id: number) => {
+    const user = await UserModel.getWithID(id);
+    if (!user) throw new NotFoundError("Ez a film nem létezik");
+    const reviews = await UserModel.listReviews(user.id);
+    return { user, reviews };
+}
