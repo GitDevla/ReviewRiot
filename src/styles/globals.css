@@ -1,11 +1,9 @@
 :root {
-    --colorBackground: #3C4F76;
-    --colorForeground: #2C3E50;
-    --colorAccent1: #F4F9FF;
-    --colorAccent2: #B2C7E0;
-    --colorAccent3: #FFB347;
-
-    --red: red;
+    --bg: #252627;
+    --fg: #DBD9DB;
+    --a1: #252323;
+    --a2: #D5A021;
+    --highlight: #048BA8;
 }
 
 *,
@@ -18,17 +16,17 @@ body,
 html {
     width: 100%;
     margin: 0;
-    background-color: var(--colorBackground);
-    color: var(--colorAccent1);
+    background-color: var(--bg);
+    color: var(--fg);
     font-size: 1.1rem;
 }
 
 a {
-    color: var(--colorAccent3);
+    color: var(--highlight);
 }
 
 .error {
-    color: var(--colorAccent3);
+    color: var(--a2);
 }
 
 .sidebar {
@@ -37,7 +35,6 @@ a {
     left: 0;
     bottom: 0;
     width: 17%;
-    background-color: red;
     height: 100vh;
     padding-left: 40px;
 }
@@ -56,10 +53,10 @@ a {
 .sidebar a {
     text-decoration: none;
     list-style: none;
-    color: var(--colorAccent2);
+    color: var(--fg);
 }
 
-.sidebar li::before {
+/* .sidebar li::before {
     content: "";
     background-color: #2C3E50;
     display: inline-block;
@@ -67,10 +64,15 @@ a {
     height: 1px;
     position: relative;
     left: -20px;
+} */
+
+.sidebar li:hover {
+    background-color: var(--a1);
 }
 
 .sidebar li:hover a {
-    color: var(--colorAccent1);
+    color: var(--highlight);
+
 }
 
 .layout {
@@ -89,4 +91,8 @@ a {
 .bottom {
     position: absolute;
     bottom: 0;
+}
+
+img {
+    fill: red;
 }
