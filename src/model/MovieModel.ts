@@ -75,7 +75,7 @@ export class MovieModel {
         return MovieModel.listMovies("release_date ASC", page, max)
     }
 
-    public static listByPopularity = async (page: number, max: number) => {
+    public static listByTop = async (page: number, max: number) => {
         return await MovieModel.listMovies("avgRating DESC", page, max)
     }
 

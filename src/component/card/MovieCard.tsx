@@ -4,7 +4,7 @@ import Image from 'next/legacy/image';
 import styles from '@/styles/movieCard.module.css';
 import { useRouter } from 'next/router';
 
-function MovieCard(movie: MovieModel) {
+function MovieCard({ movie }: { movie: MovieModel }) {
     const router = useRouter();
 
     function open() {

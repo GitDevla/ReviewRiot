@@ -16,7 +16,7 @@ export class UserModel {
         this.name = name;
         this.created = created_at;
         this.description = description;
-        this.picturePath = picture_path;
+        this.picturePath = "/image/user/" + (picture_path ?? "default.png");
         this.permissionID = permission_id;
     }
 
@@ -78,7 +78,7 @@ export class UserModel {
             "name": this.name,
             "created": this.created,
             "description": this.description,
-            "picture": this.picturePath,
+            "picturePath": this.picturePath,
         }
     }
 }

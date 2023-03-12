@@ -32,7 +32,7 @@ function Sidebar() {
                     <div><Link href="/auth">Belépés/Regisztráció</Link></div> :
                     <div onClick={() => logout()}>
                         <Image className='round'
-                            src={user.picturePath ?? "/image/user/temp.png"} alt='Profilkép' width={50} height={50} />
+                            src={user.picturePath} alt='Profilkép' width={50} height={50} />
                         <span>{user.name}</span>
                     </div>
                 }

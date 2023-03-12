@@ -1,8 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
 import styles from '@/styles/login.module.css';
-import LoginForm from '@/component/LoginForm';
-import RegisterForm from '@/component/RegisterForm';
+import LoginForm from '@/component/form/LoginForm';
+import RegisterForm from '@/component/form/RegisterForm';
+import Head from 'next/head';
 
 function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
@@ -13,6 +14,9 @@ function AuthPage() {
         <div className={styles.wrapper}>
             {isLogin ? (
                 <>
+                    <Head>
+                        <title>Belépés</title>
+                    </Head>
                     <LoginForm />
                     <p>
                         Nincsen még fiókja? <a href='#' onClick={toggle}>Regisztráljon</a>
@@ -20,6 +24,9 @@ function AuthPage() {
                 </>
             ) : (
                 <>
+                    <Head>
+                        <title>Regisztráció</title>
+                    </Head>
                     <RegisterForm next={toggle} />
                     <p>
                         Van már fiókja? <a href='#' onClick={toggle}>Belépés</a>

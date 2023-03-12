@@ -30,8 +30,8 @@ export const listMovies = async (page: number, max: number, order: string) => {
         case "old":
             return MovieModel.listByOld(page, max);
 
-        case "popularity":
-            return MovieModel.listByPopularity(page, max);
+        case "top":
+            return MovieModel.listByTop(page, max);
 
         case "hot":
             return MovieModel.listByHot(page, max);

@@ -1,8 +1,9 @@
-import MovieCard from '@/component/MovieCard';
+import MovieCard from '@/component/card/MovieCard';
 import { GenreModel } from '@/model/GenreModel';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
+import Head from 'next/head';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieModel[]);
@@ -49,31 +50,35 @@ function MoviesPage() {
         }
     }
 
-    return (<Layout>
-        <div>
+    return (
+        <Layout>
+            <Head>
+                <title>Filmek</title>
+            </Head>
             <div>
-                <label>Név:</label>
-                <input type="text" />
+                <div>
+                    <label>Név:</label>
+                    <input type="text" />
+                </div>
+                <div>
+                    <label>Műfaj:</label>
+                    <select name="genre" id="">
+                        <option value="0" defaultChecked></option>
+                        {genres.map(i =>
+                            <option key={i.id} value={i.id}>{i.name}</option>
+                        )}
+                    </select>
+                </div>
+                <div>
+                    <label>Név:</label>
+                    <input type="range" min={Math.min(...movies.flatMap(i => (i.release) as any))} max={Math.max(...movies.flatMap(i => (i.release) as any))} name="" id="" />
+                </div>
             </div>
-            <div>
-                <label>Műfaj:</label>
-                <select name="genre" id="">
-                    <option value="0" defaultChecked></option>
-                    {genres.map(i =>
-                        <option key={i.id} value={i.id}>{i.name}</option>
-                    )}
-                </select>
-            </div>
-            <div>
-                <label>Név:</label>
-                <input type="range" min={Math.min(...movies.flatMap(i => (i.release) as any))} max={Math.max(...movies.flatMap(i => (i.release) as any))} name="" id="" />
-            </div>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
-            {movies.map((movie) => MovieCard(movie))}
-            {loading && <div>Loading...</div>}
-        </div >
-    </Layout>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
+                {movies.map(i => <MovieCard movie={i} />)}
+                {loading && <div>Loading...</div>}
+            </div >
+        </Layout>
 
     );
 }
