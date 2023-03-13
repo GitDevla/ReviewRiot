@@ -2,6 +2,7 @@ import Layout from '@/component/Layout';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Fetch } from '@/util/Fetch';
 import Head from 'next/head';
+import Link from 'next/link';
 
 function SearchPage() {
     const [result, setResult] = useState([] as { id: number, name: string, picture: string, type: string }[])
@@ -37,7 +38,7 @@ function SearchPage() {
                 <input type="text" value={inputValue} onChange={handleInputChange} />
                 {result.map((i, id) => {
                     return <div key={id}>
-                        <p>{i.type}:{i.name}</p>
+                        <p><Link href={`/${i.type}/${i.id}`}>{i.name}</Link>:</p>
                     </div>
                 })}
             </div>
