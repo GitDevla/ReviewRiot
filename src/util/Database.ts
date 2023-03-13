@@ -1,16 +1,18 @@
 import { createPool, Pool } from "mysql2/promise";
 type param = string | number | boolean | undefined | null;
-export default class Database {
-    private static connection: Pool;
+let globalPool: Pool | null = null;
 
+export default class Database {
     private static getPool = () => {
-        if (!this.connection) this.connection = createPool({
-            host: process.env.databaseHost,
-            user: process.env.databaseUser,
-            password: process.env.databasePassword,
-            database: process.env.databaseDatabase
-        });
-        return this.connection;
+        if (!globalPool) {
+            globalPool = createPool({
+                host: process.env.databaseHost,
+                user: process.env.databaseUser,
+                password: process.env.databasePassword,
+                database: process.env.databaseDatabase
+            });
+        }
+        return globalPool;
     }
 
     public static query = async (stmt: string, ...params: param[]): Promise<any[]> => {
