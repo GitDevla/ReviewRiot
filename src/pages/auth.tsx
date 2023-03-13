@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import styles from '@/styles/login.module.css';
+import styles from '@/styles/login.module.scss';
 import LoginForm from '@/component/form/LoginForm';
 import RegisterForm from '@/component/form/RegisterForm';
 import Head from 'next/head';

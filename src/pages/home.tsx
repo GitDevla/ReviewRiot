@@ -39,13 +39,13 @@ function HomePage() {
             <div>
                 <h2>Felkapott filmek 🔥</h2>
                 <div style={{ display: "flex" }}>
-                    {hotMovies.map(i => <div style={{ width: "70px", margin: "10px" }}><MovieCard movie={i} /></div>)}
+                    {hotMovies.map(i => <div key={i.id} style={{ width: "70px", margin: "10px" }}><MovieCard movie={i} /></div>)}
                 </div>
             </div>
             <div>
                 <h2>Top filmek ⭐</h2>
                 <div style={{ display: "flex" }}>
-                    {topMovies.map(i => <div style={{ width: "70px", margin: "10px" }}><MovieCard movie={i} /></div>)}
+                    {topMovies.map(i => <div key={i.id} style={{ width: "70px", margin: "10px" }}><MovieCard movie={i} /></div>)}
                 </div>
             </div>
         </Layout>

@@ -75,7 +75,7 @@ function MoviesPage() {
                 </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
-                {movies.map(i => <MovieCard movie={i} />)}
+                {movies.map(i => <MovieCard key={i.id} movie={i} />)}
                 {loading && <div>Loading...</div>}
             </div >
         </Layout>

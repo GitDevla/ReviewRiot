@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { UserModel } from '@/model/UserModel'
 import { logout, useUser } from '@/util/useUser'
+import { useRouter } from 'next/router'
 
 function Sidebar() {
     const [user, setUser] = useState(null as UserModel | null)
+    const { pathname } = useRouter();
 
     useEffect(() => {
         useUser()
@@ -19,10 +21,10 @@ function Sidebar() {
             </div>
             <nav>
                 <ul>
-                    <li><Link href="/home">Főoldal</Link></li>
-                    {user && <li><Link href="/feed">Bejegyzéslista</Link></li>}
-                    <li><Link href="/movies">Filmek</Link></li>
-                    <li><Link href="/search">Keresés</Link></li>
+                    <li className={pathname == "/home" ? "active" : ""}><Link href="/home">Főoldal</Link></li>
+                    {user && <li className={pathname == "/feed" ? "active" : ""}><Link href="/feed">Bejegyzéslista</Link></li>}
+                    <li className={pathname == "/movies" ? "active" : ""}><Link href="/movies">Filmek</Link></li>
+                    <li className={pathname == "/search" ? "active" : ""}><Link href="/search">Keresés</Link></li>
                     <hr />
                     <li>Beállítások</li>
                 </ul>
