@@ -34,32 +34,81 @@ a {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 17%;
+    width: clamp(100px, 20%, 300px);
+    font-size: 1.4rem;
     height: 100vh;
     padding-left: 40px;
+    padding-right: 10px;
 
     ul {
         margin: 0px;
+        margin-top: 70px;
         padding: 0px;
     }
 
     li {
+
         list-style-type: none;
+        margin: 10px 0px;
+        padding: 3px;
+        border-radius: 1px;
+        position: relative;
+
+        svg {
+            height: 22px;
+            width: 22px;
+            margin-right: 10px;
+
+            * {
+                stroke: var(--fg);
+            }
+        }
+    }
+
+    li.active {
+        color: var(--a2);
+
+        svg * {
+            stroke: var(--a2);
+            fill: var(--a2);
+        }
+
+        a:link,
+        a:visited {
+            color: var(--a2);
+        }
+
+        ::before {
+            content: "";
+            vertical-align: top;
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 3px;
+            height: 100%;
+            background-color: var(--a2);
+            border-radius: 2px;
+        }
     }
 
     a,
     a:visited,
     a:link {
+        display: flex;
+        align-items: center;
         text-decoration: none;
         list-style: none;
         color: var(--fg);
     }
 
     li:hover {
-        background-color: var(--a1);
-
         a {
-            color: var(--highlight);
+            color: var(--a2);
+        }
+
+        svg * {
+            stroke: var(--a2);
+            fill: var(--a2);
         }
     }
 }
@@ -84,14 +133,4 @@ a {
 
 img {
     fill: red;
-}
-
-li.active {
-    background-color: var(--a1);
-    color: var(--a2);
-
-    a:link,
-    a:visited {
-        color: var(--a2);
-    }
 }

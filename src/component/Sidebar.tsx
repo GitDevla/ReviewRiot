@@ -4,6 +4,11 @@ import Image from 'next/image'
 import { UserModel } from '@/model/UserModel'
 import { logout, useUser } from '@/util/useUser'
 import { useRouter } from 'next/router'
+import HomeSVG from '@/../public/icon/home.svg';
+import FeedSVG from '@/../public/icon/feed.svg';
+import MoviesSVG from '@/../public/icon/movies.svg';
+import SearchSVG from '@/../public/icon/search.svg';
+import SettingsSVG from '@/../public/icon/settings.svg';
 
 function Sidebar() {
     const [user, setUser] = useState(null as UserModel | null)
@@ -21,12 +26,12 @@ function Sidebar() {
             </div>
             <nav>
                 <ul>
-                    <li className={pathname == "/home" ? "active" : ""}><Link href="/home">Főoldal</Link></li>
-                    {user && <li className={pathname == "/feed" ? "active" : ""}><Link href="/feed">Bejegyzéslista</Link></li>}
-                    <li className={pathname == "/movies" ? "active" : ""}><Link href="/movies">Filmek</Link></li>
-                    <li className={pathname == "/search" ? "active" : ""}><Link href="/search">Keresés</Link></li>
+                    <li className={pathname == "/home" ? "active" : ""}><Link href="/home"><HomeSVG /><span>Főoldal</span></Link></li>
+                    {user && <li className={pathname == "/feed" ? "active" : ""}><Link href="/feed"><FeedSVG /><span>Bejegyzéslista</span></Link></li>}
+                    <li className={pathname == "/movies" ? "active" : ""}><Link href="/movies"><MoviesSVG /><span>Filmek</span></Link></li>
+                    <li className={pathname == "/search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
-                    <li>Beállítások</li>
+                    <li><SettingsSVG /><span>Beállítások</span></li>
                 </ul>
             </nav>
             <div className='bottom'>
@@ -39,7 +44,7 @@ function Sidebar() {
                     </div>
                 }
             </div>
-        </div>
+        </div >
     )
 }
 
