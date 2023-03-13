@@ -1,0 +1,37 @@
+$small: 300px;
+$medium: 900px;
+
+@media screen and (max-width: $medium) {
+    .sidebar {
+        position: fixed;
+        width: 100%;
+        height: auto;
+        top: unset;
+        z-index: 99;
+        background-color: var(--a1);
+        padding: 10px;
+
+        span {
+            display: none;
+        }
+
+        hr {
+            display: none;
+        }
+
+        ul {
+            margin: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        li.active a::before {
+            left: 0;
+            bottom: -5px;
+            width: 200%;
+            transform: translate(-25%, 0%);
+            height: 3px;
+        }
+    }
+}

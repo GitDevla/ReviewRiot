@@ -78,11 +78,14 @@ a {
             color: var(--a2);
         }
 
+        svg {
+            margin: 0;
+        }
+
         ::before {
             content: "";
             vertical-align: top;
             position: absolute;
-            top: 0;
             left: -10px;
             width: 3px;
             height: 100%;

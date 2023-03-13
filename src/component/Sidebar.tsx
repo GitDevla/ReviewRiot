@@ -22,7 +22,7 @@ function Sidebar() {
     return (
         <div className='sidebar'>
             <div>
-                [logo]
+                <span>[logo]</span>
             </div>
             <nav>
                 <ul>
