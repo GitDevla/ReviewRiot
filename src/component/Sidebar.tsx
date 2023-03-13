@@ -13,7 +13,8 @@ import UserSVG from '@/../public/icon/user.svg';
 
 function Sidebar() {
     const [user, setUser] = useState(null as UserModel | null)
-    const { pathname } = useRouter();
+    let { pathname } = useRouter();
+    pathname = pathname.split("/")[1];
 
     useEffect(() => {
         useUser()
@@ -27,12 +28,12 @@ function Sidebar() {
             </div>
             <nav>
                 <ul>
-                    <li className={pathname == "/home" ? "active" : ""}><Link href="/home"><HomeSVG /><span>Főoldal</span></Link></li>
-                    {user && <li className={pathname == "/feed" ? "active" : ""}><Link href="/feed"><FeedSVG /><span>Bejegyzéslista</span></Link></li>}
-                    <li className={pathname == "/movies" ? "active" : ""}><Link href="/movies"><MoviesSVG /><span>Filmek</span></Link></li>
-                    <li className={pathname == "/search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
+                    <li className={pathname == "home" ? "active" : ""}><Link href="/home"><HomeSVG /><span>Főoldal</span></Link></li>
+                    {user && <li className={pathname == "feed" ? "active" : ""}><Link href="/feed"><FeedSVG /><span>Bejegyzéslista</span></Link></li>}
+                    <li className={pathname.startsWith("movie") ? "active" : ""}><Link href="/movies"><MoviesSVG /><span>Filmek</span></Link></li>
+                    <li className={pathname == "search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
-                    {user && <li className={pathname == "/settings" ? "active" : ""}><Link href="/settings"><SettingsSVG /><span>Beállítások</span></Link></li>}
+                    {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings"><SettingsSVG /><span>Beállítások</span></Link></li>}
                     <li className='bottom'>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={() => logout()}>

@@ -6,6 +6,8 @@ import LoginRequired from '@/util/LoginRequired';
 import { ForbiddenError } from '@/util/Errors';
 import { createMovie, listMovies } from '@/service/MovieService';
 import { validateMovieCreate } from '@/validator/movieValidator';
+import { PermissionLevel } from '@/util/PermissionLevels';
+
 
 export default async (
     req: NextApiRequest,
@@ -23,7 +25,7 @@ async function moviePostHandler(
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
-    if (!(await checkPermission(user!, 255))) throw new ForbiddenError();
+    if (!(await checkPermission(user!, PermissionLevel.admin))) throw new ForbiddenError();
     validateMovieCreate(req.body);
     let { name, date } = req.body;
 
