@@ -37,7 +37,6 @@ a {
     width: clamp(100px, 20%, 300px);
     font-size: 1.4rem;
     height: 100vh;
-    padding-left: 40px;
     padding-right: 10px;
 
     ul {
@@ -78,10 +77,6 @@ a {
             color: var(--a2);
         }
 
-        svg {
-            margin: 0;
-        }
-
         ::before {
             content: "";
             vertical-align: top;
@@ -114,10 +109,16 @@ a {
             fill: var(--a2);
         }
     }
+
+    hr {
+        background-color: var(--a1);
+        border-color: var(--a1);
+    }
 }
 
 .layout {
     display: flex;
+    padding: 0 15%;
 
     .content {
         width: 100%;
@@ -130,7 +131,7 @@ a {
 }
 
 .bottom {
-    position: absolute;
+    position: absolute !important;
     bottom: 0;
 }
 

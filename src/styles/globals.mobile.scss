@@ -1,6 +1,13 @@
 $small: 300px;
 $medium: 900px;
 
+
+@media screen and (max-width: 1200px) {
+    .layout {
+        padding: 0%;
+    }
+}
+
 @media screen and (max-width: $medium) {
     .sidebar {
         position: fixed;
@@ -10,6 +17,7 @@ $medium: 900px;
         z-index: 99;
         background-color: var(--a1);
         padding: 10px;
+
 
         span {
             display: none;
@@ -26,6 +34,10 @@ $medium: 900px;
             justify-content: space-evenly;
         }
 
+        svg {
+            margin: 0;
+        }
+
         li.active a::before {
             left: 0;
             bottom: -5px;
@@ -33,5 +45,10 @@ $medium: 900px;
             transform: translate(-25%, 0%);
             height: 3px;
         }
+
+        .bottom {
+            position: relative !important;
+        }
+
     }
 }

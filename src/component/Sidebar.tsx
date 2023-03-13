@@ -9,6 +9,7 @@ import FeedSVG from '@/../public/icon/feed.svg';
 import MoviesSVG from '@/../public/icon/movies.svg';
 import SearchSVG from '@/../public/icon/search.svg';
 import SettingsSVG from '@/../public/icon/settings.svg';
+import UserSVG from '@/../public/icon/user.svg';
 
 function Sidebar() {
     const [user, setUser] = useState(null as UserModel | null)
@@ -31,19 +32,17 @@ function Sidebar() {
                     <li className={pathname == "/movies" ? "active" : ""}><Link href="/movies"><MoviesSVG /><span>Filmek</span></Link></li>
                     <li className={pathname == "/search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
-                    <li><SettingsSVG /><span>Beállítások</span></li>
+                    {user && <li className={pathname == "/settings" ? "active" : ""}><Link href="/settings"><SettingsSVG /><span>Beállítások</span></Link></li>}
+                    <li className='bottom'>{!user ?
+                        <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
+                        <div onClick={() => logout()}>
+                            <Image className='round'
+                                src={user.picturePath} alt='Profilkép' width={50} height={50} />
+                            <span>{user.name}</span>
+                        </div>
+                    }</li>
                 </ul>
             </nav>
-            <div className='bottom'>
-                {!user ?
-                    <div><Link href="/auth">Belépés/Regisztráció</Link></div> :
-                    <div onClick={() => logout()}>
-                        <Image className='round'
-                            src={user.picturePath} alt='Profilkép' width={50} height={50} />
-                        <span>{user.name}</span>
-                    </div>
-                }
-            </div>
         </div >
     )
 }
