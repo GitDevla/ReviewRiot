@@ -12,6 +12,7 @@ function SettingsProfilePage() {
     const [user, setUser] = useState({} as UserModel);
     const [file, setFile] = useState(null as any);
 
+
     useEffect(() => {
         async function getIsAdmin() {
             const res = await Fetch.GET("/api/permission");
@@ -25,9 +26,10 @@ function SettingsProfilePage() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         const body = new FormData();
         body.append("file", file);
-        await fetch("/api/user", {
+        await fetch("/api/user/update", {
             method: "PUT",
             body
         });
@@ -36,7 +38,7 @@ function SettingsProfilePage() {
     return (
         <Layout>
             {isAdmin && <SettingsNavbar />}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Image src={user.picturePath} alt="" width={100} height={100}></Image>
                 <input type="file" name="" id="" onChange={i => setFile(i.target.files![0])} />
                 <input type="submit" value="" />
