@@ -1,6 +1,7 @@
 import { PermissionModel } from "@/model/PermissionModel";
 import { UserModel } from "@/model/UserModel"
 import { BadRequestError, ConflictError, NotFoundError } from "@/util/Errors";
+import { Filesystem } from "@/util/Filesystem";
 import { generateToken } from "./TokenService";
 
 export const createUser = async (username: string, email: string, password: string) => {
@@ -61,4 +62,13 @@ export const getUserReviews = async (id: number) => {
     if (!user) throw new NotFoundError("Ez a film nem létezik");
     const reviews = await UserModel.listReviews(user.id);
     return { user, reviews };
+}
+
+
+export const changeProfilePicture = async (user: UserModel, path: string) => {
+    const filename = user.picturePath.split("/").at(-1);
+    if (filename != "default.png")
+        Filesystem.remove("user/" + filename!);
+    const newFile = await Filesystem.saveImage(path, "user");
+    user.update(newFile);
 }

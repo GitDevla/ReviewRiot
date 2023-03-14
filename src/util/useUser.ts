@@ -1,5 +1,6 @@
 import { UserModel } from "@/model/UserModel";
 import { deleteCookie, getCookie } from "cookies-next";
+import Router from "next/router";
 
 export const useUser = async () => {
     const token = getCookie("token");
@@ -19,4 +20,10 @@ export const logout = async () => {
     deleteCookie("token");
     sessionStorage.removeItem("user");
     window.location.reload();
+}
+
+export const resetCache = async () => {
+    sessionStorage.removeItem("user");
+    useUser();
+    Router.reload();
 }

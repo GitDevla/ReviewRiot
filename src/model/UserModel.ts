@@ -72,6 +72,10 @@ export class UserModel {
         return Database.transform(ReviewModel, res);
     }
 
+    public update = async (picture_path: string) => {
+        return Database.nonQuery("UPDATE `user` SET `picture_path` = ? WHERE `user`.`id` = ?", picture_path, this.id);
+    }
+
     public covertToSafe() {
         return {
             "id": this.id,

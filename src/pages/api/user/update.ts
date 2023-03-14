@@ -1,7 +1,8 @@
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { FilesystemModel } from '@/model/FilesystemModel';
 import multiparty from 'multiparty';
+import { changeProfilePicture } from '@/service/UserService';
+import LoginRequired from '@/util/LoginRequired';
 
 
 export const config = {
@@ -26,13 +27,17 @@ async function userUpdateHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    const user = await LoginRequired(req);
+
     var form = new multiparty.Form();
 
-    form.parse(req, function (err, fields, files) {
-        console.log(fields);
-
-        FilesystemModel.save(files.file[0].path, "user")
+    form.parse(req, async function (err, fields, files) {
+        if (files.file[0]) {
+            const image = files.file[0] as multiparty.File
+            if (image.headers["content-type"].startsWith("image"))
+                await changeProfilePicture(user!, files.file[0].path);
+        }
+        return res.status(201).send("");
     });
-    return res.status(201).send("");
 
 }

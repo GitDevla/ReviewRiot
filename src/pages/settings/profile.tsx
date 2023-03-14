@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { UserModel } from '@/model/UserModel';
 import SettingsNavbar from '@/component/SettingsNavbar';
-import { useUser } from '@/util/useUser';
+import { resetCache, useUser } from '@/util/useUser';
 
 function SettingsProfilePage() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -33,6 +33,7 @@ function SettingsProfilePage() {
             method: "PUT",
             body
         });
+        resetCache();
     };
 
     return (
