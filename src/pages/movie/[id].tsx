@@ -4,7 +4,6 @@ import { ReviewModel } from '@/model/ReviewModel';
 import { Fetch } from '@/util/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image';
 import Head from 'next/head';
 
 function MovieFeed() {
@@ -31,7 +30,7 @@ function MovieFeed() {
             {movie && < div >
                 <h2>{movie.name}</h2>
                 <p><>Kiadás: {movie.release}</></p>
-                <Image src={movie.imagePath} alt="Borítókép" width={330} height={440} />
+                <img src={movie.imagePath} alt="Borítókép" width={330} height={440} />
             </div>}
             <div><h2>Vélemények</h2>{JSON.stringify(reviews)}</div>
         </Layout >

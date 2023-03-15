@@ -72,8 +72,19 @@ export class UserModel {
         return Database.transform(ReviewModel, res);
     }
 
-    public update = async (picture_path: string) => {
-        return Database.nonQuery("UPDATE `user` SET `picture_path` = ? WHERE `user`.`id` = ?", picture_path, this.id);
+    public update = async ({
+        picture_path = null as string | null,
+        username = this.name,
+        password = null as string | null,
+        description = this.description,
+    }
+    ) => {
+        if (!picture_path) picture_path = this.picturePath.split("/").at(-1)!;
+        if (password) {
+            var hash = await bcrypt.hash(password, 10);
+            await Database.nonQuery("UPDATE `auth` SET `password_hash` = ? WHERE `auth`.`user_id` = ?", hash, this.id);
+        }
+        return Database.nonQuery("UPDATE `user` SET name = ?, `picture_path` = ?, description = ? WHERE `user`.`id` = ?", username, picture_path, description, this.id);
     }
 
     public covertToSafe() {

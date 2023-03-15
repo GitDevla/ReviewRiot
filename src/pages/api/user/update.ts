@@ -1,8 +1,9 @@
 import MethodRouter from '@/util/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import multiparty from 'multiparty';
-import { changeProfilePicture } from '@/service/UserService';
+import { changeDescription, changePassword, changeProfilePicture, changeUsername } from '@/service/UserService';
 import LoginRequired from '@/util/LoginRequired';
+import { validatePassword, validateUsername } from '@/validator/userValidator';
 
 
 export const config = {
@@ -32,7 +33,19 @@ async function userUpdateHandler(
     var form = new multiparty.Form();
 
     form.parse(req, async function (err, fields, files) {
-        if (files.file[0]) {
+        const { username, password, description } = fields;
+        if (username) {
+            validateUsername(username[0])
+            await changeUsername(user!, username[0]);
+        }
+        if (description) {
+            await changeDescription(user!, description[0]);
+        }
+        if (password) {
+            validatePassword(password[0])
+            await changePassword(user!, password[0]);
+        }
+        if (files.file) {
             const image = files.file[0] as multiparty.File
             if (image.headers["content-type"].startsWith("image"))
                 await changeProfilePicture(user!, files.file[0].path);

@@ -70,5 +70,19 @@ export const changeProfilePicture = async (user: UserModel, path: string) => {
     if (filename != "default.png")
         Filesystem.remove("user/" + filename!);
     const newFile = await Filesystem.saveImage(path, "user");
-    user.update(newFile);
+    user.update({ picture_path: newFile });
+}
+
+export const changeUsername = async (user: UserModel, newName: string) => {
+    const userWithSameName = await UserModel.getWithName(newName);
+    if (userWithSameName) throw new ConflictError("Ez a felhasználónév már létezik");
+    user.update({ username: newName });
+}
+
+export const changePassword = async (user: UserModel, newPassword: string) => {
+    user.update({ password: newPassword });
+}
+
+export const changeDescription = async (user: UserModel, newDescription: string) => {
+    user.update({ description: newDescription });
 }

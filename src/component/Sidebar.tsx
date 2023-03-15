@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { UserModel } from '@/model/UserModel'
 import { logout, useUser } from '@/util/useUser'
 import { useRouter } from 'next/router'
@@ -37,7 +36,7 @@ function Sidebar() {
                     <li className='bottom'>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={() => logout()}>
-                            <Image className='round'
+                            <img className='round'
                                 src={user.picturePath} alt='Profilkép' width={50} height={50} />
                             <span>{user.name}</span>
                         </div>

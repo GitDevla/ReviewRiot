@@ -3,7 +3,6 @@ import { ReviewModel } from '@/model/ReviewModel';
 import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/Fetch';
 import { useRouter } from 'next/router'
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
 import { useUser } from '@/util/useUser';
@@ -45,7 +44,7 @@ function UserFeed() {
             {user && < div >
                 <h2>{user.name}</h2>
                 <p>{user.description}</p>
-                <Image src={user.picturePath} alt="Profilkép" width={100} height={100} />
+                <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
             </div>}
             <div>{!ownProfile && <>
                 <button onClick={() => handleFollow()}>Követés</button>

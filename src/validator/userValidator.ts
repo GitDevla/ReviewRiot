@@ -7,11 +7,8 @@ interface IUserCreateBody {
 }
 
 export const validateUserRegister = ({ username, email, password }: IUserCreateBody) => {
-    validateAuthBody({ username, password });
-    Validate(username)
-        .lengthBetween(6, 32, "Felhasználónév (username) hosszának 6 és 32 között kell lennie")
-    Validate(password)
-        .lengthBetween(8, 55, "Jelszó (password) hosszának 8 és 55 között kell lennie")
+    validateUsername(username);
+    validatePassword(password);
     Validate(email)
         .required("Email (email) kötelező")
         .email("Email (email) nem email")
@@ -23,12 +20,8 @@ interface IAuthBody {
 }
 
 export const validateAuthBody = ({ username, password }: IAuthBody) => {
-    Validate(username)
-        .required("Felhasználónév (username) kötelező")
-        .string("Felhasználónévnek (username) szöveg típúsúnak kell lennie")
-    Validate(password)
-        .required("Jelszó (password) kötelező")
-        .string("Jelszó (password) szöveg típúsúnak kell lennie")
+    validateUsername(username)
+    validatePassword(password);
 }
 
 interface IFollowPostBody {
@@ -41,3 +34,15 @@ export const followValidator = ({ whom }: IFollowPostBody) => {
         .number("Felhasználó azonósitó (whom) szám típusúnak kell lennie")
         .min(1, "Felhasználó azonósitó (whom) nem lehet kisseb mint 1");
 }
+
+export const validateUsername = (username: string) =>
+    Validate(username)
+        .required("Felhasználónév (username) kötelező")
+        .string("Felhasználónévnek (username) szöveg típúsúnak kell lennie")
+        .lengthBetween(5, 32, "Felhasználónév (username) hosszának 5 és 32 között kell lennie")
+
+export const validatePassword = (password: string) =>
+    Validate(password)
+        .required("Jelszó (password) kötelező")
+        .string("Jelszó (password) szöveg típúsúnak kell lennie")
+        .lengthBetween(8, 55, "Jelszó (password) hosszának 8 és 55 között kell lennie")
