@@ -2,7 +2,7 @@ import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { resetCache, useUser } from '@/util/frontend/useUser';
 import { validateUsername } from '@/validator/userValidator';
-import { useRouter } from 'next/router';
+import router from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 
 function ProfileEditForm() {
@@ -16,7 +16,6 @@ function ProfileEditForm() {
     const oldPassword = useRef(null as string | null);
     const newDescription = useRef(null as string | null);
 
-    const router = useRouter();
     useEffect(() => {
         async function getUserData() {
             const data = await useUser();
@@ -29,12 +28,18 @@ function ProfileEditForm() {
 
     const testOldPasword = async () => (await Fetch.POST('/api/auth', { username: user.name, password: oldPassword.current })).ok;
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        sendRequest().catch(i =>
+            setErrorMessage(i.message));
+    }
+
+    const sendRequest = async () => {
         const body = new FormData();
         if (newPassword.current) {
             if (!(await testOldPasword()))
-                return setErrorMessage("A régi jelszó nem egyezik meg");
+                throw Error("A régi jelszó nem egyezik meg");
             body.append("password", newPassword.current!);
         }
         if (newImage.current) {

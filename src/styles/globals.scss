@@ -140,3 +140,15 @@ img {
     image-rendering: crisp-edges;
     object-fit: cover;
 }
+
+.genreTag {
+    display: inline;
+    background-color: #048BA8;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 30px;
+}
+
+.movieCover {
+    aspect-ratio: 640/880;
+}

@@ -1,6 +1,6 @@
 import { ExpectedError, HTTPError } from '@/util/Errors';
 import { Fetch } from '@/util/frontend/Fetch';
-import { useRouter } from 'next/router';
+import router from 'next/router';
 import React from 'react'
 import { useState } from 'react'
 
@@ -8,7 +8,6 @@ function LoginForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

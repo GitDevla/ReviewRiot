@@ -1,5 +1,7 @@
 import { MovieModel } from "@/model/MovieModel";
 import { ReviewModel } from "@/model/ReviewModel";
+import movie from "@/pages/api/movie";
+import { Filesystem } from "@/util/backend/Filesystem";
 import { ConflictError, NotFoundError } from "@/util/Errors";
 
 export const createMovie = async (name: string, date: Date) => {
@@ -39,4 +41,29 @@ export const listMovies = async (page: number, max: number, order: string) => {
         default:
             break;
     }
+}
+
+
+export const updateMovieCoverPhoto = async (movieID: number, path: string) => {
+    const movie = await MovieModel.getWithID(movieID);
+    if (!movie) throw new NotFoundError("Ez a film nem létezik");
+    const filename = movie.imagePath.split("/").at(-1);
+    if (filename != "default.png")
+        Filesystem.remove("movie/" + filename!);
+    const newFile = await Filesystem.saveImage(path, "movie");
+    movie.update({ image_path: newFile });
+}
+
+export const updateMovieName = async (movieID: number, newName: string) => {
+    const movie = await MovieModel.getWithID(movieID);
+    if (!movie) throw new NotFoundError("Ez a film nem létezik");
+    const userWithSameName = await MovieModel.getWithName(newName);
+    if (userWithSameName) throw new ConflictError("Ez a film már létezik");
+    movie.update({ name: newName });
+}
+
+export const updateMovieRelease = async (movieID: number, newRelease: Date) => {
+    const movie = await MovieModel.getWithID(movieID);
+    if (!movie) throw new NotFoundError("Ez a film nem létezik");
+    movie.update({ release: newRelease });
 }

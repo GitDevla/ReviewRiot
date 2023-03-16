@@ -1,5 +1,5 @@
 import { FeedModel } from '@/model/FeedModel';
-import { useRouter } from 'next/router';
+import router from 'next/router';
 import Layout from '@/component/Layout';
 import React, { useEffect, useState } from 'react'
 import { Fetch } from '@/util/frontend/Fetch';
@@ -10,7 +10,7 @@ import ReviewForm from '@/component/form/ReviewForm';
 
 function FeedPage() {
     const [feed, setFeed] = useState([] as FeedModel[])
-    const router = useRouter();
+
     useEffect(() => {
         async function getFeed() {
             const res = await Fetch.GET('/api/feed');
