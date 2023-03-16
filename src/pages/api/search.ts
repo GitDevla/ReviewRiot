@@ -1,7 +1,7 @@
-import MethodRouter from '@/util/MethodRouter';
+import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { returnResponse } from '@/util/ApiResponses';
-import Database from '@/util/Database';
+import { returnResponse } from '@/util/backend/ApiResponses';
+import Database from '@/util/backend/Database';
 
 export default async (
     req: NextApiRequest,

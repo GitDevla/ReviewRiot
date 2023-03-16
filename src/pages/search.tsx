@@ -1,6 +1,6 @@
 import Layout from '@/component/Layout';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import Head from 'next/head';
 import Link from 'next/link';
 

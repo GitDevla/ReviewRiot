@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { UserModel } from '@/model/UserModel'
-import { logout, useUser } from '@/util/useUser'
+import { logout, useUser } from '@/util/frontend/useUser'
 import { useRouter } from 'next/router'
 import HomeSVG from '@/../public/icon/home.svg';
 import FeedSVG from '@/../public/icon/feed.svg';

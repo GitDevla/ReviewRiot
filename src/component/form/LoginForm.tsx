@@ -1,5 +1,5 @@
 import { ExpectedError, HTTPError } from '@/util/Errors';
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useState } from 'react'

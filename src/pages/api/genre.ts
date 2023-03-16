@@ -1,6 +1,6 @@
-import MethodRouter from '@/util/MethodRouter';
+import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { returnResponse } from '@/util/ApiResponses';
+import { returnResponse } from '@/util/backend/ApiResponses';
 import { listGenres } from '@/service/GenreService';
 
 export default async (

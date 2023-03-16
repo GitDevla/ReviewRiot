@@ -1,7 +1,7 @@
-import MethodRouter from '@/util/MethodRouter';
+import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { returnResponse } from '@/util/ApiResponses';
-import LoginRequired from '@/util/LoginRequired';
+import { returnResponse } from '@/util/backend/ApiResponses';
+import LoginRequired from '@/util/backend/LoginRequired';
 import { createReview, deleteReview } from '@/service/ReviewService';
 import { validateReviewCreate } from '@/validator/reviewValidator';
 

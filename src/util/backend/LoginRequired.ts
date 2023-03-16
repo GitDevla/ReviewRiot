@@ -2,7 +2,7 @@ import { UserModel } from "@/model/UserModel";
 import { validateToken } from "@/service/TokenService";
 import { getCookie } from "cookies-next";
 import { NextApiRequest } from "next";
-import { UnauthorizedError } from "./Errors";
+import { UnauthorizedError } from "../Errors";
 
 export default async (req: NextApiRequest) => {
     const cookie = getCookie("token", { req });

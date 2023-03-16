@@ -1,5 +1,5 @@
 import { NextApiResponse } from "next";
-import { HTTPError } from "./Errors";
+import { HTTPError } from "../Errors";
 
 
 export const returnError = (res: NextApiResponse, body: HTTPError) => {

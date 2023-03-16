@@ -12,5 +12,4 @@ export class Fetch {
             body: JSON.stringify(body),
         });
     }
-
 }

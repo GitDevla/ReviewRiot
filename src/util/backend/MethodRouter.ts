@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { returnError } from "./ApiResponses";
-import { HTTPError, ServerError, UnknowMethodError } from "./Errors";
+import { HTTPError, ServerError, UnknowMethodError } from "../Errors";
 
 export default async (req: NextApiRequest, res: NextApiResponse, methodMap: any) => {
     const method = req.method as keyof typeof methodMap;

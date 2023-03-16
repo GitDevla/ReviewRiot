@@ -1,4 +1,4 @@
-import Database from "@/util/Database"
+import Database from "@/util/backend/Database"
 
 export class MovieModel {
     public readonly id: number;

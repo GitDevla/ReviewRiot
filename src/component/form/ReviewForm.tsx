@@ -1,6 +1,6 @@
 import { MovieModel } from '@/model/MovieModel';
 import { ExpectedError, HTTPError } from '@/util/Errors';
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import React, { ChangeEvent, useEffect, useRef } from 'react'
 import { useState } from 'react'
 

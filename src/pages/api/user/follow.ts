@@ -1,8 +1,8 @@
 import { followUser, listUserFollows } from '@/service/UserService';
-import MethodRouter from '@/util/MethodRouter';
+import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { returnResponse } from '@/util/ApiResponses';
-import LoginRequired from '@/util/LoginRequired';
+import { returnResponse } from '@/util/backend/ApiResponses';
+import LoginRequired from '@/util/backend/LoginRequired';
 import { followValidator } from '@/validator/userValidator';
 
 export default async (

@@ -1,4 +1,4 @@
-import Database from "@/util/Database"
+import Database from "@/util/backend/Database"
 import { MovieModel } from "./MovieModel";
 import { UserModel } from "./UserModel";
 

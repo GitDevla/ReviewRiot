@@ -1,8 +1,8 @@
-import MethodRouter from '@/util/MethodRouter';
+import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import multiparty from 'multiparty';
 import { changeDescription, changePassword, changeProfilePicture, changeUsername } from '@/service/UserService';
-import LoginRequired from '@/util/LoginRequired';
+import LoginRequired from '@/util/backend/LoginRequired';
 import { validatePassword, validateUsername } from '@/validator/userValidator';
 
 

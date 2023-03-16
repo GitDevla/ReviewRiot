@@ -1,7 +1,7 @@
 import MovieCard from '@/component/card/MovieCard';
 import Layout from '@/component/Layout';
 import { MovieModel } from '@/model/MovieModel';
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react'
 

@@ -1,7 +1,7 @@
 import { PermissionModel } from "@/model/PermissionModel";
 import { UserModel } from "@/model/UserModel"
 import { BadRequestError, ConflictError, NotFoundError } from "@/util/Errors";
-import { Filesystem } from "@/util/Filesystem";
+import { Filesystem } from "@/util/backend/Filesystem";
 import { generateToken } from "./TokenService";
 
 export const createUser = async (username: string, email: string, password: string) => {

@@ -5,9 +5,8 @@ import { useRouter } from 'next/router';
 
 function MovieCard({ movie }: { movie: MovieModel }) {
     const router = useRouter();
-
     function open() {
-        router.push("/movie/" + movie.id);
+        router.push("/movie/" + movie.id)
     }
 
     return (

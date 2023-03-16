@@ -1,11 +1,11 @@
 import Layout from '@/component/Layout';
 import { ReviewModel } from '@/model/ReviewModel';
 import { UserModel } from '@/model/UserModel';
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
-import { useUser } from '@/util/useUser';
+import { useUser } from '@/util/frontend/useUser';
 
 function UserFeed() {
     const { query: { id } } = useRouter();

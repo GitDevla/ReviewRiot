@@ -1,7 +1,7 @@
 import Layout from '@/component/Layout';
 import { MovieModel } from '@/model/MovieModel';
 import { ReviewModel } from '@/model/ReviewModel';
-import { Fetch } from '@/util/Fetch';
+import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';

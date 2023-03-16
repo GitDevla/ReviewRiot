@@ -1,4 +1,4 @@
-import Database from "@/util/Database"
+import Database from "@/util/backend/Database"
 import bcrypt from 'bcrypt';
 import { ReviewModel } from "./ReviewModel";
 
