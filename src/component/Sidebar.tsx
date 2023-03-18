@@ -32,7 +32,7 @@ function Sidebar() {
                     <li className={pathname.startsWith("movie") ? "active" : ""}><Link href="/movies"><MoviesSVG /><span>Filmek</span></Link></li>
                     <li className={pathname == "search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
-                    {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings"><SettingsSVG /><span>Beállítások</span></Link></li>}
+                    {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings/profile"><SettingsSVG /><span>Beállítások</span></Link></li>}
                     <li className='bottom'>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={() => logout()}>

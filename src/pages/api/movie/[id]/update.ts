@@ -6,7 +6,7 @@ import LoginRequired from '@/util/backend/LoginRequired';
 import { validatePassword, validateUsername } from '@/validator/userValidator';
 import { PermissionLevel } from '@/util/PermissionLevels';
 import { ForbiddenError } from '@/util/Errors';
-import { updateMovieCoverPhoto, updateMovieName, updateMovieRelease } from '@/service/MovieService';
+import { updateMovieCoverPhoto, updateMovieGenres, updateMovieName, updateMovieRelease } from '@/service/MovieService';
 import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator';
 
 
@@ -38,7 +38,7 @@ async function movieUpdateHandler(
     var form = new multiparty.Form();
 
     form.parse(req, async function (err, fields, files) {
-        const { name, release } = fields;
+        const { name, release, genres } = fields;
         if (name) {
             validateMovieName(name[0])
             await updateMovieName(movieID, name[0]);
@@ -46,6 +46,9 @@ async function movieUpdateHandler(
         if (release) {
             validateMovieRelease(release);
             await updateMovieRelease(movieID, release[0]);
+        }
+        if (genres) {
+            await updateMovieGenres(movieID, genres.map((i: string) => parseInt(i)));
         }
 
         if (files.file) {

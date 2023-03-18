@@ -4,6 +4,7 @@ import SettingsNavbar from '@/component/SettingsNavbar'
 import { MovieModel } from '@/model/MovieModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { isAdmin } from '@/util/frontend/isAdmin';
+import Head from 'next/head';
 import router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
@@ -25,6 +26,9 @@ function MovieEditPage() {
 
     return (
         <Layout>
+            <Head>
+                <title>{movie?.name} beállítása</title>
+            </Head>
             <SettingsNavbar />
             {movie && <MovieEditForm movie={movie} />}
         </Layout>

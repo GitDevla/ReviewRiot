@@ -4,6 +4,7 @@ import { PermissionLevel } from '@/util/PermissionLevels';
 import React, { useEffect, useState } from 'react'
 import SettingsNavbar from '@/component/SettingsNavbar';
 import ProfileEditForm from '@/component/form/ProfileEditForm';
+import Head from 'next/head';
 
 function SettingsProfilePage() {
     const [isAdmin, setIsAdmin] = useState(false)
@@ -19,7 +20,11 @@ function SettingsProfilePage() {
     }, [])
 
     return (
+
         <Layout>
+            <Head>
+                <title>Profil beállítások</title>
+            </Head>
             {isAdmin && <SettingsNavbar />}
             <ProfileEditForm />
         </Layout >

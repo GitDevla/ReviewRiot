@@ -35,6 +35,10 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
         if (newImage.current) {
             body.append("file", newImage.current);
         }
+        genres.forEach(i => {
+            body.append("genres", i.id.toString())
+        });
+
         if (newRelease.current) {
             body.append("release", newRelease.current);
         }

@@ -1,6 +1,6 @@
+import { GenreModel } from "@/model/GenreModel";
 import { MovieModel } from "@/model/MovieModel";
 import { ReviewModel } from "@/model/ReviewModel";
-import movie from "@/pages/api/movie";
 import { Filesystem } from "@/util/backend/Filesystem";
 import { ConflictError, NotFoundError } from "@/util/Errors";
 
@@ -66,4 +66,14 @@ export const updateMovieRelease = async (movieID: number, newRelease: Date) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
     movie.update({ release: newRelease });
+}
+
+export const updateMovieGenres = async (movieID: number, genres: number[]) => {
+    const movie = await MovieModel.getWithID(movieID);
+    if (!movie) throw new NotFoundError("Ez a film nem létezik");
+    for (const genre of genres) {
+        const exists = await GenreModel.getById(genre);
+        if (!exists) throw new NotFoundError("Ez a műfaj nem létezik");
+    }
+    GenreModel.updateMovieGenres(movie.id, genres);
 }
