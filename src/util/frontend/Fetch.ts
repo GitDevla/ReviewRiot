@@ -12,4 +12,12 @@ export class Fetch {
             body: JSON.stringify(body),
         });
     }
+
+    static DELETE = async (url: string, body = {}) => {
+        return fetch(url, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+    }
 }
