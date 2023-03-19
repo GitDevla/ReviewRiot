@@ -18,7 +18,7 @@ export class MovieModel {
         this.rating = avgRating;
         this.NOReviews = number_of_reviews
         this.genres = MovieModel.convertToArrayOfGenres(genres);
-        this.imagePath = "/image/movie/" + image_path;
+        this.imagePath = "/image/movie/" + (image_path ?? "default.jpg");
     }
 
     private static convertToArrayOfGenres = (data: string) => {

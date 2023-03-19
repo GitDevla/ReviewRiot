@@ -28,6 +28,7 @@ function SettingsMoviePage() {
             <SettingsNavbar />
             <div>
                 <ul>
+                    <li><Link href="movies/new">Új Film</Link></li>
                     {movies.map(i => <li key={i.id}><Link href={"movies/" + i.id}>{i.name}</Link></li>)}
                 </ul>
             </div>

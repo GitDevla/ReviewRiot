@@ -2,6 +2,9 @@ import { createPool, Pool } from "mysql2/promise";
 type param = string | number | boolean | undefined | null;
 let globalPool: Pool | null = null;
 
+
+
+
 export default class Database {
     private static getPool = () => {
         if (!globalPool) {

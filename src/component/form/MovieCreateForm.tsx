@@ -1,21 +1,19 @@
 import { GenreModel } from '@/model/GenreModel'
-import { MovieModel } from '@/model/MovieModel'
-import Router from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
+import { ExpectedError } from '@/util/Errors';
+import { Fetch } from '@/util/frontend/Fetch';
+import Router from 'next/router';
+import React, { useRef, useState } from 'react'
 import GenreSelector from '../GenreSelector'
 
-function MovieEditForm({ movie }: { movie: MovieModel }) {
+function MovieCreateForm() {
     const [genres, setGenres] = useState([] as GenreModel[])
     const [errorMessage, setErrorMessage] = useState('');
-    const [previewPath, setPreviewPath] = useState(movie?.imagePath)
+    const [previewPath, setPreviewPath] = useState("/image/movie/default.jpg")
 
     const newName = useRef(null as string | null)
     const newImage = useRef(null as File | null);
     const newRelease = useRef(null as string | null);
 
-    useEffect(() => {
-        setGenres(movie.genres);
-    }, [movie])
 
     function handleGenreAdd(e: GenreModel) {
         setGenres([...genres, e])
@@ -32,6 +30,14 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     }
 
     const sendRequest = async () => {
+        const res = await Fetch.POST("/api/movie",
+            {
+                name: newName.current,
+                date: newRelease.current
+            }
+        )
+        const json = await res.json();
+        if (!res.ok) throw new ExpectedError(json.error);
         const body = new FormData();
         if (newImage.current) {
             body.append("file", newImage.current);
@@ -40,17 +46,12 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
             body.append("genres", i.id.toString())
         });
 
-        if (newRelease.current) {
-            body.append("release", newRelease.current);
-        }
-        if (newName.current) {
-            body.append("name", newName.current);
-        }
-        await fetch(`/api/movie/${movie.id}/update`, {
+        await fetch(`/api/movie/${json.id}/update`, {
             method: "PUT",
             body
         });
-        Router.reload();
+        Router.push("/settings");
+
     };
 
     async function setImage(file: File) {
@@ -63,11 +64,11 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
         <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div>
                 <label>Név: </label>
-                <input type="text" placeholder='Film név' defaultValue={movie?.name} onChange={i => newName.current = i.target.value} />
+                <input type="text" placeholder='Film név' onChange={i => newName.current = i.target.value} />
             </div>
             <div>
                 <label>Kiadási dátum: </label>
-                <input type="number" min={1900} max={new Date().getFullYear() + 2} placeholder='Kiadási dátum' defaultValue={movie?.release.toString()} onChange={i => newRelease.current = i.target.value} />
+                <input type="number" min={1900} max={new Date().getFullYear() + 2} placeholder='Kiadási dátum' onChange={i => newRelease.current = i.target.value} />
             </div>
             <div>
                 <label>Műfajok: </label>
@@ -85,4 +86,4 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     )
 }
 
-export default MovieEditForm
+export default MovieCreateForm

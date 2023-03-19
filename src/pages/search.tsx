@@ -16,9 +16,10 @@ function SearchPage() {
     }
 
     useEffect(() => {
+        query();
         clearTimeout(timeoutId.current!);
         const newTimeoutId = setTimeout(() => {
-            query()
+            query();
         }, cd);
         timeoutId.current = newTimeoutId;
     }, [inputValue]);

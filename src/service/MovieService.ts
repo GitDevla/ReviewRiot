@@ -8,7 +8,7 @@ export const createMovie = async (name: string, date: Date) => {
     const userWithSameName = await MovieModel.getWithName(name);
     if (userWithSameName) throw new ConflictError("Ez a film már létezik");
 
-    MovieModel.create(name, date);
+    return MovieModel.create(name, date);
 }
 
 export const getMovieReviews = async (id: number) => {

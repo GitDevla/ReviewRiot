@@ -1,7 +1,7 @@
 import { FeedModel } from '@/model/FeedModel';
 import router from 'next/router';
 import Layout from '@/component/Layout';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Fetch } from '@/util/frontend/Fetch';
 import FeedCard from '@/component/card/FeedCard';
 import Head from 'next/head';
@@ -10,6 +10,8 @@ import ReviewForm from '@/component/form/ReviewForm';
 
 function FeedPage() {
     const [feed, setFeed] = useState([] as FeedModel[])
+    const interval = useRef(null as any);
+    const cd = 10000;
 
     useEffect(() => {
         async function getFeed() {
@@ -19,8 +21,13 @@ function FeedPage() {
         }
         getFeed().catch(() => router.push("/auth"));
 
-        setInterval(getFeed, 10000)
+        interval.current = setInterval(getFeed, cd)
+        return () => {
+            clearInterval(interval.current);
+        }
     }, []);
+
+
 
     return (
         <Layout>

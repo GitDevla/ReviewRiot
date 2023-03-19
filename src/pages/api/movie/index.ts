@@ -30,8 +30,8 @@ async function moviePostHandler(
     let { name, date } = req.body;
 
     date = new Date(date);
-    await createMovie(name, date);
-    return returnResponse(res, { message: "New movie Added" })
+    const id = await createMovie(name, date);
+    return returnResponse(res, { message: "New movie Added", id })
 }
 
 async function movieGetHandler(
