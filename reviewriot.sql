@@ -42,8 +42,8 @@ CREATE TABLE `auth` (
 --
 
 INSERT INTO `auth` (`id`, `user_id`, `email`, `password_hash`) VALUES
-(1, 1, 'admin', '$2b$10$bp81UrXZs.gBcXgvhR/9y.Eq12VIbqCFJUUn782x0XMPUD7u95wKe'),
-(2, 2, 'guest@gmail.com', '$2b$10$jq/0EnvARwAdTzDctfjwgeXH/lMkI9INsRn/3IER17f0TiPDCWYZC');
+(1, 1, 'admin', '$2a$10$OhSuIuqzLh5TCE/mX49hgOqpwfIHRsPTCHmhVZrGKnxxDh2xg.dvi'),
+(2, 2, 'guest@gmail.com', '$2a$10$NIb.DGpeaLXhNg9JwEsfAuE9uNidbKbuaeWbcB8q1mWrqSgfxGWp6');
 
 -- --------------------------------------------------------
 
