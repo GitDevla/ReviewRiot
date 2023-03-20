@@ -48,7 +48,7 @@ export const updateMovieCoverPhoto = async (movieID: number, path: string) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
     const filename = movie.imagePath.split("/").at(-1);
-    if (filename != "default.png")
+    if (filename != MovieModel.defaultCoverImage)
         Filesystem.remove("movie/" + filename!);
     const newFile = await Filesystem.saveImage(path, "movie");
     movie.update({ image_path: newFile });

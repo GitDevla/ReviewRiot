@@ -24,10 +24,11 @@ function MovieEditPage() {
         getMovie();
     }, [id])
 
+    const title = `${movie?.name} értékelések`;
     return (
         <Layout>
             <Head>
-                <title>{movie?.name} beállítása</title>
+                <title>{title}</title>
             </Head>
             <SettingsNavbar />
             {movie && <MovieEditForm movie={movie} />}

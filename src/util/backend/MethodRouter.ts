@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse, methodMap: any)
 
     try {
         if (!handler)
-            throw new UnknowMethodError("Nincs ilyen methodus")
+            throw new UnknowMethodError(`Nincs ilyen metódus, elérhető metódusok: [${Object.keys(methodMap)}]`)
         return await handler(req = req, res = res);
     } catch (error) {
         if (error instanceof HTTPError)

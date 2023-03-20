@@ -2,6 +2,7 @@ import Database from "@/util/backend/Database"
 import { GenreModel } from "./GenreModel";
 
 export class MovieModel {
+    public static readonly defaultCoverImage = "default.jpg";
     public readonly id: number;
     public readonly name: string;
     public readonly release: Date;
@@ -18,7 +19,7 @@ export class MovieModel {
         this.rating = avgRating;
         this.NOReviews = number_of_reviews
         this.genres = MovieModel.convertToArrayOfGenres(genres);
-        this.imagePath = "/image/movie/" + (image_path ?? "default.jpg");
+        this.imagePath = "/image/movie/" + (image_path ?? MovieModel.defaultCoverImage);
     }
 
     private static convertToArrayOfGenres = (data: string) => {

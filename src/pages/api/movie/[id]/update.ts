@@ -1,14 +1,13 @@
 import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import multiparty from 'multiparty';
-import { changeDescription, changePassword, changeProfilePicture, changeUsername, checkPermission } from '@/service/UserService';
+import { checkPermission } from '@/service/UserService';
 import LoginRequired from '@/util/backend/LoginRequired';
-import { validatePassword, validateUsername } from '@/validator/userValidator';
 import { PermissionLevel } from '@/util/PermissionLevels';
-import { ForbiddenError } from '@/util/Errors';
+import { BadRequestError, ForbiddenError } from '@/util/Errors';
 import { updateMovieCoverPhoto, updateMovieGenres, updateMovieName, updateMovieRelease } from '@/service/MovieService';
-import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator';
-
+import { validateMovieCoverPhoto, validateMovieName, validateMovieRelease } from '@/validator/movieValidator';
+import { FormParse } from '@/util/backend/FormParse';
+import { returnResponse } from '@/util/backend/ApiResponses';
 
 export const config = {
     api: {
@@ -35,30 +34,25 @@ async function movieUpdateHandler(
 
     const { id } = req.query;
     const movieID = parseInt(id as string);
-    var form = new multiparty.Form();
+    if (isNaN(movieID)) throw new BadRequestError("A movieID-nek számnak kell lennie");
 
-    form.parse(req, async function (err, fields, files) {
-        const { name, release, genres } = fields;
-        if (name) {
-            validateMovieName(name[0])
-            await updateMovieName(movieID, name[0]);
-        }
-        if (release) {
-            validateMovieRelease(release);
-            await updateMovieRelease(movieID, release[0]);
-        }
-        if (genres) {
-            await updateMovieGenres(movieID, genres.map((i: string) => parseInt(i)));
-        }
+    const { fields, files } = await FormParse(req);
+    const { name, release, genres } = fields;
 
-        if (files.file) {
-            const image = files.file[0] as multiparty.File
-            if (image.headers["content-type"].startsWith("image"))
-                console.log();
+    if (name) validateMovieName(name[0])
+    if (release) validateMovieRelease(release);
+    if (files.file) validateMovieCoverPhoto(files.file[0])
 
-            await updateMovieCoverPhoto(movieID, files.file[0].path);
-        }
-        return res.status(201).send("");
-    });
+    let tasks = [];
+    if (name) tasks.push(updateMovieName(movieID, name[0]));
+    if (release) tasks.push(updateMovieRelease(movieID, release[0]));
+    if (genres) {
+        const numbers: number[] = genres.map((i: string) => parseInt(i));
+        const unique = [...new Set(numbers)];
+        tasks.push(updateMovieGenres(movieID, unique));
+    }
+    if (files.file) tasks.push(updateMovieCoverPhoto(movieID, files.file[0].path));
 
+    await Promise.all(tasks);
+    return returnResponse(res, { message: tasks.length + " attribútum változtatva" })
 }

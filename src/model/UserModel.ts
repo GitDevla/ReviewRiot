@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { ReviewModel } from "./ReviewModel";
 
 export class UserModel {
+    public static readonly defaultProfilePicture = "default.png";
     public readonly id: number;
     public readonly name: string;
     public readonly created: Date;
@@ -16,7 +17,7 @@ export class UserModel {
         this.name = name;
         this.created = created_at;
         this.description = description;
-        this.picturePath = "/image/user/" + (picture_path ?? "default.png");
+        this.picturePath = "/image/user/" + (picture_path ?? UserModel.defaultProfilePicture);
         this.permissionID = permission_id;
     }
 

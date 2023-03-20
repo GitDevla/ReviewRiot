@@ -1,3 +1,4 @@
+import { BadRequestError } from "@/util/Errors";
 import { Validate } from "./Validator";
 
 interface IMovieCreateBody {
@@ -18,3 +19,12 @@ export const validateMovieName = (name: string) => Validate(name)
 export const validateMovieRelease = (release: string) => Validate(release)
     .required("Dátum (date) kötelező")
     .date("Dátum (date) nem valódi");
+
+
+const size1mb = 1 * 1024 * 1024;
+export const validateMovieCoverPhoto = (img: any) => {
+    if (!img.headers["content-type"].startsWith("image"))
+        throw new BadRequestError("Megadott file nem kép")
+    if (img.size > size1mb)
+        throw new BadRequestError("Megadott kép nagyobb mint 1mb")
+}

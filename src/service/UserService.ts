@@ -67,7 +67,7 @@ export const getUserReviews = async (id: number) => {
 
 export const changeProfilePicture = async (user: UserModel, path: string) => {
     const filename = user.picturePath.split("/").at(-1);
-    if (filename != "default.png")
+    if (filename != UserModel.defaultProfilePicture)
         Filesystem.remove("user/" + filename!);
     const newFile = await Filesystem.saveImage(path, "user");
     user.update({ picture_path: newFile });

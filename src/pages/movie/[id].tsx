@@ -21,11 +21,11 @@ function MovieFeed() {
         getMovie();
     }, [id])
 
-
+    const title = `${movie?.name} értékelések`;
     return (
         <Layout>
             <Head>
-                <title>{movie?.name} értékelések</title>
+                <title>{title}</title>
             </Head>
             {movie && < div >
                 <h2>{movie.name}</h2>
