@@ -52,3 +52,15 @@ const size1mb = 1 * 1024 * 1024;
 export const validateUserProfilePicture = (img: any) => Validate(img)
     .image("Megadott file nem kép")
     .fileSizeMax(size1mb, "Megadott kép nagyobb mint 1mb");
+
+interface IUserPermUpdate {
+    whom: string;
+    permID: string;
+}
+export const validateUserPermUpdate = ({ whom, permID }: IUserPermUpdate) => {
+    followValidator({ whom })
+    Validate(permID)
+        .required("Engedély azonósitó (permID) kötelező")
+        .number("Engedély azonósitó (permID) szám típusúnak kell lennie")
+        .min(1, "Engedély azonósitó (permID) nem lehet kisseb mint 1");
+}

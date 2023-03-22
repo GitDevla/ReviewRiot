@@ -55,4 +55,5 @@ async function movieUpdateHandler(
 
     const succesful = await Promise.allSettled(tasks);
     return returnResponse(res, { message: succesful.length + " attribútum változtatva" })
+
 }

@@ -39,6 +39,11 @@ export class UserModel {
         return new UserModel(res);
     }
 
+    public static list = async () => {
+        const res = await Database.query("SELECT * FROM `user`;");
+        return Database.transform(this, res);
+    }
+
     public static create = async (name: string, email: string, password: string) => {
         const hash = await bcrypt.hash(password, 10);
         const userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);

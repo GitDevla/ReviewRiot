@@ -13,6 +13,14 @@ export class Fetch {
         });
     }
 
+    static PUT = async (url: string, body: object) => {
+        return fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+    }
+
     static DELETE = async (url: string, body = {}) => {
         return fetch(url, {
             method: 'DELETE',

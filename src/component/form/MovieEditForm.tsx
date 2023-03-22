@@ -46,14 +46,16 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
         if (newName.current) {
             body.append("name", newName.current);
         }
-        await fetch(`/api/movie/${movie.id}/update`, {
+        const res = await fetch(`/api/movie/${movie.id}/update`, {
             method: "PUT",
             body
         });
+        if (!res.ok) throw new Error((await res.json()).error)
         Router.reload();
     };
 
     async function setImage(file: File) {
+        if (!file) return;
         const objectUrl = URL.createObjectURL(file)
         setPreviewPath(objectUrl);
         newImage.current = file;

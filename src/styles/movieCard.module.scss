@@ -1,6 +1,10 @@
 .card {
     position: relative;
+    overflow: hidden;
     border-radius: 10px;
+    box-shadow: 0 0 0px 0px;
+    transition: box-shadow 0.25s ease-in-out,
+        transform 0.25s ease-in-out;
 
     img {
         display: block;
@@ -10,9 +14,12 @@
     }
 
     &:hover {
-        box-shadow: 0 0 50px 15px var(--highlight);
+        box-shadow: 0 0 40px 5px var(--a2);
+        transform: scale(1.05);
+        cursor: pointer;
 
         .card_hover {
+
             opacity: 1;
         }
     }
@@ -24,10 +31,9 @@
     position: absolute;
     border-radius: 10px;
     padding: 5%;
-    background-color: rgba(#1a1818, 0.8);
+    background-color: rgba(#1a1818, 0.85);
     top: 0;
     left: 0;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    //display: none;
+    transition: opacity 0.25s ease-in-out;
 }

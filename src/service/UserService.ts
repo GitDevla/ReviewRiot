@@ -24,7 +24,7 @@ export const authUser = async (username: string, password: string) => {
 
 export const checkPermission = async (user: UserModel, minLevel: number) => {
     const userLevel = await PermissionModel.getLevelFromID(user.permissionID);
-    return userLevel! >= minLevel;
+    return userLevel!.level >= minLevel;
 }
 
 export const followUser = async (who: UserModel, whomID: number) => {
@@ -57,6 +57,10 @@ export const listUserFollows = async (whoId: number) => {
     return UserModel.listFollows(whoId);
 }
 
+export const listUsers = async () => {
+    return UserModel.list();
+}
+
 export const getUserReviews = async (id: number) => {
     const user = await UserModel.getWithID(id);
     if (!user) throw new NotFoundError("Ez a film nem létezik");
@@ -85,4 +89,12 @@ export const changePassword = async (user: UserModel, newPassword: string) => {
 
 export const changeDescription = async (user: UserModel, newDescription: string) => {
     user.update({ description: newDescription });
+}
+
+export const changeUserPermission = async (userID: number, permID: number) => {
+    const whom = await UserModel.getWithID(userID);
+    if (!whom) throw new NotFoundError("Ez a felhasználó nem létezik");
+    const perm = await PermissionModel.getLevelFromID(permID);
+    if (!perm) throw new NotFoundError("Ez a jog-szint nem létezik");
+    PermissionModel.updateUser(whom, perm);
 }
