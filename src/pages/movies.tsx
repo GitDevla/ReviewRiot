@@ -72,7 +72,7 @@ function MoviesPage() {
                     <input type="range" min={Math.min(...movies.flatMap(i => (i.release) as any))} max={Math.max(...movies.flatMap(i => (i.release) as any))} name="" id="" />
                 </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "10px" }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: "30px" }}>
                 {movies.map(i => <MovieCard key={i.id} movie={i} />)}
                 {loading && <div>Loading...</div>}
             </div >

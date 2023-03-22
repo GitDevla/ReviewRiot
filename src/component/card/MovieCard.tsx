@@ -1,6 +1,6 @@
 import { MovieModel } from '@/model/MovieModel'
 import React from 'react'
-import styles from '@/styles/movieCard.module.css';
+import styles from '@/styles/movieCard.module.scss';
 import router from 'next/router';
 
 function MovieCard({ movie }: { movie: MovieModel }) {
@@ -10,15 +10,20 @@ function MovieCard({ movie }: { movie: MovieModel }) {
 
     return (
         <div key={movie.id} className={styles.card} onClick={() => open()}>
-            <div>
-                <img className='movieCover' src={movie.imagePath} alt={movie.name} width={880} height={640} />
+            <div className={styles.card_inside}>
+                <div>
+                    <img className='movieCover' src={movie.imagePath} alt={movie.name} width={880} height={640} />
+                </div>
+                <div><>{movie.name} ({movie.release})</></div>
             </div>
-            <div><>{movie.name} ({movie.release})</></div>
-            <div>
-                {movie.rating ? <>⭐: {movie.rating} a {movie.NOReviews} értékelésből</> : null}
-            </div>
-            <div>
-                {movie.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}
+            <div className={styles.card_hover}>
+                <div><>{movie.name} ({movie.release})</></div>
+                <div>
+                    {movie.rating ? <>⭐: {movie.rating} a {movie.NOReviews} értékelésből</> : null}
+                </div>
+                <div>
+                    {movie.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}
+                </div>
             </div>
         </div>
     )
