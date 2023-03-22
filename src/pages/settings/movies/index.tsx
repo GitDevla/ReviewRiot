@@ -1,8 +1,8 @@
 import Layout from '@/component/Layout'
 import SettingsNavbar from '@/component/SettingsNavbar'
+import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
 import { isAdmin } from '@/util/frontend/isAdmin';
-import Head from 'next/head';
 import Link from 'next/link';
 import router from 'next/router';
 import React, { useEffect, useState } from 'react'
@@ -22,9 +22,7 @@ function SettingsMoviePage() {
 
     return (
         <Layout>
-            <Head>
-                <title>Filmek beállításai</title>
-            </Head>
+            <Title>Filmek beállításai</Title>
             <SettingsNavbar />
             <div>
                 <ul>

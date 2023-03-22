@@ -1,9 +1,10 @@
 import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import multiparty from 'multiparty';
 import { changeDescription, changePassword, changeProfilePicture, changeUsername } from '@/service/UserService';
 import LoginRequired from '@/util/backend/LoginRequired';
-import { validatePassword, validateUsername } from '@/validator/userValidator';
+import { validatePassword, validateUsername, validateUserProfilePicture } from '@/validator/userValidator';
+import { FormParse } from '@/util/backend/FormParse';
+import { returnResponse } from '@/util/backend/ApiResponses';
 
 
 export const config = {
@@ -23,34 +24,24 @@ export default async (
 }
 
 
-
 async function userUpdateHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
+    const { fields, files } = await FormParse(req);
 
-    var form = new multiparty.Form();
+    const { username, password, description } = fields;
+    if (username) validateUsername(username[0]);
+    if (password) validatePassword(password[0]);
+    if (files.file) validateUserProfilePicture(files.file[0]);
 
-    form.parse(req, async function (err, fields, files) {
-        const { username, password, description } = fields;
-        if (username) {
-            validateUsername(username[0])
-            await changeUsername(user!, username[0]);
-        }
-        if (description) {
-            await changeDescription(user!, description[0]);
-        }
-        if (password) {
-            validatePassword(password[0])
-            await changePassword(user!, password[0]);
-        }
-        if (files.file) {
-            const image = files.file[0] as multiparty.File
-            if (image.headers["content-type"].startsWith("image"))
-                await changeProfilePicture(user!, files.file[0].path);
-        }
-        return res.status(201).send("");
-    });
+    let tasks = [];
+    if (username) tasks.push(changeUsername(user!, username[0]));
+    if (description) tasks.push(changeDescription(user!, description[0]));
+    if (password) tasks.push(changePassword(user!, password[0]));
+    if (files.file) tasks.push(changeProfilePicture(user!, files.file[0].path));
 
+    const succesful = (await Promise.allSettled(tasks)).filter(i => i.status == "fulfilled");
+    return returnResponse(res, { message: succesful.length + " attribútum változtatva" })
 }

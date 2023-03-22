@@ -20,11 +20,9 @@ async function followGetHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const user = LoginRequired(req);
-    let userID = parseInt(req.query["user"] as string);
-    if (isNaN(userID)) userID = (await user)!.id
+    const user = await LoginRequired(req);
 
-    const whomUser = (await listUserFollows(userID)).map(i => i.covertToSafe());
+    const whomUser = (await listUserFollows(user!.id)).map(i => i.covertToSafe());
     return returnResponse(res, whomUser)
 }
 
@@ -32,11 +30,11 @@ async function followPostHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const user = LoginRequired(req);
+    const user = await LoginRequired(req);
     followValidator(req.body);
 
     const { whom } = req.body;
-    const whomUser = await followUser((await user)!, whom);
+    const whomUser = await followUser(user!, whom);
 
     return returnResponse(res, { message: `You started following ${whomUser.name}` })
 }

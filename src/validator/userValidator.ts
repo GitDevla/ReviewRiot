@@ -46,3 +46,9 @@ export const validatePassword = (password: string) =>
         .required("Jelszó (password) kötelező")
         .string("Jelszó (password) szöveg típúsúnak kell lennie")
         .lengthBetween(8, 55, "Jelszó (password) hosszának 8 és 55 között kell lennie")
+
+
+const size1mb = 1 * 1024 * 1024;
+export const validateUserProfilePicture = (img: any) => Validate(img)
+    .image("Megadott file nem kép")
+    .fileSizeMax(size1mb, "Megadott kép nagyobb mint 1mb");

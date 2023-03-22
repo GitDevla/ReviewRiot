@@ -1,8 +1,8 @@
 import MovieCard from '@/component/card/MovieCard';
 import Layout from '@/component/Layout';
+import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
 import { Fetch } from '@/util/frontend/Fetch';
-import Head from 'next/head';
 import React, { useEffect, useState } from 'react'
 
 function HomePage() {
@@ -28,9 +28,7 @@ function HomePage() {
 
     return (
         <Layout>
-            <Head>
-                <title>Főoldal</title>
-            </Head>
+            <Title>Főoldal</Title>
             <div>
                 <h1>Hello World!</h1>
                 <p>A backend teszteléséhez használjon <a href="https://insomnia.rest/">Insomnia</a> vagy <a href="https://www.postman.com/">Postman</a> nevezetű API tesztelő programokat.</p>

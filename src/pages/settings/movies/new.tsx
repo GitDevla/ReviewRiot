@@ -1,8 +1,8 @@
 import MovieCreateForm from '@/component/form/MovieCreateForm';
 import Layout from '@/component/Layout'
 import SettingsNavbar from '@/component/SettingsNavbar'
+import Title from '@/component/Title';
 import { isAdmin } from '@/util/frontend/isAdmin';
-import Head from 'next/head';
 import router from 'next/router';
 import React, { useEffect } from 'react'
 
@@ -13,9 +13,7 @@ function MovieEditPage() {
 
     return (
         <Layout>
-            <Head>
-                <title>Új film létrehozása</title>
-            </Head>
+            <Title>Új film létrehozása</Title>
             <SettingsNavbar />
             <MovieCreateForm />
         </Layout>

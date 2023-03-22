@@ -45,6 +45,11 @@ class ValidatorMonad {
         throw new BadRequestError(error);
     }
 
+    image(error: string) {
+        if (this.value.headers["content-type"].startsWith("image")) return this;
+        throw new BadRequestError(error);
+    }
+
     // Value Check
     lengthBetween(min: number, max: number, error: string) {
         if (this.value.length >= min && max > this.value.length) return this;
@@ -68,6 +73,11 @@ class ValidatorMonad {
 
     max(max: number, error: string) {
         if (max < this.value) return this;
+        throw new BadRequestError(error);
+    }
+
+    fileSizeMax(byte: number, error: string) {
+        if (this.value.size <= byte) return this;
         throw new BadRequestError(error);
     }
 }

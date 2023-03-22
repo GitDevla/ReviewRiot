@@ -6,7 +6,7 @@ import { PermissionLevel } from '@/util/PermissionLevels'
 
 function FeedCard({ feed, userID, permsLevel }: { feed: FeedModel, userID: number, permsLevel: number }) {
     const handleDelete = async () => {
-        await Fetch.DELETE("/api/review?id=" + feed.id)
+        await Fetch.DELETE("/api/review/" + feed.id)
     }
 
     return (

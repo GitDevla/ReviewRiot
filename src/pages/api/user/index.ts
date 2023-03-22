@@ -23,6 +23,5 @@ async function userPostHandler(
     const { username, password, email } = req.body;
     await createUser(username, email, password);
 
-
     return returnResponse(res, { message: `User ${username} created` })
 }

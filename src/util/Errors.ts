@@ -51,4 +51,3 @@ export class ServerError extends HTTPError {
         super(message, 500);
     }
 }
-

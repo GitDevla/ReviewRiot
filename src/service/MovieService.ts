@@ -21,6 +21,7 @@ export const getMovieReviews = async (id: number) => {
 export const listMovies = async (page: number, max: number, order: string) => {
     switch (order) {
         case "name":
+        default:
             return MovieModel.listByName(page, max);
 
         case "dname":
@@ -37,9 +38,6 @@ export const listMovies = async (page: number, max: number, order: string) => {
 
         case "hot":
             return MovieModel.listByHot(page, max);
-
-        default:
-            break;
     }
 }
 

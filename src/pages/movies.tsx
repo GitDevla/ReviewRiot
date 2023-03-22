@@ -3,7 +3,7 @@ import { GenreModel } from '@/model/GenreModel';
 import { MovieModel } from '@/model/MovieModel';
 import React, { useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
-import Head from 'next/head';
+import Title from '@/component/Title';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieModel[]);
@@ -52,9 +52,7 @@ function MoviesPage() {
 
     return (
         <Layout>
-            <Head>
-                <title>Filmek</title>
-            </Head>
+            <Title>Filmek</Title>
             <div>
                 <div>
                     <label>Név:</label>

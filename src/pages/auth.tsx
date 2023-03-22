@@ -3,20 +3,20 @@ import { useState } from 'react'
 import styles from '@/styles/login.module.scss';
 import LoginForm from '@/component/form/LoginForm';
 import RegisterForm from '@/component/form/RegisterForm';
-import Head from 'next/head';
+import { getLoggedIn } from '@/util/frontend/getLoggedIn';
+import Router from 'next/router';
+import Title from '@/component/Title';
 
 function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
-
+    getLoggedIn().then(() => Router.push("/home")).catch(() => { });
     const toggle = () => setIsLogin(!isLogin);
 
     return (
         <div className={styles.wrapper}>
             {isLogin ? (
                 <>
-                    <Head>
-                        <title>Belépés</title>
-                    </Head>
+                    <Title>Belépés</Title>
                     <LoginForm />
                     <p>
                         Nincsen még fiókja? <a href='#' onClick={toggle}>Regisztráljon</a>
@@ -24,9 +24,7 @@ function AuthPage() {
                 </>
             ) : (
                 <>
-                    <Head>
-                        <title>Regisztráció</title>
-                    </Head>
+                    <Title>Regisztráció</Title>
                     <RegisterForm next={toggle} />
                     <p>
                         Van már fiókja? <a href='#' onClick={toggle}>Belépés</a>

@@ -1,10 +1,10 @@
 import MovieEditForm from '@/component/form/MovieEditForm';
 import Layout from '@/component/Layout'
 import SettingsNavbar from '@/component/SettingsNavbar'
+import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { isAdmin } from '@/util/frontend/isAdmin';
-import Head from 'next/head';
 import router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
@@ -24,12 +24,9 @@ function MovieEditPage() {
         getMovie();
     }, [id])
 
-    const title = `${movie?.name} értékelések`;
     return (
         <Layout>
-            <Head>
-                <title>{title}</title>
-            </Head>
+            <Title>{movie?.name} értékelések</Title>
             <SettingsNavbar />
             {movie && <MovieEditForm movie={movie} />}
         </Layout>

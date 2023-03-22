@@ -53,6 +53,6 @@ async function movieUpdateHandler(
     }
     if (files.file) tasks.push(updateMovieCoverPhoto(movieID, files.file[0].path));
 
-    await Promise.all(tasks);
-    return returnResponse(res, { message: tasks.length + " attribútum változtatva" })
+    const succesful = await Promise.allSettled(tasks);
+    return returnResponse(res, { message: succesful.length + " attribútum változtatva" })
 }

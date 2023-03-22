@@ -1,30 +1,23 @@
 import Layout from '@/component/Layout'
-import { Fetch } from '@/util/frontend/Fetch';
-import { PermissionLevel } from '@/util/PermissionLevels';
 import React, { useEffect, useState } from 'react'
 import SettingsNavbar from '@/component/SettingsNavbar';
 import ProfileEditForm from '@/component/form/ProfileEditForm';
-import Head from 'next/head';
+import { isAdmin as getIsAdmin } from '@/util/frontend/isAdmin';
+import { getLoggedIn } from '@/util/frontend/getLoggedIn';
+import router from 'next/router';
+import Title from '@/component/Title';
 
 function SettingsProfilePage() {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        async function getIsAdmin() {
-            const res = await Fetch.GET("/api/permission");
-            const json = await res.json();
-            setIsAdmin(json.level >= PermissionLevel.admin)
-        }
-
-        getIsAdmin();
+        getLoggedIn().catch(() => router.push("/auth"));
+        getIsAdmin().then(() => setIsAdmin(true)).catch(() => { });
     }, [])
 
     return (
-
         <Layout>
-            <Head>
-                <title>Profil beállítások</title>
-            </Head>
+            <Title>Profil beállítások</Title>
             {isAdmin && <SettingsNavbar />}
             <ProfileEditForm />
         </Layout >

@@ -1,8 +1,9 @@
 import { UserModel } from "@/model/UserModel";
 import { deleteCookie, getCookie } from "cookies-next";
 import Router from "next/router";
+import { UnauthorizedError } from "../Errors";
 
-export const useUser = async () => {
+export const tryGetLoggedIn = async () => {
     const token = getCookie("token");
     if (!token) return null;
 
@@ -16,6 +17,13 @@ export const useUser = async () => {
     return json.user as UserModel;
 }
 
+export const getLoggedIn = async () => {
+    const res = await tryGetLoggedIn();
+    if (res == null) throw new UnauthorizedError();
+    return res;
+}
+
+
 export const logout = async () => {
     deleteCookie("token");
     sessionStorage.removeItem("user");
@@ -24,6 +32,6 @@ export const logout = async () => {
 
 export const resetCache = async () => {
     sessionStorage.removeItem("user");
-    useUser();
+    tryGetLoggedIn();
     Router.reload();
 }

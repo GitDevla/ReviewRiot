@@ -1,6 +1,6 @@
 import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
-import { resetCache, useUser } from '@/util/frontend/useUser';
+import { getLoggedIn, resetCache } from '@/util/frontend/getLoggedIn';
 import { validateUsername } from '@/validator/userValidator';
 import router from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
@@ -17,13 +17,10 @@ function ProfileEditForm() {
     const newDescription = useRef(null as string | null);
 
     useEffect(() => {
-        async function getUserData() {
-            const data = await useUser();
-            setUser(data!);
-            setPreviewPath(data!.picturePath);
-        }
-
-        getUserData().catch(() => router.push("/auth"));
+        getLoggedIn().then(i => {
+            setUser(i);
+            setPreviewPath(i.picturePath);
+        }).catch(() => router.push("/auth"));
     }, [])
 
     const testOldPasword = async () => (await Fetch.POST('/api/auth', { username: user.name, password: oldPassword.current })).ok;

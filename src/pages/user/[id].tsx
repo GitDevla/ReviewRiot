@@ -5,7 +5,7 @@ import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
-import { useUser } from '@/util/frontend/useUser';
+import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn';
 
 function UserFeed() {
     const { query: { id } } = useRouter();
@@ -15,7 +15,7 @@ function UserFeed() {
 
     useEffect(() => {
         async function fetchUser() {
-            const loggedIn = useUser();
+            const loggedIn = tryGetLoggedIn();
             const res = await Fetch.GET("/api/user/" + id);
             const json = await res.json();
             setUser(json.user)

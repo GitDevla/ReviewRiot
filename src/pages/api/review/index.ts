@@ -1,29 +1,28 @@
-import { unfollowUser } from '@/service/UserService';
 import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/backend/ApiResponses';
 import LoginRequired from '@/util/backend/LoginRequired';
-import { followValidator } from '@/validator/userValidator';
+import { createReview } from '@/service/ReviewService';
+import { validateReviewCreate } from '@/validator/reviewValidator';
 
 export default async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
     const methodMap = {
-        "POST": followPostHandler
+        "POST": reviewPostHandler
     };
     await MethodRouter(req, res, methodMap);
 }
 
-async function followPostHandler(
+async function reviewPostHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
-    followValidator(req.body);
+    validateReviewCreate(req.body);
 
-    const { whom } = req.body;
-    const whomUser = await unfollowUser(user!, whom);
-
-    return returnResponse(res, { message: `You unfollowed ${whomUser.name}` })
+    const { movieID, rating, description, isPublic } = req.body;
+    await createReview(user!, movieID, rating, description, isPublic)
+    return returnResponse(res, { message: "New review created" })
 }
