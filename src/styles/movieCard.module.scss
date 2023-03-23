@@ -2,7 +2,7 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    box-shadow: 0 0 0px 0px;
+    box-shadow: 0 0 0px 0px var(--a2);
     transition: box-shadow 0.25s ease-in-out,
         transform 0.25s ease-in-out;
 
@@ -19,7 +19,6 @@
         cursor: pointer;
 
         .card_hover {
-
             opacity: 1;
         }
     }

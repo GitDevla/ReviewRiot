@@ -3,6 +3,7 @@ import { MovieModel } from '@/model/MovieModel'
 import Router from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import GenreSelector from '../GenreSelector'
+import style from "@/styles/editForm.module.scss"
 
 function MovieEditForm({ movie }: { movie: MovieModel }) {
     const [genres, setGenres] = useState([] as GenreModel[])
@@ -62,17 +63,17 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
             <div>
-                <label>Név: </label>
+                <label>Név: </label><br />
                 <input type="text" placeholder='Film név' defaultValue={movie?.name} onChange={i => newName.current = i.target.value} />
             </div>
             <div>
-                <label>Kiadási dátum: </label>
+                <label>Kiadási dátum: </label><br />
                 <input type="number" min={1900} max={new Date().getFullYear() + 2} placeholder='Kiadási dátum' defaultValue={movie?.release.toString()} onChange={i => newRelease.current = i.target.value} />
             </div>
             <div>
-                <label>Műfajok: </label>
+                <label>Műfajok: </label><br />
                 <GenreSelector onValueChange={handleGenreAdd} />
                 {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
             </div>

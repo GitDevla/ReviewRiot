@@ -4,8 +4,14 @@ $medium: 900px;
 
 @media screen and (max-width: 1200px) {
     .layout {
-        padding: 0%;
+        padding: 0;
+
+        .content {
+            padding: 0;
+        }
     }
+
+
 }
 
 @media screen and (max-width: $medium) {
@@ -17,6 +23,8 @@ $medium: 900px;
         z-index: 99;
         background-color: var(--a1);
         padding: 10px;
+
+
 
 
         span {
@@ -32,6 +40,10 @@ $medium: 900px;
             display: flex;
             align-items: center;
             justify-content: space-evenly;
+
+            li svg {
+                margin: 0;
+            }
         }
 
         svg {
@@ -39,9 +51,11 @@ $medium: 900px;
         }
 
         li.active a::before {
+            margin: 0 0;
             left: 0;
             bottom: -5px;
             width: 200%;
+
             transform: translate(-25%, 0%);
             height: 3px;
         }

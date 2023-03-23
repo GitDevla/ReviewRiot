@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Raleway&family=Signika+Negative:wght@300&display=swap');
+
 :root {
     --bg: #252627;
     --fg: #DBD9DB;
@@ -10,6 +12,16 @@
 *::before,
 *::after {
     box-sizing: border-box;
+    font-family: 'Signika Negative', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Raleway', sans-serif;
 }
 
 body,
@@ -38,6 +50,10 @@ a {
     font-size: 1.4rem;
     height: 100vh;
     padding-right: 10px;
+
+    * {
+        font-family: "Poppins" !important;
+    }
 
     ul {
         margin: 0px;

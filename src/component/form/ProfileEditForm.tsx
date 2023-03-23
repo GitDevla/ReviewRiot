@@ -4,6 +4,7 @@ import { getLoggedIn, resetCache } from '@/util/frontend/getLoggedIn';
 import { validateUsername } from '@/validator/userValidator';
 import router from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
+import style from "@/styles/editForm.module.scss"
 
 function ProfileEditForm() {
     const [user, setUser] = useState({} as UserModel);
@@ -16,6 +17,8 @@ function ProfileEditForm() {
     const oldPassword = useRef(null as string | null);
     const newDescription = useRef(null as string | null);
 
+
+    const fileInput = useRef(null as HTMLInputElement | null);
     useEffect(() => {
         getLoggedIn().then(i => {
             setUser(i);
@@ -57,29 +60,35 @@ function ProfileEditForm() {
     };
 
     async function setImage(file: File) {
+        if (!file) return;
+
         const objectUrl = URL.createObjectURL(file)
         setPreviewPath(objectUrl);
         newImage.current = file;
     }
 
     return (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
             <div>
-                <label>Fehasználónév: </label>
+                <label>Fehasználónév</label><br />
                 <input type="text" placeholder='Fehasználónév' defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
             </div>
             <div>
-                <label>Jelszó változtatás: </label>
+                <label>Jelszó változtatás</label><br />
                 <input type="password" placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
                 <input type="password" placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
             </div>
             <div>
-                <label>Profilkép: </label>
-                <input type="file" accept="image/*" onChange={i => setImage(i.target.files![0])} /><br />
-                <img src={previewPath} width={100} height={100} className={"round"} />
+                <label>Profilkép</label><br />
+                <div className={style.image_change}>
+                    <input type='button' onClick={() => fileInput.current?.click()} value="File kiválasztása" />
+                    <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
+                    <img src={previewPath} width={100} height={100} className={"round"} />
+                </div>
+
             </div>
             <div>
-                <label>Leírás: </label>
+                <label>Leírás</label><br />
                 <textarea defaultValue={user?.description ?? ""} onChange={i => newDescription.current = i.target.value}></textarea>
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}

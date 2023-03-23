@@ -19,6 +19,7 @@ function SettingsProfilePage() {
         <Layout>
             <Title>Profil beállítások</Title>
             {isAdmin && <SettingsNavbar />}
+            <h1>Profil beállítások</h1>
             <ProfileEditForm />
         </Layout >
     )
