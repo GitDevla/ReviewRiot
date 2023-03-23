@@ -1,5 +1,5 @@
 import { UserModel } from "@/model/UserModel";
-import { validateToken } from "@/service/TokenService";
+import { validateToken } from "@/service/AuthService";
 import { getCookie } from "cookies-next";
 import { NextApiRequest } from "next";
 import { UnauthorizedError } from "../Errors";

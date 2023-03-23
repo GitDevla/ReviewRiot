@@ -1,9 +1,19 @@
+import { UserModel } from '@/model/UserModel';
 import jwt from 'jsonwebtoken';
 
 const jwtToken = process.env.JWT_TOKEN ?? "";
 
 interface IToken {
     userId: number;
+}
+
+export const authUser = async (username: string, password: string) => {
+    const user = await UserModel.getWithName(username);
+    if (!user) return false;
+    const res = await UserModel.auth(username, password);
+    if (!res) return false;
+
+    return generateToken(user.id);
 }
 
 export const generateToken = async (userID: number) => {

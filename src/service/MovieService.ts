@@ -4,13 +4,16 @@ import { ReviewModel } from "@/model/ReviewModel";
 import { Filesystem } from "@/util/backend/Filesystem";
 import { ConflictError, NotFoundError } from "@/util/Errors";
 
+//#region CREATE
 export const createMovie = async (name: string, date: Date) => {
     const userWithSameName = await MovieModel.getWithName(name);
     if (userWithSameName) throw new ConflictError("Ez a film már létezik");
 
     return MovieModel.create(name, date);
 }
+//#endregion
 
+//#region READ
 export const getMovieReviews = async (id: number) => {
     const movie = await MovieModel.getWithID(id);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
@@ -40,8 +43,9 @@ export const listMovies = async (page: number, max: number, order: string) => {
             return MovieModel.listByHot(page, max);
     }
 }
+//#endregion
 
-
+//#region UPDATE
 export const updateMovieCoverPhoto = async (movieID: number, path: string) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
@@ -75,3 +79,4 @@ export const updateMovieGenres = async (movieID: number, genres: number[]) => {
     }
     GenreModel.updateMovieGenres(movie.id, genres);
 }
+//#endregion

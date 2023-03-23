@@ -3,6 +3,7 @@ import { MovieModel } from "./MovieModel";
 import { UserModel } from "./UserModel";
 
 export class FeedModel {
+    //#region Properties
     public readonly id: number;
     public readonly rating: number;
     public readonly description: string;
@@ -19,9 +20,12 @@ export class FeedModel {
         this.author = new UserModel({ id: author_id, name, picture_path });
         this.movie = new MovieModel({ id: movie_id, name: movie_name, image_path })
     }
+    //#endregion
 
+    //#region Fetch List
     public static listFeed = async (user: UserModel, page: number, max: number) => {
-        const res = await Database.query("SELECT review.id, review.rating, review.description, review.create_date,user.id as author_id, USER.name, USER.picture_path, movie.id as movie_id, movie.name as movie_name, movie.image_path FROM review JOIN `USER` ON review.author_id = USER.id JOIN movie ON review.movie_id = movie.id WHERE USER.id IN( SELECT whom_id FROM follow WHERE who_id = ?) OR USER.id = 1 or user.id = ? ORDER by create_date desc limit ?,?;", user.id, user.id, page, max)
+        const res = await Database.query("SELECT review.id, review.rating, review.description, review.create_date,user.id as author_id, user.name, user.picture_path, movie.id as movie_id, movie.name as movie_name, movie.image_path FROM review JOIN `user` ON review.author_id = user.id JOIN movie ON review.movie_id = movie.id WHERE user.id IN( SELECT whom_id FROM follow WHERE who_id = ?) OR user.id = 1 or user.id = ? ORDER by create_date desc limit ?,?;", user.id, user.id, page, max)
         return Database.transform(this, res);
     }
+    //#endregion
 }

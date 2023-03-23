@@ -2,6 +2,7 @@ import Database from "@/util/backend/Database"
 import { GenreModel } from "./GenreModel";
 
 export class MovieModel {
+    //#region Properties
     public static readonly defaultCoverImage = "default.jpg";
     public readonly id: number;
     public readonly name: string;
@@ -21,6 +22,13 @@ export class MovieModel {
         this.genres = MovieModel.convertToArrayOfGenres(genres);
         this.imagePath = "/image/movie/" + (image_path ?? MovieModel.defaultCoverImage);
     }
+    //#endregion
+
+    //#region Create
+    public static create = async (name: string, release_date: Date) => {
+        return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
+    }
+    //#endregion
 
     private static convertToArrayOfGenres = (data: string) => {
         return data?.split(",").map((i: String) => {
@@ -30,6 +38,7 @@ export class MovieModel {
         ) ?? [];
     }
 
+    //#region Fetch Single
     public static getWithID = async (id: number) => {
         const res = await Database.single(`SELECT movie.id,movie.name,movie.release_date,
         movie.image_path,GROUP_CONCAT(DISTINCT CONCAT(genre.id, ';', genre.name)) as genres FROM movie left join movie_genre
@@ -45,11 +54,9 @@ export class MovieModel {
         if (!res) return null;
         return new MovieModel(res);
     }
+    //#endregion
 
-    public static create = async (name: string, release_date: Date) => {
-        return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
-    }
-
+    //#region Fetch List
     private static listMovies = async (orderBy: string, page: number, max: number, filterBy = "1") => {
         const res = await Database.query(`
         SELECT movie.id,
@@ -97,7 +104,9 @@ export class MovieModel {
         const lastWeekFilter = "review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
         return MovieModel.listMovies("avgRating DESC", page, max, lastWeekFilter)
     }
+    //#endregion
 
+    //#region Update
     public update = async ({
         image_path = null as string | null,
         name = this.name,
@@ -107,4 +116,5 @@ export class MovieModel {
         if (!image_path) image_path = this.imagePath.split("/").at(-1)!;
         return Database.nonQuery("UPDATE `movie` SET `name` = ?, `release_date` = ?, `image_path` = ? WHERE `movie`.`id` = ?", name, release.toString(), image_path, this.id);
     }
+    //#endregion
 }

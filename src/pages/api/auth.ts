@@ -1,4 +1,3 @@
-import { authUser } from '@/service/UserService';
 import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'cookies-next';
@@ -6,6 +5,7 @@ import { returnResponse } from '@/util/backend/ApiResponses';
 import LoginRequired from '@/util/backend/LoginRequired';
 import { UnauthorizedError } from '@/util/Errors';
 import { validateAuthBody } from '@/validator/userValidator';
+import { authUser } from '@/service/AuthService';
 
 export default async (
     req: NextApiRequest,

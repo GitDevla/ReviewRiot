@@ -30,12 +30,6 @@ export class ReviewModel {
     }
     //#endregion
 
-    //#region Delete
-    public static delete = async (id: number) => {
-        return Database.nonQuery("DELETE FROM review WHERE `review`.`id` = ?;", id);
-    }
-    //#endregion
-
     //#region Fetch Single
     public static getWithID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `review` WHERE id = ?;", id);
@@ -50,4 +44,11 @@ export class ReviewModel {
         return Database.transform(this, res);
     }
     //#endregion
+
+    //#region Delete
+    public static delete = async (id: number) => {
+        return Database.nonQuery("DELETE FROM review WHERE `review`.`id` = ?;", id);
+    }
+    //#endregion
 }
+

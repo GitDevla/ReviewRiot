@@ -5,10 +5,19 @@ import { ForbiddenError, NotFoundError } from "@/util/Errors";
 import { PermissionLevel } from "@/util/PermissionLevels";
 import { checkPermission } from "./UserService";
 
+//#region CREATE
 export const createReview = async (author: UserModel, movie: number, rating: number, description: string, isPublic: boolean) => {
     return ReviewModel.create(author.id, movie, rating, description, isPublic);
 }
+//#endregion
 
+//#region READ
+export const listFeed = async (user: UserModel, page: number, max: number) => {
+    return FeedModel.listFeed(user, page, max);
+}
+//#endregion
+
+//#region DELETE
 export const deleteReview = async (user: UserModel, reviewID: number) => {
     const review = await ReviewModel.getWithID(reviewID);
     if (!review) throw new NotFoundError("Nincs ilyen értékelés");
@@ -18,7 +27,4 @@ export const deleteReview = async (user: UserModel, reviewID: number) => {
 
     return ReviewModel.delete(review.id);
 }
-
-export const listFeed = async (user: UserModel, page: number, max: number) => {
-    return FeedModel.listFeed(user, page, max);
-}
+//#endregion

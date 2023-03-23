@@ -23,7 +23,21 @@ export class UserModel {
     }
     //#endregion
 
+    //#region Create
+    public static create = async (name: string, email: string, password: string) => {
+        const hash = await bcrypt.hash(password, 10);
+        const userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);
+        await Database.nonQuery("INSERT INTO `auth` (`user_id`, `email`, `password_hash`) VALUES (?, ?, ?);", userId, email, hash);
+    }
+    //#endregion
+
     //#region Fetch Single
+    public static auth = async (username: string, plainPassword: string) => {
+        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))?.password_hash;
+        if (!hash) return false;
+        return bcrypt.compare(plainPassword, hash);
+    }
+
     public static getWithID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `user` WHERE `id` = ?;", id);
         if (!res) return null;
@@ -49,18 +63,6 @@ export class UserModel {
         return Database.transform(this, res);
     }
     //#endregion
-
-    public static create = async (name: string, email: string, password: string) => {
-        const hash = await bcrypt.hash(password, 10);
-        const userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);
-        await Database.nonQuery("INSERT INTO `auth` (`user_id`, `email`, `password_hash`) VALUES (?, ?, ?);", userId, email, hash);
-    }
-
-    public static auth = async (username: string, plainPassword: string) => {
-        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))?.password_hash;
-        if (!hash) return false;
-        return bcrypt.compare(plainPassword, hash);
-    }
 
     //#region Follow
     public static followExists = async (who: UserModel, whom: UserModel) => {
