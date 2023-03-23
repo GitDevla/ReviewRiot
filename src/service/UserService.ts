@@ -57,6 +57,12 @@ export const listUserFollows = async (whoId: number) => {
     return UserModel.listFollows(whoId);
 }
 
+export const isFollowing = async (who: UserModel, whomID: number) => {
+    const user = await UserModel.getWithID(whomID);
+    if (!user) throw new NotFoundError("Ez a felhasználó nem létezik");
+    return UserModel.followExists(who, user)
+}
+
 export const listUsers = async () => {
     return UserModel.list();
 }

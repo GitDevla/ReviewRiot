@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { ReviewModel } from "./ReviewModel";
 
 export class UserModel {
+    //#region Properties
     public static readonly defaultProfilePicture = "default.png";
     public readonly id: number;
     public readonly name: string;
@@ -20,7 +21,9 @@ export class UserModel {
         this.picturePath = "/image/user/" + (picture_path ?? UserModel.defaultProfilePicture);
         this.permissionID = permission_id;
     }
+    //#endregion
 
+    //#region Fetch Single
     public static getWithID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `user` WHERE `id` = ?;", id);
         if (!res) return null;
@@ -38,11 +41,14 @@ export class UserModel {
         if (!res) return null;
         return new UserModel(res);
     }
+    //#endregion
 
+    //#region Fetch List
     public static list = async () => {
         const res = await Database.query("SELECT * FROM `user`;");
         return Database.transform(this, res);
     }
+    //#endregion
 
     public static create = async (name: string, email: string, password: string) => {
         const hash = await bcrypt.hash(password, 10);
@@ -56,8 +62,9 @@ export class UserModel {
         return bcrypt.compare(plainPassword, hash);
     }
 
+    //#region Follow
     public static followExists = async (who: UserModel, whom: UserModel) => {
-        return await Database.single("SELECT * FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", who.id, whom.id);
+        return Database.single("SELECT * FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", who.id, whom.id);
     }
 
     public follow = async (whom: UserModel) => {
@@ -77,7 +84,9 @@ export class UserModel {
         const res = await Database.query("SELECT * FROM `review` JOIN `user` on review.author_id = user.id WHERE author_id=?;", who);
         return Database.transform(ReviewModel, res);
     }
+    //#endregion
 
+    //#region Update
     public update = async ({
         picture_path = null as string | null,
         username = this.name,
@@ -92,6 +101,7 @@ export class UserModel {
         }
         return Database.nonQuery("UPDATE `user` SET name = ?, `picture_path` = ?, description = ? WHERE `user`.`id` = ?", username, picture_path, description, this.id);
     }
+    //#endregion
 
     public covertToSafe() {
         return {

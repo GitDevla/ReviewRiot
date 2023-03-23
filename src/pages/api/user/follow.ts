@@ -1,4 +1,4 @@
-import { followUser, listUserFollows } from '@/service/UserService';
+import { followUser, isFollowing, listUserFollows } from '@/service/UserService';
 import MethodRouter from '@/util/backend/MethodRouter';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/backend/ApiResponses';
@@ -21,6 +21,12 @@ async function followGetHandler(
     res: NextApiResponse
 ) {
     const user = await LoginRequired(req);
+    const { id } = req.query;
+    if (id) {
+        const whomID = parseInt(id as string)
+        const exists = await isFollowing(user!, whomID) != null;
+        return returnResponse(res, { exists })
+    }
 
     const whomUser = (await listUserFollows(user!.id)).map(i => i.covertToSafe());
     return returnResponse(res, whomUser)

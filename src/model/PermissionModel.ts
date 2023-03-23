@@ -2,6 +2,7 @@ import Database from "@/util/backend/Database"
 import { UserModel } from "./UserModel";
 
 export class PermissionModel {
+    //#region Properties
     public readonly id: number;
     public readonly name: string;
     public readonly level: number;
@@ -12,6 +13,7 @@ export class PermissionModel {
         this.name = name;
         this.level = parseInt(level);
     }
+    //#endregion
 
     public static getLevelFromID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `permission` WHERE `id` = ?;", id);

@@ -15,6 +15,10 @@ $medium: 900px;
 }
 
 @media screen and (max-width: $medium) {
+    .content {
+        margin-bottom: 150px;
+    }
+
     .sidebar {
         position: fixed;
         width: 100%;

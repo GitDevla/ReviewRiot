@@ -2,6 +2,7 @@ import Database from "@/util/backend/Database"
 import { MovieModel } from "./MovieModel";
 
 export class ReviewModel {
+    //#region Properties
     public readonly id: number;
     public readonly authorID: number;
     public readonly movieID: number;
@@ -20,24 +21,33 @@ export class ReviewModel {
         this.create = create_date;
         this.isPublic = <boolean>is_public;
     }
+    //#endregion
 
+    //#region Create
     public static create = async (authorID: number, movieID: number, rating: number, description: string, isPublic: boolean) => {
         return Database.nonQuery("INSERT INTO `review` (`author_id`, `movie_id`, `rating`, `description`, `is_public`) VALUES (?, ?, ?, ?, ?);",
             authorID, movieID, rating, description, isPublic);
     }
+    //#endregion
 
+    //#region Delete
     public static delete = async (id: number) => {
         return Database.nonQuery("DELETE FROM review WHERE `review`.`id` = ?;", id);
     }
+    //#endregion
 
+    //#region Fetch Single
     public static getWithID = async (id: number) => {
         const res = await Database.single("SELECT * FROM `review` WHERE id = ?;", id);
         if (!res) return null;
         return new ReviewModel(res);
     }
+    //#endregion
 
+    //#region Fetch List
     public static listReviewsForMovie = async (movie: MovieModel) => {
         const res = await Database.query("SELECT * FROM `review` WHERE `movie_id` = ? ORDER by create_date DESC;", movie.id);
         return Database.transform(this, res);
     }
+    //#endregion
 }

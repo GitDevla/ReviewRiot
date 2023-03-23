@@ -32,6 +32,7 @@ function MoviesPage() {
         setLoading(true);
         const response = await fetch(`/api/movie?page=${page.current}&max=30&order=dname`);
         const data = await response.json();
+        if (data.movies.length < 30) window.removeEventListener('scroll', handleScroll);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
         setLoading(false);
         flag.current = true;

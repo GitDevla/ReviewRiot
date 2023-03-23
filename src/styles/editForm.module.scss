@@ -1,13 +1,17 @@
 .form {
     padding: 0 25px;
 
-    input {
+    input:not([type=button]),
+    textarea {
         padding: 5px;
         width: 25%;
         transition: ease-in-out, width .35s ease-in-out,
             border-color .35s ease-in-out;
         border-radius: 5px;
-        border: 3px solid rgba($color: #AAA, $alpha: 0.3);
+        border: 3px solid rgba(#AAA, 0.9);
+        resize: none;
+        margin-bottom: 15px;
+        margin-right: 15px;
 
         &:focus,
         &:focus-visible,
@@ -15,20 +19,16 @@
             box-shadow: none;
             outline: none;
             border-color: var(--a2);
-
-            width: 50%;
+            width: 33%;
         }
     }
 
     .image_change {
         position: relative;
-        width: 18%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
         aspect-ratio: 1;
 
-        &:hover input[type=button] {
+        &:hover .hover_inside {
             opacity: 1;
         }
 
@@ -41,10 +41,20 @@
         }
 
         input[type=button] {
-            opacity: 0;
             width: 70%;
-            z-index: 99;
             height: 20%;
+        }
+
+        .hover_inside {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(#000, 0.7);
+            border-radius: 50%;
+            z-index: 99;
             position: absolute;
             transition: opacity 0.3s ease-in-out;
         }

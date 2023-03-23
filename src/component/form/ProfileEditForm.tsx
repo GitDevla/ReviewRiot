@@ -69,6 +69,16 @@ function ProfileEditForm() {
 
     return (
         <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
+            <div style={{ float: "right", width: "18%", aspectRatio: "1" }}>
+                <label>Profilkép</label><br />
+                <div className={style.image_change}>
+                    <div className={style.hover_inside}>
+                        <input type='button' onClick={() => fileInput.current?.click()} value="File kiválasztása" />
+                        <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
+                    </div>
+                    <img src={previewPath} width={100} height={100} className={"round"} />
+                </div>
+            </div>
             <div>
                 <label>Fehasználónév</label><br />
                 <input type="text" placeholder='Fehasználónév' defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
@@ -78,21 +88,14 @@ function ProfileEditForm() {
                 <input type="password" placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
                 <input type="password" placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
             </div>
-            <div>
-                <label>Profilkép</label><br />
-                <div className={style.image_change}>
-                    <input type='button' onClick={() => fileInput.current?.click()} value="File kiválasztása" />
-                    <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
-                    <img src={previewPath} width={100} height={100} className={"round"} />
-                </div>
 
-            </div>
             <div>
                 <label>Leírás</label><br />
-                <textarea defaultValue={user?.description ?? ""} onChange={i => newDescription.current = i.target.value}></textarea>
+                <textarea defaultValue={user?.description ?? ""} rows={5} onChange={i => newDescription.current = i.target.value}></textarea>
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
+            <input type="submit" onClick={() => router.reload()} value="Mégse" />
         </form>
     )
 }

@@ -12,8 +12,10 @@ function UserFeed() {
     const [user, setUser] = useState({} as UserModel);
     const [reviews, setReviews] = useState([] as ReviewModel[]);
     const [ownProfile, setOwnProfile] = useState(false);
+    const [isFollowed, setIsFollowed] = useState(false)
 
     useEffect(() => {
+        if (!id) return
         async function fetchUser() {
             const loggedIn = tryGetLoggedIn();
             const res = await Fetch.GET("/api/user/" + id);
@@ -21,6 +23,10 @@ function UserFeed() {
             setUser(json.user)
             setReviews(json.reviews)
             setOwnProfile(json.user.name == (await loggedIn)?.name)
+            const res2 = await Fetch.GET("/api/user/follow?id=" + id)
+            const json2 = await res2.json();
+            setIsFollowed(json2.exists);
+            //TODODODO
         }
         fetchUser();
     }, [id])
@@ -28,11 +34,13 @@ function UserFeed() {
     async function handleFollow() {
         const res = await Fetch.POST("/api/user/follow", { whom: user.id });
         if (!res.ok) alert("XDDDDDDDD");
+        setIsFollowed(true);
     }
 
     async function handleUnfollow() {
         const res = await Fetch.POST("/api/user/unfollow", { whom: user.id });
         if (!res.ok) alert("XDDDDDDDD");
+        setIsFollowed(false);
     }
 
 
@@ -47,8 +55,9 @@ function UserFeed() {
                 <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
             </div>}
             <div>{!ownProfile && <>
-                <button onClick={() => handleFollow()}>Követés</button>
-                <button onClick={() => handleUnfollow()}>Követés abbahagyása</button>
+                {isFollowed ?
+                    <button onClick={() => handleUnfollow()}>Követés abbahagyása</button>
+                    : <button onClick={() => handleFollow()}>Követés</button>}
             </>}</div>
             <div><h2>Vélemények</h2>
                 {JSON.stringify(reviews)}</div>
