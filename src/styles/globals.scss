@@ -168,3 +168,57 @@ img {
 .movieCover {
     aspect-ratio: 640/880;
 }
+
+.flex {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+
+.hover {
+    position: relative;
+
+    &:hover {
+        .hover_inside {
+            opacity: 1 !important;
+        }
+    }
+
+    .hover_inside {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(#1a1818, 0.2);
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.fill svg * {
+    stroke: red;
+    fill: red;
+}
+
+.heart svg {
+    height: 30px;
+    width: 30px;
+
+    * {
+        transition: 0.2s ease-in-out;
+    }
+}
+
+.heart:hover svg * {
+    stroke: red;
+    fill: red;
+}

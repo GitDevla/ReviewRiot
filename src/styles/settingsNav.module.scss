@@ -4,7 +4,8 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         justify-content: space-evenly;
         margin-bottom: 20px;
     }
@@ -28,10 +29,10 @@
                     margin: 0 0;
                     left: 0;
                     bottom: 9px;
-                    width: 200%;
+                    width: 80%;
                     background-color: var(--a2);
                     border-radius: 2px;
-                    transform: translate(-25%, 0%);
+                    transform: translate(10%, 0%);
                     height: 2px;
                 }
 

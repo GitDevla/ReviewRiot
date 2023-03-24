@@ -35,7 +35,10 @@ function Sidebar() {
                     {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings/profile"><SettingsSVG /><span>Beállítások</span></Link></li>}
                     <li className='bottom'>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
-                        <div onClick={() => logout()}>
+                        <div onClick={() => logout()} className="flex center hover">
+                            <div className='hover_inside'>
+                                <button>Kilépés</button>
+                            </div>
                             <img className='round'
                                 src={user.picturePath} alt='Profilkép' width={50} height={50} />
                             <span>{user.name}</span>

@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn';
+import HeartSVG from '@/../public/icon/heart.svg';
+
 
 function UserFeed() {
     const { query: { id } } = useRouter();
@@ -56,8 +58,8 @@ function UserFeed() {
             </div>}
             <div>{!ownProfile && <>
                 {isFollowed ?
-                    <button onClick={() => handleUnfollow()}>Követés abbahagyása</button>
-                    : <button onClick={() => handleFollow()}>Követés</button>}
+                    <span className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
+                    : <span className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
             </>}</div>
             <div><h2>Vélemények</h2>
                 {JSON.stringify(reviews)}</div>
