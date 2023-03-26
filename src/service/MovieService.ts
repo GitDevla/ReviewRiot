@@ -1,6 +1,8 @@
+import { ReviewWithUser } from "@/interface/ReviewWithUser";
 import { GenreModel } from "@/model/GenreModel";
 import { MovieModel } from "@/model/MovieModel";
 import { ReviewModel } from "@/model/ReviewModel";
+import { UserModel } from "@/model/UserModel";
 import { Filesystem } from "@/util/backend/Filesystem";
 import { ConflictError, NotFoundError } from "@/util/Errors";
 
@@ -17,7 +19,10 @@ export const createMovie = async (name: string, date: Date) => {
 export const getMovieReviews = async (id: number) => {
     const movie = await MovieModel.getWithID(id);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
-    const reviews = await ReviewModel.listReviewsForMovie(movie);
+    const reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUser[];
+    for (const i of reviews) {
+        i.author = (await UserModel.getWithID(i.authorID))!;
+    }
     return { movie, reviews };
 }
 

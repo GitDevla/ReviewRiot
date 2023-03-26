@@ -83,7 +83,7 @@ export class UserModel {
     }
 
     public static listReviews = async (who: number) => {
-        const res = await Database.query("SELECT * FROM `review` JOIN `user` on review.author_id = user.id WHERE author_id=?;", who);
+        const res = await Database.query("SELECT review.* FROM `review` JOIN `user` on review.author_id = user.id WHERE author_id=?;", who);
         return Database.transform(ReviewModel, res);
     }
     //#endregion

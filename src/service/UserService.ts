@@ -1,3 +1,5 @@
+import { ReviewWithMovie } from "@/interface/ReviewWithMovie";
+import { MovieModel } from "@/model/MovieModel";
 import { PermissionModel } from "@/model/PermissionModel";
 import { UserModel } from "@/model/UserModel";
 import { Filesystem } from "@/util/backend/Filesystem";
@@ -27,7 +29,10 @@ export const listUsers = async () => {
 export const getUserReviews = async (id: number) => {
     const user = await UserModel.getWithID(id);
     if (!user) throw new NotFoundError("Ez a film nem létezik");
-    const reviews = await UserModel.listReviews(user.id);
+    const reviews = await UserModel.listReviews(user.id) as ReviewWithMovie[];
+    for (const i of reviews) {
+        i.movie = (await MovieModel.getWithID(i.movieID))!;
+    }
     return { user, reviews };
 }
 //#endregion

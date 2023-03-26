@@ -7,12 +7,14 @@ import React, { useEffect, useState } from 'react'
 import Head from 'next/head';
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn';
 import HeartSVG from '@/../public/icon/heart.svg';
+import UserReviewCard from '@/component/card/UserReviewCard';
+import { ReviewWithMovie } from '@/interface/ReviewWithMovie';
 
 
 function UserFeed() {
     const { query: { id } } = useRouter();
     const [user, setUser] = useState({} as UserModel);
-    const [reviews, setReviews] = useState([] as ReviewModel[]);
+    const [reviews, setReviews] = useState([] as ReviewWithMovie[]);
     const [ownProfile, setOwnProfile] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false)
 
@@ -61,8 +63,10 @@ function UserFeed() {
                     <span className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
                     : <span className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
             </>}</div>
-            <div><h2>Vélemények</h2>
-                {JSON.stringify(reviews)}</div>
+            <div>
+                <h2>Vélemények</h2>
+                {reviews.map(i => <UserReviewCard key={i.id} review={i} userID={-1} permsLevel={-1} />)}
+            </div>
         </Layout >
     )
 }

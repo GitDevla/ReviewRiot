@@ -1,15 +1,16 @@
 import Layout from '@/component/Layout';
 import { MovieModel } from '@/model/MovieModel';
-import { ReviewModel } from '@/model/ReviewModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Title from '@/component/Title';
+import MovieReviewCard from '@/component/card/MovieReviewCard';
+import { ReviewWithUser } from '@/interface/ReviewWithUser';
 
 function MovieFeed() {
     const { query: { id } } = useRouter();
     const [movie, setMovie] = useState(null as MovieModel | null);
-    const [reviews, setReviews] = useState([] as ReviewModel[]);
+    const [reviews, setReviews] = useState([] as ReviewWithUser[]);
 
     useEffect(() => {
         if (!id) return;
@@ -31,7 +32,8 @@ function MovieFeed() {
                 <img src={movie?.imagePath} alt="Borítókép" width={330} height={440} />
             </div>
             <div>
-                <h2>Vélemények</h2>{JSON.stringify(reviews)}
+                <h2>Vélemények</h2>
+                {reviews.map(i => <MovieReviewCard review={i} userID={-1} permsLevel={-1} />)}
             </div>
         </Layout >
     )
