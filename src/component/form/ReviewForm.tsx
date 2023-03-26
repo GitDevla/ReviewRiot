@@ -3,6 +3,8 @@ import { ExpectedError, HTTPError } from '@/util/Errors';
 import { Fetch } from '@/util/frontend/Fetch';
 import React, { ChangeEvent, useEffect, useRef } from 'react'
 import { useState } from 'react'
+import StarRating from '../StarRating';
+import style from "@/styles/feedCard.module.scss"
 
 function ReviewForm() {
     const [rating, setRating] = useState(0)
@@ -28,6 +30,9 @@ function ReviewForm() {
             if (!response.ok)
                 throw new ExpectedError((await response.json()).error);
             setErrorMessage("");
+            setRating(0);
+            setDescription("");
+            selectedMovieId.current = 0;
         } catch (error) {
             if (error instanceof ExpectedError || error instanceof HTTPError)
                 setErrorMessage(error.message);
@@ -41,15 +46,16 @@ function ReviewForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <select name="" id="" onChange={handleOptionSelect} required>
+        <form className={style.card} onSubmit={handleSubmit}>
+            <label>Ezt a filmet láttam: </label>
+            <select onChange={handleOptionSelect} required>
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
-            </select>
-            <input type="range" min={0} max={10} value={rating} onChange={e => setRating(parseInt(e.target.value))} />
-            <label>{rating}/10</label>
+            </select><br />
+            <label>Értékelés:</label><StarRating value={rating} readOnly={false} onClick={e => setRating(e)} /> <br />
             <textarea placeholder='Vélemény' value={description} onChange={(e) => setDescription(e.target.value)} />
+            <br />
             <input type="submit" value="Értékelés" />
-            {errorMessage && <p className='error'>{errorMessage}</p>}
+            {errorMessage && <span className='error'>{errorMessage}</span>}
         </form >
     )
 }

@@ -1,0 +1,38 @@
+.card {
+    background-color: var(--a1);
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 10px var(--a1);
+    margin: 25px 0px;
+    position: relative;
+
+    textarea {
+        background-color: var(--bg);
+        width: 80%;
+        outline: none;
+        border: none;
+        resize: none;
+        height: 5rem;
+        font-size: 1.05rem;
+    }
+
+    input[type=submit] {
+        background-color: var(--a2);
+        border: none;
+        padding: 4px 10px;
+        font-size: 1.1rem;
+        border-radius: 25px;
+    }
+}
+
+.cover img {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 640/880;
+    border-radius: 5%;
+    // box-shadow: 0px 0px 5px 1px var(--a2);
+}

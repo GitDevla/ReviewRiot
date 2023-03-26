@@ -37,7 +37,7 @@ function Sidebar() {
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={() => logout()} className="flex center hover">
                             <div className='hover_inside'>
-                                <button>Kilépés</button>
+                                <p style={{ color: "var(--a2)" }}>Kilépés X</p>
                             </div>
                             <img className='round'
                                 src={user.picturePath} alt='Profilkép' width={50} height={50} />
