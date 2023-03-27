@@ -14,6 +14,8 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     const newImage = useRef(null as File | null);
     const newRelease = useRef(null as string | null);
 
+    const fileInput = useRef(null as HTMLInputElement | null);
+
     useEffect(() => {
         setGenres(movie.genres);
     }, [movie])
@@ -64,6 +66,16 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
 
     return (
         <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
+            <div style={{ float: "right", width: "18%", aspectRatio: "640/880" }}>
+                <label>Boritókép</label><br />
+                <div className={style.image_change} onClick={() => fileInput.current?.click()}>
+                    <div className={style.hover_inside}>
+                        <label>Kép feltötése</label>
+                        <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
+                    </div>
+                    <img src={previewPath} width={640} height={880} />
+                </div>
+            </div>
             <div>
                 <label>Név: </label><br />
                 <input type="text" placeholder='Film név' defaultValue={movie?.name} onChange={i => newName.current = i.target.value} />
@@ -77,11 +89,7 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
                 <GenreSelector onValueChange={handleGenreAdd} />
                 {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
             </div>
-            <div>
-                <label>Boritókép: </label>
-                <input type="file" accept="image/*" onChange={i => setImage(i.target.files![0])} /><br />
-                <img src={previewPath} width={320} height={440} />
-            </div>
+
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
         </form>

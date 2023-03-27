@@ -10,8 +10,6 @@ $medium: 900px;
             padding: 0;
         }
     }
-
-
 }
 
 @media screen and (max-width: $medium) {
@@ -27,9 +25,6 @@ $medium: 900px;
         z-index: 99;
         background-color: var(--a1);
         padding: 10px;
-
-
-
 
         span {
             display: none;

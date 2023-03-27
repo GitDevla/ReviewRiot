@@ -14,7 +14,10 @@
         resize: none;
         height: 5rem;
         font-size: 1.05rem;
-        color: var(--fg)
+        color: var(--fg);
+        border-radius: 5px;
+        padding: 8px;
+        margin: 10px 0px;
     }
 
     input[type=submit] {

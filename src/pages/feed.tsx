@@ -18,16 +18,17 @@ function FeedPage() {
     const interval = useRef(null as any);
     const cd = 10000;
 
+    async function getFeed() {
+        const res = await Fetch.GET('/api/feed');
+        if (!res.ok) throw new Error()
+        setFeed((await res.json()).feed)
+    }
+
     useEffect(() => {
         async function getPerms() {
             let res = await Fetch.GET("/api/permission");
             if (!res.ok) throw new Error()
             setPermissionLevel((await res.json()).level);
-        }
-        async function getFeed() {
-            const res = await Fetch.GET('/api/feed');
-            if (!res.ok) throw new Error()
-            setFeed((await res.json()).feed)
         }
 
         getLoggedIn().then(i => setUser(i))
@@ -42,16 +43,14 @@ function FeedPage() {
         }
     }, []);
 
-
-
     return (
         <Layout>
             <Title>Bejegyzéslista</Title>
             <div>
-                <ReviewForm />
+                <ReviewForm onSubmit={getFeed} />
             </div>
             <div id='feed'>
-                {feed.map(i => <FeedCard feed={i} key={i.id} userID={user!.id} permsLevel={permissionLevel} />)}
+                {feed.map(i => <FeedCard onDelete={getFeed} feed={i} key={i.id} userID={user!.id} permsLevel={permissionLevel} />)}
             </div>
         </Layout>
     )

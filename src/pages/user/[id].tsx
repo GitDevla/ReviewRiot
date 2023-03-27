@@ -1,5 +1,4 @@
 import Layout from '@/component/Layout';
-import { ReviewModel } from '@/model/ReviewModel';
 import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'

@@ -26,10 +26,10 @@
     .image_change {
         position: relative;
         width: 100%;
-        aspect-ratio: 1;
+        height: 100%;
         border: 3px solid rgba(#AAA, 0.9);
         cursor: pointer;
-        border-radius: 50%;
+        overflow: hidden;
 
         &:hover .hover_inside {
             opacity: 1;
@@ -54,10 +54,10 @@
             justify-content: center;
             align-items: center;
             background-color: rgba(#000, 0.7);
-            border-radius: 50%;
             z-index: 99;
             position: absolute;
             transition: opacity 0.3s ease-in-out;
+            border-radius: inherit;
         }
     }
 }

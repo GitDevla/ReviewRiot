@@ -6,9 +6,10 @@ import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
 
-function FeedCard({ feed, userID, permsLevel }: { feed: FeedModel, userID: number, permsLevel: number }) {
+function FeedCard({ feed, userID, permsLevel, onDelete = () => { } }: { feed: FeedModel, userID: number, permsLevel: number, onDelete: Function }) {
     const handleDelete = async () => {
         await Fetch.DELETE("/api/review/" + feed.id)
+        onDelete();
     }
 
     return (

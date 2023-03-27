@@ -6,9 +6,9 @@ import { useState } from 'react'
 import StarRating from '../StarRating';
 import style from "@/styles/feedCard.module.scss"
 
-function ReviewForm() {
+function ReviewForm({ onSubmit = () => { } }) {
     const [rating, setRating] = useState(0)
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState(null as string | null)
     const [errorMessage, setErrorMessage] = useState('');
     const [movies, setMovies] = useState([] as MovieModel[]);
     const selectedMovieId = useRef(0 as number);
@@ -26,13 +26,19 @@ function ReviewForm() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, description, isPublic: true })
+            let response;
+            if (description)
+                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, description, isPublic: true })
+            else
+                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, isPublic: true })
+
             if (!response.ok)
                 throw new ExpectedError((await response.json()).error);
             setErrorMessage("");
             setRating(0);
             setDescription("");
             selectedMovieId.current = 0;
+            onSubmit();
         } catch (error) {
             if (error instanceof ExpectedError || error instanceof HTTPError)
                 setErrorMessage(error.message);
@@ -52,7 +58,7 @@ function ReviewForm() {
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
             </select><br />
             <label>Értékelés:</label><StarRating value={rating} readOnly={false} onClick={e => setRating(e)} /> <br />
-            <textarea placeholder='Vélemény' value={description} onChange={(e) => setDescription(e.target.value)} />
+            <textarea placeholder='Vélemény (nem kötelező)' value={description!} onChange={(e) => setDescription(e.target.value)} />
             <br />
             <input type="submit" value="Értékelés" />
             {errorMessage && <span className='error'>{errorMessage}</span>}

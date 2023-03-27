@@ -76,12 +76,12 @@ function ProfileEditForm() {
         <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
             <div style={{ float: "right", width: "18%", aspectRatio: "1" }}>
                 <label>Profilkép</label><br />
-                <div className={style.image_change} onClick={() => fileInput.current?.click()}>
+                <div className={`${style.image_change} round`} onClick={() => fileInput.current?.click()}>
                     <div className={style.hover_inside}>
                         <label>Kép feltötése</label>
                         <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
                     </div>
-                    <img src={previewPath} width={100} height={100} className={"round"} />
+                    <img src={previewPath} width={100} height={100} />
                 </div>
             </div>
             <div>
