@@ -26,26 +26,26 @@ export const getMovieReviews = async (id: number) => {
     return { movie, reviews };
 }
 
-export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: string[], filterDate: number) => {
+export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: number[]) => {
     switch (order) {
         case "name":
         default:
-            return MovieModel.listByName(page, max, filterName, filterGenres, filterDate);
+            return MovieModel.listByName(page, max, { name: filterName, genres: filterGenres });
 
         case "dname":
-            return MovieModel.listByNameDesc(page, max);
+            return MovieModel.listByNameDesc(page, max, { name: filterName, genres: filterGenres });
 
         case "new":
-            return MovieModel.listByNew(page, max);
+            return MovieModel.listByNew(page, max, { name: filterName, genres: filterGenres });
 
         case "old":
-            return MovieModel.listByOld(page, max);
+            return MovieModel.listByOld(page, max, { name: filterName, genres: filterGenres });
 
         case "top":
-            return MovieModel.listByTop(page, max);
+            return MovieModel.listByTop(page, max, { name: filterName, genres: filterGenres });
 
         case "hot":
-            return MovieModel.listByHot(page, max);
+            return MovieModel.listByHot(page, max, { name: filterName, genres: filterGenres });
     }
 }
 //#endregion

@@ -1,5 +1,5 @@
 import { createPool, Pool, format } from "mysql2/promise";
-type param = string | number | boolean | undefined | null;
+type param = string | number | boolean | undefined | null | string[] | number[];
 let globalPool: Pool | null = null;
 
 
