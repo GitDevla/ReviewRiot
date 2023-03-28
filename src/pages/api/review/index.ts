@@ -22,7 +22,7 @@ async function reviewPostHandler(
     const user = await LoginRequired(req);
     validateReviewCreate(req.body);
 
-    const { movieID, rating, description, isPublic } = req.body;
-    await createReview(user!, movieID, rating, description, isPublic)
+    const { movieID, rating, description } = req.body;
+    await createReview(user!, movieID, rating, description)
     return returnResponse(res, { message: "New review created" })
 }

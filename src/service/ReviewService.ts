@@ -6,8 +6,8 @@ import { PermissionLevel } from "@/util/PermissionLevels";
 import { checkPermission } from "./UserService";
 
 //#region CREATE
-export const createReview = async (author: UserModel, movie: number, rating: number, description: string, isPublic: boolean) => {
-    return ReviewModel.create(author.id, movie, rating, description, isPublic);
+export const createReview = async (author: UserModel, movie: number, rating: number, description: string) => {
+    return ReviewModel.create(author.id, movie, rating, description);
 }
 //#endregion
 

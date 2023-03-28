@@ -9,24 +9,22 @@ export class ReviewModel {
     public readonly rating: number;
     public readonly description: string | null;
     public readonly create: Date;
-    public readonly isPublic: boolean;
 
     constructor(dbRes: any) {
-        const { id, author_id, movie_id, rating, description, create_date, is_public } = dbRes;
+        const { id, author_id, movie_id, rating, description, create_date } = dbRes;
         this.id = id;
         this.authorID = author_id;
         this.movieID = movie_id;
         this.rating = rating;
         this.description = description;
         this.create = create_date;
-        this.isPublic = <boolean>is_public;
     }
     //#endregion
 
     //#region Create
-    public static create = async (authorID: number, movieID: number, rating: number, description: string, isPublic: boolean) => {
-        return Database.nonQuery("INSERT INTO `review` (`author_id`, `movie_id`, `rating`, `description`, `is_public`) VALUES (?, ?, ?, ?, ?);",
-            authorID, movieID, rating, description, isPublic);
+    public static create = async (authorID: number, movieID: number, rating: number, description: string) => {
+        return Database.nonQuery("INSERT INTO `review` (`author_id`, `movie_id`, `rating`, `description`) VALUES (?, ?, ?, ?);",
+            authorID, movieID, rating, description);
     }
     //#endregion
 

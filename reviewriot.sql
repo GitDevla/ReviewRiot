@@ -521,8 +521,7 @@ CREATE TABLE `review` (
   `movie_id` int(10) UNSIGNED NOT NULL,
   `rating` tinyint(3) UNSIGNED NOT NULL,
   `description` varchar(256) DEFAULT NULL,
-  `create_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `is_public` tinyint(1) NOT NULL
+  `create_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

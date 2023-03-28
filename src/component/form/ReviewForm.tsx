@@ -28,9 +28,9 @@ function ReviewForm({ onSubmit = () => { } }) {
         try {
             let response;
             if (description)
-                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, description, isPublic: true })
+                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, description })
             else
-                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating, isPublic: true })
+                response = await Fetch.POST('/api/review', { movieID: selectedMovieId.current, rating })
 
             if (!response.ok)
                 throw new ExpectedError((await response.json()).error);
