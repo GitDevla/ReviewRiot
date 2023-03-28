@@ -57,7 +57,7 @@ export class MovieModel {
     //#endregion
 
     //#region Fetch List
-    private static listMovies = async (orderBy: string, page: number, max: number, filterBy = "1") => {
+    private static listMovies = async (orderBy: string, page: number, max: number, filterBy = "1", having = "true") => {
         const res = await Database.query(`
         SELECT movie.id,
             movie.name,
@@ -75,13 +75,26 @@ export class MovieModel {
                 	on genre.id = movie_genre.genre_id
         WHERE ${filterBy}
         GROUP  BY movie.id
+        HAVING ${having} 
         ORDER  BY ${orderBy}
         LIMIT  ?, ?;`, page * max, max);
         return Database.transform(this, res);
     }
 
-    public static listByName = async (page: number, max: number) => {
-        return MovieModel.listMovies("name ASC", page, max)
+    public static listByName = async (page: number, max: number, filterName: string, filterGenres: string[], filterDate: number) => {
+        const where = [] as string[];
+        const having = [] as string[];
+        if (filterName)
+            where.push(await Database.format("movie.name like ?", `%${filterName}%`));
+        if (filterGenres) {
+            where.push(await Database.format("genre.id in (?)", filterGenres));
+            having.push(await Database.format("COUNT(DISTINCT genre.id) = ?", filterGenres.length));
+        }
+
+        const whereString = where.length ? where.join(" AND ") : "1";
+        const havingString = having.length ? having.join(" AND ") : "1";
+
+        return MovieModel.listMovies("movie.name ASC", page, max, whereString, havingString)
     }
 
     public static listByNameDesc = async (page: number, max: number) => {

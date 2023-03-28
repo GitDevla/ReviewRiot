@@ -18,7 +18,8 @@ function GenreSelector({ onValueChange }: { onValueChange: Function }) {
     }
 
     return (
-        <select onChange={handleChange}>
+        <select onChange={handleChange} defaultValue={-1}>
+            <option disabled value={-1} >--- Válasszon egy műfajt ---</option>
             {genres.map((i, index) => <option key={i.id} value={index}>{i.name}</option>)}
         </select>
     )

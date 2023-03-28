@@ -86,12 +86,12 @@ function ProfileEditForm() {
             </div>
             <div>
                 <label>Fehasználónév</label><br />
-                <input type="text" placeholder='Fehasználónév' defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
+                <input type="text" autoComplete='username' placeholder='Fehasználónév' defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
             </div>
             <div>
                 <label>Jelszó változtatás</label><br />
-                <input type="password" placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
-                <input type="password" placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
+                <input type="password" autoComplete='current-password' placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
+                <input type="password" autoComplete='new-password' placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
             </div>
 
             <div>

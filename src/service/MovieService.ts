@@ -26,11 +26,11 @@ export const getMovieReviews = async (id: number) => {
     return { movie, reviews };
 }
 
-export const listMovies = async (page: number, max: number, order: string) => {
+export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: string[], filterDate: number) => {
     switch (order) {
         case "name":
         default:
-            return MovieModel.listByName(page, max);
+            return MovieModel.listByName(page, max, filterName, filterGenres, filterDate);
 
         case "dname":
             return MovieModel.listByNameDesc(page, max);

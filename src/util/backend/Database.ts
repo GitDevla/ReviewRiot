@@ -1,4 +1,4 @@
-import { createPool, Pool } from "mysql2/promise";
+import { createPool, Pool, format } from "mysql2/promise";
 type param = string | number | boolean | undefined | null;
 let globalPool: Pool | null = null;
 
@@ -39,6 +39,8 @@ export default class Database {
         await Database.query(stmt, ...params)
         return this.getLastID();
     }
+
+    public static format = async (stmt: string, ...params: param[]) => format(stmt, params)
 
     public static transform = <T>(type: { new(...args: any[]): T; }, dbRes: any): T[] =>
         dbRes.map((i: any) => new type(i));

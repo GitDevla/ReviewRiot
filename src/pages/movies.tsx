@@ -4,18 +4,23 @@ import { MovieModel } from '@/model/MovieModel';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
 import Title from '@/component/Title';
+import GenreSelector from '@/component/GenreSelector';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieModel[]);
-    const [genres, setGenres] = useState([] as GenreModel[]);
     const [loading, setLoading] = useState(false);
-    const sort = useRef("name");
+    const [genres, setGenres] = useState([] as GenreModel[])
     const page = useRef(0);
     const flag = useRef(true);
 
+    const sort = useRef("name");
+    const filterName = useRef("");
+    const filterGenre = useRef([] as GenreModel[]);
+
+
+
     useEffect(() => {
         fetchMovies();
-        fetchGenres();
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -23,15 +28,11 @@ function MoviesPage() {
         };
     }, []);
 
-    async function fetchGenres() {
-        const response = await fetch(`/api/genre`);
-        const data = await response.json();
-        setGenres(data.genres);
-    }
 
     async function fetchMovies() {
         setLoading(true);
-        const response = await fetch(`/api/movie?page=${page.current}&max=30&order=${sort.current}`);
+        const genreFilter = filterGenre.current.map(i => i.id);
+        const response = await fetch(`/api/movie?page=${page.current}&max=30&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
         if (data.movies.length < 30) window.removeEventListener('scroll', handleScroll);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
@@ -52,11 +53,32 @@ function MoviesPage() {
         }
     }
 
-    async function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
-        sort.current = e.target.value
+    async function handleFilterChange() {
         setMovies([]);
         page.current = 0;
         fetchMovies();
+    }
+
+    async function handleSortChange(e: ChangeEvent<HTMLSelectElement>) {
+        sort.current = e.target.value
+        handleFilterChange();
+    }
+
+    async function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
+        filterName.current = e.target.value
+        handleFilterChange();
+    }
+
+    function handleGenreAdd(e: GenreModel) {
+        filterGenre.current = [...genres, e];
+        setGenres(filterGenre.current);
+        handleFilterChange();
+    }
+
+    function handleGenreRemove(e: number) {
+        filterGenre.current = genres.filter(i => i.id != e);
+        setGenres(filterGenre.current);
+        handleFilterChange()
     }
 
     return (
@@ -76,16 +98,14 @@ function MoviesPage() {
                 </div>
                 <div>
                     <label>Név:</label>
-                    <input type="text" />
+                    <input type="text" onChange={handleNameChange} />
                 </div>
                 <div>
-                    <label>Műfaj:</label>
-                    <select name="genre" id="">
-                        <option value="0" defaultChecked></option>
-                        {genres.map(i =>
-                            <option key={i.id} value={i.id}>{i.name}</option>
-                        )}
-                    </select>
+                    <div>
+                        <label>Műfajok: </label><br />
+                        <GenreSelector onValueChange={handleGenreAdd} />
+                        {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
+                    </div>
                 </div>
                 <div>
                     <label>Név:</label>

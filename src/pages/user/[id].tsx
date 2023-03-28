@@ -15,17 +15,19 @@ function UserFeed() {
     const [user, setUser] = useState({} as UserModel);
     const [reviews, setReviews] = useState([] as ReviewWithMovie[]);
     const [ownProfile, setOwnProfile] = useState(false);
-    const [isFollowed, setIsFollowed] = useState(false)
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
         if (!id) return
         async function fetchUser() {
-            const loggedIn = tryGetLoggedIn();
+            const loggedIn = await tryGetLoggedIn();
             const res = await Fetch.GET("/api/user/" + id);
             const json = await res.json();
+            setIsLoggedIn(loggedIn != null);
             setUser(json.user)
             setReviews(json.reviews)
-            setOwnProfile(json.user.name == (await loggedIn)?.name)
+            setOwnProfile(json.user.name == loggedIn?.name)
             const res2 = await Fetch.GET("/api/user/follow?id=" + id)
             const json2 = await res2.json();
             setIsFollowed(json2.exists);
@@ -57,7 +59,7 @@ function UserFeed() {
                 <p>{user.description}</p>
                 <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
             </div>}
-            <div>{!ownProfile && <>
+            <div>{isLoggedIn && !ownProfile && <>
                 {isFollowed ?
                     <span className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
                     : <span className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}

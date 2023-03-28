@@ -38,14 +38,18 @@ async function movieGetHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { page, max, order } = req.query;
+    let { page, max, order, filterName, filterGenres, filterDate } = req.query;
     let pageId = parseInt(page as string);
     if (isNaN(pageId)) pageId = 0;
     let maxId = parseInt(max as string);
     if (isNaN(maxId)) maxId = 20;
+    if (typeof filterGenres == "string" && filterGenres) filterGenres = [filterGenres];
+    filterName = filterName as string;
+    filterGenres = filterGenres as string[];
+    let filterDateYear = parseInt(filterDate as string);
 
     let orderBy = order as string;
-    const movies = await listMovies(pageId, maxId, orderBy);
+    const movies = await listMovies(pageId, maxId, orderBy, filterName, filterGenres, filterDateYear);
 
     return returnResponse(res, { movies })
 }

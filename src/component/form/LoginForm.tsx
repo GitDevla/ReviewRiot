@@ -26,8 +26,8 @@ function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
+            <input type="text" autoComplete='username' placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" autoComplete='current-password' placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Belépés" />
         </form >

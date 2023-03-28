@@ -55,6 +55,7 @@ function ReviewForm({ onSubmit = () => { } }) {
         <form className={style.card} onSubmit={handleSubmit}>
             <label>Ezt a filmet láttam: </label>
             <select onChange={handleOptionSelect} required>
+                <option disabled selected>--- Válasszon egy filmet ---</option>
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
             </select><br />
             <label>Értékelés:</label><StarRating value={rating} readOnly={false} onClick={e => setRating(e)} /> <br />
