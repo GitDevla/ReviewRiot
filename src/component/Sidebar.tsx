@@ -23,7 +23,7 @@ function Sidebar() {
     return (
         <div className='sidebar'>
             <div>
-                <span>[logo]</span>
+                <img src="/icon/logo.png" alt="" width={75} className="hide_phone" />
             </div>
             <nav>
                 <ul>

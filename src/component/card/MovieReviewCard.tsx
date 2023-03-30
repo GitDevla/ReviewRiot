@@ -1,13 +1,22 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
 import { ReviewWithUser } from '@/interface/ReviewWithUser'
+import { UserModel } from '@/model/UserModel'
+import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 
-function MovieReviewCard({ review, userID, permsLevel }: { review: ReviewWithUser, userID: number, permsLevel: number }) {
+function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUser, permsLevel: number }) {
+    const [user, setUser] = useState(null as UserModel | null);
+
+    useEffect(() => {
+        tryGetLoggedIn().then(i => setUser(i))
+    }, [])
+
+
     const handleDelete = async () => {
         await Fetch.DELETE("/api/review/" + review.id)
     }
@@ -26,7 +35,7 @@ function MovieReviewCard({ review, userID, permsLevel }: { review: ReviewWithUse
                 <p style={{ whiteSpace: "pre-wrap" }}>{review.description}</p>
             </div>
             {
-                (userID == review.authorID || permsLevel >= PermissionLevel.moderator) && <div>
+                (user?.id == review.authorID || permsLevel >= PermissionLevel.moderator) && <div>
                     <button onClick={handleDelete}>Törlés</button></div>
             }
         </div >

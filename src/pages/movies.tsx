@@ -5,6 +5,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
 import Title from '@/component/Title';
 import GenreSelector from '@/component/GenreSelector';
+import RateLimitedInput from '@/component/RateLimitedInput';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieModel[]);
@@ -64,11 +65,6 @@ function MoviesPage() {
         handleFilterChange();
     }
 
-    async function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
-        filterName.current = e.target.value
-        handleFilterChange();
-    }
-
     function handleGenreAdd(e: GenreModel) {
         filterGenre.current = [...genres, e];
         setGenres(filterGenre.current);
@@ -84,7 +80,7 @@ function MoviesPage() {
     return (
         <Layout>
             <Title>Filmek</Title>
-            <div>
+            <div style={{ marginBottom: "30px" }}>
                 <div>
                     <label>Rendezés:</label>
                     <select name="sort" onChange={handleSortChange}>
@@ -98,11 +94,11 @@ function MoviesPage() {
                 </div>
                 <div>
                     <label>Név:</label>
-                    <input type="text" onChange={handleNameChange} />
+                    <RateLimitedInput value={filterName} timeout={300} onChange={handleFilterChange} />
                 </div>
                 <div>
                     <div>
-                        <label>Műfajok: </label><br />
+                        <label>Műfajok: </label>
                         <GenreSelector onValueChange={handleGenreAdd} />
                         {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
                     </div>

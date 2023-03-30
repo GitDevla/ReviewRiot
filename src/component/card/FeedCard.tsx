@@ -1,12 +1,20 @@
 import { FeedModel } from '@/model/FeedModel'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
+import { UserModel } from '@/model/UserModel'
+import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 
-function FeedCard({ feed, userID, permsLevel, onDelete = () => { } }: { feed: FeedModel, userID: number, permsLevel: number, onDelete: Function }) {
+function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel, permsLevel: number, onDelete: Function }) {
+    const [user, setUser] = useState(null as UserModel | null);
+
+    useEffect(() => {
+        tryGetLoggedIn().then(i => setUser(i))
+    }, [])
+
     const handleDelete = async () => {
         await Fetch.DELETE("/api/review/" + feed.id)
         onDelete();
@@ -29,7 +37,7 @@ function FeedCard({ feed, userID, permsLevel, onDelete = () => { } }: { feed: Fe
                 <img src={feed.movie.imagePath} width={50} height={50} alt='Filmkép' />
             </div>
             {
-                (userID == feed.author.id || permsLevel >= PermissionLevel.moderator) && <div>
+                (user?.id == feed.author.id || permsLevel >= PermissionLevel.moderator) && <div>
                     <button onClick={handleDelete}>Törlés</button></div>
             }
         </div >

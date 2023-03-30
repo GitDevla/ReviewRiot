@@ -13,6 +13,10 @@ $medium: 900px;
 }
 
 @media screen and (max-width: $medium) {
+    .hide_phone {
+        display: none;
+    }
+
     .content {
         margin-bottom: 150px;
     }

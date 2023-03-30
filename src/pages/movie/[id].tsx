@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import Title from '@/component/Title';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
 import { ReviewWithUser } from '@/interface/ReviewWithUser';
+import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
 
 function MovieFeed() {
     const { query: { id } } = useRouter();
@@ -33,7 +34,8 @@ function MovieFeed() {
             </div>
             <div>
                 <h2>Vélemények</h2>
-                {reviews.map(i => <MovieReviewCard review={i} userID={-1} permsLevel={-1} />)}
+                {movie && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
+                {reviews.map(i => <MovieReviewCard review={i} permsLevel={-1} />)}
             </div>
         </Layout >
     )

@@ -1,13 +1,20 @@
-import { FeedModel } from '@/model/FeedModel'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
 import { ReviewWithMovie } from '@/interface/ReviewWithMovie'
+import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
+import { UserModel } from '@/model/UserModel'
 
-function UserReviewCard({ review, userID, permsLevel }: { review: ReviewWithMovie, userID: number, permsLevel: number }) {
+function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovie, permsLevel: number }) {
+    const [user, setUser] = useState(null as UserModel | null);
+
+    useEffect(() => {
+        tryGetLoggedIn().then(i => setUser(i))
+    }, [])
+
     const handleDelete = async () => {
         await Fetch.DELETE("/api/review/" + review.id)
     }
@@ -28,7 +35,7 @@ function UserReviewCard({ review, userID, permsLevel }: { review: ReviewWithMovi
                 <img src={review.movie.imagePath} width={50} height={50} alt='Filmkép' />
             </div>
             {
-                (userID == review.authorID || permsLevel >= PermissionLevel.moderator) && <div>
+                (user?.id == review.authorID || permsLevel >= PermissionLevel.moderator) && <div>
                     <button onClick={handleDelete}>Törlés</button></div>
             }
         </div >

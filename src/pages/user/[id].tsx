@@ -66,7 +66,7 @@ function UserFeed() {
             </>}</div>
             <div>
                 <h2>Vélemények</h2>
-                {reviews.map(i => <UserReviewCard key={i.id} review={i} userID={-1} permsLevel={-1} />)}
+                {reviews.map(i => <UserReviewCard key={i.id} review={i} permsLevel={-1} />)}
             </div>
         </Layout >
     )
