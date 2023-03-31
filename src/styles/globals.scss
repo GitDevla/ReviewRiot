@@ -46,7 +46,7 @@ a {
     top: 0;
     left: 0;
     bottom: 0;
-    width: clamp(100px, 20%, 300px);
+    width: fit-content;
     font-size: 1.4rem;
     height: 100vh;
     padding-right: 10px;

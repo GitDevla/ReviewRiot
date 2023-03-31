@@ -80,31 +80,33 @@ function MoviesPage() {
     return (
         <Layout>
             <Title>Filmek</Title>
-            <div style={{ marginBottom: "30px" }}>
-                <div>
-                    <label>Rendezés:</label>
-                    <select name="sort" onChange={handleSortChange}>
-                        <option value="name" defaultChecked>Név növekvő</option>
-                        <option value="dname">Név csökkenő</option>
-                        <option value="new">Új</option>
-                        <option value="old">Régi</option>
-                        <option value="top">Népszerűek</option>
-                        <option value="hot">Felkapottak</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Név:</label>
-                    <RateLimitedInput value={filterName} timeout={300} onChange={handleFilterChange} />
-                </div>
-                <div>
-                    <div>
-                        <label>Műfajok: </label>
+            <div>
+                <div style={{ marginBottom: "30px", display: "flex", justifyContent: "space-evenly" }}>
+                    <span>
+                        <label>Rendezés:</label><br />
+                        <select name="sort" onChange={handleSortChange}>
+                            <option value="name" defaultChecked>Név növekvő</option>
+                            <option value="dname">Név csökkenő</option>
+                            <option value="new">Új</option>
+                            <option value="old">Régi</option>
+                            <option value="top">Népszerűek</option>
+                            <option value="hot">Felkapottak</option>
+                        </select>
+                    </span>
+                    <span>
+                        <label>Név:</label><br />
+                        <RateLimitedInput value={filterName} timeout={300} onChange={handleFilterChange} />
+                    </span>
+                    <span>
+                        <label>Műfajok: </label><br />
                         <GenreSelector onValueChange={handleGenreAdd} />
-                        {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
-                    </div>
+                    </span>
+                </div>
+                <div>
+                    {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
                 </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(175px, 2fr))', gap: "30px" }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr ))', gap: "30px", justifyContent: "space-evenly" }}>
                 {movies.map(i => <MovieCard key={i.id} movie={i} />)}
                 {loading && <div>Loading...</div>}
             </div >
