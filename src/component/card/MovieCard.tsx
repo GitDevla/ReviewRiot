@@ -1,9 +1,9 @@
-import { MovieModel } from '@/model/MovieModel'
 import React from 'react'
 import styles from '@/styles/movieCard.module.scss';
 import router from 'next/router';
+import { MovieWithData } from '@/interface/MovieWithData';
 
-function MovieCard({ movie }: { movie: MovieModel }) {
+function MovieCard({ movie }: { movie: MovieWithData }) {
     function open() {
         router.push("/movie/" + movie.id)
     }
@@ -25,7 +25,7 @@ function MovieCard({ movie }: { movie: MovieModel }) {
                     Műfajok: {movie.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}
                 </div>
                 <div>
-                    {movie.rating ? <>⭐: {movie.rating} a {movie.NOReviews} értékelésből</> : null}
+                    {movie.data.rating ? <>⭐: {movie.data.rating} a {movie.data.NOReviews} értékelésből</> : null}
                 </div>
             </div>
         </div>

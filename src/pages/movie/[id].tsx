@@ -35,7 +35,7 @@ function MovieFeed() {
             <div>
                 <h2>Vélemények</h2>
                 {movie && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
-                {reviews.map(i => <MovieReviewCard review={i} permsLevel={-1} />)}
+                {reviews.map(i => <MovieReviewCard key={i.id} review={i} permsLevel={-1} />)}
             </div>
         </Layout >
     )

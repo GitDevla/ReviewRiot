@@ -7,18 +7,14 @@ export class MovieModel {
     public readonly id: number;
     public readonly name: string;
     public readonly release: Date;
-    public readonly rating: number;
-    public readonly NOReviews: number;
     public readonly imagePath: string;
     public readonly genres: GenreModel[];
 
     constructor(dbRes: any) {
-        const { id, name, release_date, avgRating, image_path, genres, number_of_reviews } = dbRes;
+        const { id, name, release_date, image_path, genres } = dbRes;
         this.id = id;
         this.name = name;
         this.release = release_date;
-        this.rating = avgRating;
-        this.NOReviews = number_of_reviews
         this.genres = MovieModel.convertToArrayOfGenres(genres);
         this.imagePath = "/image/movie/" + (image_path ?? MovieModel.defaultCoverImage);
     }
@@ -54,6 +50,17 @@ export class MovieModel {
         if (!res) return null;
         return new MovieModel(res);
     }
+
+    public getData = async () => {
+        const res = await Database.single(`SELECT 
+        Avg(review.rating) AS avgRating,
+        COUNT(DISTINCT review.id) as number_of_reviews
+    FROM   \`movie\`
+            LEFT JOIN review
+                ON movie.id = review.movie_id
+    WHERE movie.id = ?;`, this.id);
+        return { rating: res.avgRating, NOReviews: res.number_of_reviews };
+    }
     //#endregion
 
     //#region Fetch List
@@ -63,8 +70,6 @@ export class MovieModel {
             movie.name,
             movie.release_date,
             movie.image_path,
-            Avg(review.rating) AS avgRating,
-            COUNT(DISTINCT review.id) as number_of_reviews,
             GROUP_CONCAT(DISTINCT CONCAT(genre.id, ';', genre.name)) as genres
         FROM   \`movie\`
                 LEFT JOIN review
@@ -102,14 +107,14 @@ export class MovieModel {
 
     public static listByTop = async (page: number, max: number, filter: MovieFilter) => {
         const whereString = await MovieModel.filter(filter)
-        return await MovieModel.listMovies("avgRating DESC", page, max, whereString)
+        return await MovieModel.listMovies("Avg(review.rating) DESC", page, max, whereString)
     }
 
     public static listByHot = async (page: number, max: number, filter: MovieFilter) => {
         const filterString = await MovieModel.filter(filter);
         const lastWeekFilter = "review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
         const whereString = filterString + " AND " + lastWeekFilter;
-        return MovieModel.listMovies("avgRating DESC", page, max, whereString)
+        return MovieModel.listMovies("Avg(review.rating) DESC", page, max, whereString)
     }
     //#endregion
 

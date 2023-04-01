@@ -1,14 +1,14 @@
 import MovieCard from '@/component/card/MovieCard';
 import { GenreModel } from '@/model/GenreModel';
-import { MovieModel } from '@/model/MovieModel';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
 import Title from '@/component/Title';
 import GenreSelector from '@/component/GenreSelector';
 import RateLimitedInput from '@/component/RateLimitedInput';
+import { MovieWithData } from '@/interface/MovieWithData';
 
 function MoviesPage() {
-    const [movies, setMovies] = useState([] as MovieModel[]);
+    const [movies, setMovies] = useState([] as MovieWithData[]);
     const [loading, setLoading] = useState(false);
     const [genres, setGenres] = useState([] as GenreModel[])
     const page = useRef(0);

@@ -22,6 +22,9 @@ function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel,
 
     return (
         <div className={style.card}>
+            <div className={style.cover}>
+                <img src={feed.movie.imagePath} width={50} height={50} alt='Filmkép' />
+            </div>
             <div className="flex">
                 <img className='round' src={feed.author.picturePath} width={50} height={50} alt='Profilkép' />
                 <p><>
@@ -32,9 +35,6 @@ function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel,
             </div>
             <div>
                 <p style={{ whiteSpace: "pre-wrap" }}>{feed.description}</p>
-            </div>
-            <div className={style.cover}>
-                <img src={feed.movie.imagePath} width={50} height={50} alt='Filmkép' />
             </div>
             {
                 (user?.id == feed.author.id || permsLevel >= PermissionLevel.moderator) && <div>

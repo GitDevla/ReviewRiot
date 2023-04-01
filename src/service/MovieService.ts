@@ -1,8 +1,10 @@
+import { MovieWithData } from "@/interface/MovieWithData";
 import { ReviewWithUser } from "@/interface/ReviewWithUser";
 import { GenreModel } from "@/model/GenreModel";
 import { MovieModel } from "@/model/MovieModel";
 import { ReviewModel } from "@/model/ReviewModel";
 import { UserModel } from "@/model/UserModel";
+import { AsyncMap } from "@/util/AsyncMap";
 import { Filesystem } from "@/util/backend/Filesystem";
 import { ConflictError, NotFoundError } from "@/util/Errors";
 
@@ -17,36 +19,44 @@ export const createMovie = async (name: string, date: Date) => {
 
 //#region READ
 export const getMovieReviews = async (id: number) => {
-    const movie = await MovieModel.getWithID(id);
+    const movie = await MovieModel.getWithID(id) as MovieWithData;
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
-    const reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUser[];
-    for (const i of reviews) {
-        i.author = (await UserModel.getWithID(i.authorID))!;
-    }
+    movie.data = await movie.getData();
+    let reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUser[];
+    reviews = await AsyncMap(reviews, async (i: ReviewWithUser) => { i.author = (await UserModel.getWithID(i.authorID))!; return i; })
     return { movie, reviews };
 }
 
 export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: number[]) => {
+    let movies;
     switch (order) {
         case "name":
         default:
-            return MovieModel.listByName(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByName(page, max, { name: filterName, genres: filterGenres });
+            break;
 
         case "dname":
-            return MovieModel.listByNameDesc(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByNameDesc(page, max, { name: filterName, genres: filterGenres });
+            break;
 
         case "new":
-            return MovieModel.listByNew(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByNew(page, max, { name: filterName, genres: filterGenres });
+            break;
 
         case "old":
-            return MovieModel.listByOld(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByOld(page, max, { name: filterName, genres: filterGenres });
+            break;
 
         case "top":
-            return MovieModel.listByTop(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByTop(page, max, { name: filterName, genres: filterGenres });
+            break;
 
         case "hot":
-            return MovieModel.listByHot(page, max, { name: filterName, genres: filterGenres });
+            movies = await MovieModel.listByHot(page, max, { name: filterName, genres: filterGenres });
+            break;
     }
+    movies = await AsyncMap(movies, async (i: MovieWithData) => { i.data = await i.getData(); return i })
+    return movies;
 }
 //#endregion
 
