@@ -1,6 +1,8 @@
 import { GenreModel } from '@/model/GenreModel'
 import { ExpectedError } from '@/util/Errors';
 import { Fetch } from '@/util/frontend/Fetch';
+import { validateMovieCreate } from '@/validator/movieValidator';
+import { Validate } from '@/validator/Validator';
 import Router from 'next/router';
 import React, { useRef, useState } from 'react'
 import GenreSelector from '../GenreSelector'
@@ -25,19 +27,29 @@ function MovieCreateForm() {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        sendRequest().catch(i =>
-            setErrorMessage(i.message));
+        TestInput()
+            .then(() => sendRequest())
+            .catch(i => setErrorMessage(i.message));
+    }
+
+    async function TestInput() {
+        validateMovieCreate({ name: newName.current!, date: newRelease.current! })
+        console.log(newImage.current);
+
+        if (newImage.current)
+            Validate(newImage.current).fileSizeMax(1 * 1024 * 1024, "Megadott kép nagyobb mint 1mb");
     }
 
     const sendRequest = async () => {
-        const res = await Fetch.POST("/api/movie",
+        let res = await Fetch.POST("/api/movie",
             {
                 name: newName.current,
                 date: newRelease.current
             }
         )
-        const json = await res.json();
+        let json = await res.json();
         if (!res.ok) throw new ExpectedError(json.error);
+        let newId = json.id;
         const body = new FormData();
         if (newImage.current) {
             body.append("file", newImage.current);
@@ -46,12 +58,14 @@ function MovieCreateForm() {
             body.append("genres", i.id.toString())
         });
 
-        await fetch(`/api/movie/${json.id}/update`, {
+        res = await fetch(`/api/movie/${newId}/update`, {
             method: "PUT",
             body
         });
-        Router.push("/settings");
+        json = await res.json();
+        if (!res.ok) throw new ExpectedError(json.error);
 
+        Router.push("/settings/movies/" + newId);
     };
 
     async function setImage(file: File) {

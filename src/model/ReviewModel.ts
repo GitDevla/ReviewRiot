@@ -23,14 +23,14 @@ export class ReviewModel {
 
     //#region Create
     public static create = async (authorID: number, movieID: number, rating: number, description: string) => {
-        return Database.nonQuery("INSERT INTO `review` (`author_id`, `movie_id`, `rating`, `description`) VALUES (?, ?, ?, ?);",
+        return Database.nonQuery(SQL.INSERT,
             authorID, movieID, rating, description);
     }
     //#endregion
 
     //#region Fetch Single
     public static getWithID = async (id: number) => {
-        const res = await Database.single("SELECT * FROM `review` WHERE id = ?;", id);
+        const res = await Database.single(SQL.SELECT_ID, id);
         if (!res) return null;
         return new ReviewModel(res);
     }
@@ -38,15 +38,21 @@ export class ReviewModel {
 
     //#region Fetch List
     public static listReviewsForMovie = async (movie: MovieModel) => {
-        const res = await Database.query("SELECT * FROM `review` WHERE `movie_id` = ? ORDER by create_date DESC;", movie.id);
+        const res = await Database.query(SQL.LIST, movie.id);
         return Database.transform(this, res);
     }
     //#endregion
 
     //#region Delete
     public static delete = async (id: number) => {
-        return Database.nonQuery("DELETE FROM review WHERE `review`.`id` = ?;", id);
+        return Database.nonQuery(SQL.DELETE, id);
     }
     //#endregion
 }
 
+const SQL = {
+    INSERT: `INSERT INTO review (author_id, movie_id, rating, description) VALUES (?, ?, ?, ?)`,
+    SELECT_ID: `SELECT * FROM review WHERE id = ?`,
+    LIST: `SELECT * FROM review WHERE movie_id = ? ORDER by create_date DESC`,
+    DELETE: `DELETE FROM review WHERE id = ?`,
+}

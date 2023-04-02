@@ -20,6 +20,6 @@ async function searchGetHandler(
     const { name } = req.query;
     let nameQuery = name as string;
     nameQuery = "%" + nameQuery + "%";
-    const resp = await Database.query("SELECT id,name,picture_path as picture,'user' as type from `user` where name like ? UNION SELECT id,name,image_path,'movie' from `movie` where name like ?;", nameQuery, nameQuery);
+    const resp = await Database.query("SELECT id,name,picture_path as picture,'user' as type from `user` where name like ? UNION SELECT id,name,image_path,'movie' from `movie` where name like ? Limit 50;", nameQuery, nameQuery);
     return returnResponse(res, resp)
 }

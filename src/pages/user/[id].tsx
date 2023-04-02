@@ -1,5 +1,4 @@
 import Layout from '@/component/Layout';
-import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -7,13 +6,14 @@ import Head from 'next/head';
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn';
 import HeartSVG from '@/../public/icon/heart.svg';
 import UserReviewCard from '@/component/card/UserReviewCard';
-import { ReviewWithMovie } from '@/interface/ReviewWithMovie';
+import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie';
+import { SafeUserModel } from '@/interface/SafeUserModel';
 
 
 function UserFeed() {
     const { query: { id } } = useRouter();
-    const [user, setUser] = useState({} as UserModel);
-    const [reviews, setReviews] = useState([] as ReviewWithMovie[]);
+    const [user, setUser] = useState({} as SafeUserModel);
+    const [reviews, setReviews] = useState([] as ReviewWithMovieModel[]);
     const [ownProfile, setOwnProfile] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false)

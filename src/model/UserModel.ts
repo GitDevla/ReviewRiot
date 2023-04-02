@@ -1,3 +1,4 @@
+import { SafeUserModel } from "@/interface/SafeUserModel";
 import Database from "@/util/backend/Database"
 import bcrypt from 'bcrypt';
 import { ReviewModel } from "./ReviewModel";
@@ -26,32 +27,32 @@ export class UserModel {
     //#region Create
     public static create = async (name: string, email: string, password: string) => {
         const hash = await bcrypt.hash(password, 10);
-        const userId = await Database.nonQuery("INSERT INTO `user` (`name`) VALUES (?);", name);
-        await Database.nonQuery("INSERT INTO `auth` (`user_id`, `email`, `password_hash`) VALUES (?, ?, ?);", userId, email, hash);
+        const userId = await Database.nonQuery(SQL.INSERT_USER, name);
+        await Database.nonQuery(SQL.INSERT_AUTH, userId, email, hash);
     }
     //#endregion
 
     //#region Fetch Single
     public static auth = async (username: string, plainPassword: string) => {
-        const hash = (await Database.single("SELECT `password_hash` FROM `user` join `auth` on `auth`.`user_id` = `user`.`id` where `user`.`name` = ?;", username))?.password_hash;
+        const hash = (await Database.single(SQL.AUTH, username))?.password_hash;
         if (!hash) return false;
         return bcrypt.compare(plainPassword, hash);
     }
 
     public static getWithID = async (id: number) => {
-        const res = await Database.single("SELECT * FROM `user` WHERE `id` = ?;", id);
+        const res = await Database.single(SQL.SELECT_USER_ID, id);
         if (!res) return null;
         return new UserModel(res);
     }
 
     public static getWithName = async (name: string) => {
-        const res = await Database.single("SELECT * FROM `user` WHERE `name` = ?;", name);
+        const res = await Database.single(SQL.SELECT_USER_NAME, name);
         if (!res) return null;
         return new UserModel(res);
     }
 
     public static getWithMail = async (mail: string) => {
-        const res = await Database.single("SELECT * FROM `auth` WHERE `email` = ?;", mail);
+        const res = await Database.single(SQL.SELECT_AUTH_MAIL, mail);
         if (!res) return null;
         return new UserModel(res);
     }
@@ -59,34 +60,16 @@ export class UserModel {
 
     //#region Fetch List
     public static list = async () => {
-        const res = await Database.query("SELECT * FROM `user`;");
-        return Database.transform(this, res);
-    }
-    //#endregion
-
-    //#region Follow
-    public static followExists = async (who: UserModel, whom: UserModel) => {
-        return Database.single("SELECT * FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", who.id, whom.id);
-    }
-
-    public follow = async (whom: UserModel) => {
-        await Database.nonQuery("INSERT INTO `follow` (`who_id`, `whom_id`) VALUES (?, ?);", this.id, whom.id);
-    }
-
-    public unfollow = async (whom: UserModel) => {
-        await Database.nonQuery("DELETE FROM `follow` WHERE `who_id` = ? AND `whom_id` = ?;", this.id, whom.id);
-    }
-
-    public static listFollows = async (who: number) => {
-        const res = await Database.query("SELECT * FROM `follow` JOIN `user` ON `user`.`id`=`follow`.`whom_id` WHERE `follow`.`who_id` = ?;", who);
+        const res = await Database.query(SQL.LIST);
         return Database.transform(this, res);
     }
 
     public static listReviews = async (who: number) => {
-        const res = await Database.query("SELECT review.* FROM `review` JOIN `user` on review.author_id = user.id WHERE author_id=?;", who);
+        const res = await Database.query(SQL.LIST_REVIEW, who);
         return Database.transform(ReviewModel, res);
     }
     //#endregion
+
 
     //#region Update
     public update = async ({
@@ -99,13 +82,13 @@ export class UserModel {
         if (!picture_path) picture_path = this.picturePath.split("/").at(-1)!;
         if (password) {
             var hash = await bcrypt.hash(password, 10);
-            await Database.nonQuery("UPDATE `auth` SET `password_hash` = ? WHERE `auth`.`user_id` = ?", hash, this.id);
+            await Database.nonQuery(SQL.UPDATE_AUTH, hash, this.id);
         }
-        return Database.nonQuery("UPDATE `user` SET name = ?, `picture_path` = ?, description = ? WHERE `user`.`id` = ?", username, picture_path, description, this.id);
+        return Database.nonQuery(SQL.UPDATE_USER, username, picture_path, description, this.id);
     }
     //#endregion
 
-    public covertToSafe() {
+    public covertToSafe(): SafeUserModel {
         return {
             "id": this.id,
             "name": this.name,
@@ -114,4 +97,43 @@ export class UserModel {
             "picturePath": this.picturePath,
         }
     }
+}
+const SQL = {
+    INSERT_USER: `INSERT INTO user (name) VALUES (?)`,
+    INSERT_AUTH: `INSERT INTO auth (user_id, email, password_hash) VALUES (?, ?, ?)`,
+    AUTH: `
+    SELECT
+        auth.password_hash
+    FROM
+        user
+    JOIN auth ON auth.user_id = user.id
+    WHERE
+        user.name = ?`,
+    SELECT_USER_ID: `SELECT * FROM user WHERE id = ?`,
+    SELECT_USER_NAME: `SELECT * FROM user WHERE name = ?`,
+    SELECT_AUTH_MAIL: `SELECT * FROM auth WHERE email = ?`,
+    LIST: `SELECT * FROM user`,
+    LIST_REVIEW: `
+    SELECT
+        review.*
+    FROM
+        review
+    JOIN user ON review.author_id = user.id
+    WHERE
+        author_id = ?`,
+    UPDATE_AUTH: `
+    UPDATE
+        auth
+    SET
+        password_hash = ?
+    WHERE
+        auth.user_id = ? = ?`,
+    UPDATE_USER: `
+    UPDATE
+        user
+    SET name = ?,
+        picture_path = ?,
+        description = ?
+    WHERE
+        user.id = ?`
 }

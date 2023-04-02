@@ -5,12 +5,12 @@ import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
-import { ReviewWithUser } from '@/interface/ReviewWithUser'
-import { UserModel } from '@/model/UserModel'
+import { ReviewWithUserModel } from '@/interface/ReviewWithUser'
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
+import { SafeUserModel } from '@/interface/SafeUserModel'
 
-function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUser, permsLevel: number }) {
-    const [user, setUser] = useState(null as UserModel | null);
+function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUserModel, permsLevel: number }) {
+    const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
         tryGetLoggedIn().then(i => setUser(i))

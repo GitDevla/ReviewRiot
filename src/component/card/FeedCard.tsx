@@ -5,11 +5,11 @@ import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
 import StarRating from '../StarRating'
-import { UserModel } from '@/model/UserModel'
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
+import { SafeUserModel } from '@/interface/SafeUserModel'
 
 function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel, permsLevel: number, onDelete: Function }) {
-    const [user, setUser] = useState(null as UserModel | null);
+    const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
         tryGetLoggedIn().then(i => setUser(i))

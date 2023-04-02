@@ -5,10 +5,10 @@ import Layout from '@/component/Layout';
 import Title from '@/component/Title';
 import GenreSelector from '@/component/GenreSelector';
 import RateLimitedInput from '@/component/RateLimitedInput';
-import { MovieWithData } from '@/interface/MovieWithData';
+import { MovieWithDataModel } from '@/interface/MovieWithData';
 
 function MoviesPage() {
-    const [movies, setMovies] = useState([] as MovieWithData[]);
+    const [movies, setMovies] = useState([] as MovieWithDataModel[]);
     const [loading, setLoading] = useState(false);
     const [genres, setGenres] = useState([] as GenreModel[])
     const page = useRef(0);

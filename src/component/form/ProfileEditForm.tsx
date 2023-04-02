@@ -1,13 +1,13 @@
-import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { getLoggedIn, resetCache } from '@/util/frontend/getLoggedIn';
 import { validateUsername } from '@/validator/userValidator';
 import router from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 import style from "@/styles/editForm.module.scss"
+import { SafeUserModel } from '@/interface/SafeUserModel';
 
 function ProfileEditForm() {
-    const [user, setUser] = useState({} as UserModel);
+    const [user, setUser] = useState({} as SafeUserModel);
     const [errorMessage, setErrorMessage] = useState('');
     const [previewPath, setPreviewPath] = useState(user?.picturePath)
 

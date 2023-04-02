@@ -11,9 +11,9 @@ export const validateMovieCreate = ({ name, date }: IMovieCreateBody) => {
 }
 
 export const validateMovieName = (name: string) => Validate(name)
-    .required("Felhasználónév (name) kötelező")
-    .string("Felhasználónévnek (name) szöveg tipúsúnak kell lennie")
-    .notEmpty("Felhasználónév (name) nem lehet üres");
+    .required("Film név (name) kötelező")
+    .string("Film névnek (name) szöveg tipúsúnak kell lennie")
+    .notEmpty("Film név (name) nem lehet üres");
 
 export const validateMovieRelease = (release: string) => Validate(release)
     .required("Dátum (date) kötelező")

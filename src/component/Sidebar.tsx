@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { UserModel } from '@/model/UserModel'
 import { logout, tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { useRouter } from 'next/router'
 import HomeSVG from '@/../public/icon/home.svg';
@@ -9,9 +8,10 @@ import MoviesSVG from '@/../public/icon/movies.svg';
 import SearchSVG from '@/../public/icon/search.svg';
 import SettingsSVG from '@/../public/icon/settings.svg';
 import UserSVG from '@/../public/icon/user.svg';
+import { SafeUserModel } from '@/interface/SafeUserModel'
 
 function Sidebar() {
-    const [user, setUser] = useState(null as UserModel | null)
+    const [user, setUser] = useState(null as SafeUserModel | null)
     let { pathname } = useRouter();
     pathname = pathname.split("/")[1];
 

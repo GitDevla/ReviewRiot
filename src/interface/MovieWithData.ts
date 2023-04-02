@@ -1,6 +1,6 @@
 import { MovieModel } from "@/model/MovieModel";
 
-export interface MovieWithData extends MovieModel {
+export interface MovieWithDataModel extends MovieModel {
     data: MovieData;
 }
 

@@ -1,5 +1,5 @@
-import { MovieWithData } from "@/interface/MovieWithData";
-import { ReviewWithUser } from "@/interface/ReviewWithUser";
+import { MovieWithDataModel } from "@/interface/MovieWithData";
+import { ReviewWithUserModel } from "@/interface/ReviewWithUser";
 import { GenreModel } from "@/model/GenreModel";
 import { MovieModel } from "@/model/MovieModel";
 import { ReviewModel } from "@/model/ReviewModel";
@@ -19,11 +19,11 @@ export const createMovie = async (name: string, date: Date) => {
 
 //#region READ
 export const getMovieReviews = async (id: number) => {
-    const movie = await MovieModel.getWithID(id) as MovieWithData;
+    const movie = await MovieModel.getWithID(id) as MovieWithDataModel;
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
     movie.data = await movie.getData();
-    let reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUser[];
-    reviews = await AsyncMap(reviews, async (i: ReviewWithUser) => { i.author = (await UserModel.getWithID(i.authorID))!; return i; })
+    let reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUserModel[];
+    reviews = await AsyncMap(reviews, async (i: ReviewWithUserModel) => { i.author = (await UserModel.getWithID(i.authorID))!; return i; })
     return { movie, reviews };
 }
 
@@ -55,7 +55,7 @@ export const listMovies = async (page: number, max: number, order: string, filte
             movies = await MovieModel.listByHot(page, max, { name: filterName, genres: filterGenres });
             break;
     }
-    movies = await AsyncMap(movies, async (i: MovieWithData) => { i.data = await i.getData(); return i })
+    movies = await AsyncMap(movies, async (i: MovieWithDataModel) => { i.data = await i.getData(); return i })
     return movies;
 }
 //#endregion

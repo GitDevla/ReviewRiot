@@ -1,3 +1,4 @@
+import { AsyncMap } from "@/util/AsyncMap";
 import Database from "@/util/backend/Database";
 
 export class GenreModel {
@@ -14,22 +15,26 @@ export class GenreModel {
 
     //#region Fetch Single
     public static getById = async (id: number) => {
-        return Database.transform(this, await Database.query("SELECT * FROM genre where id = ?;", id))
+        return Database.transform(this, await Database.query(SQL.SELECT_ID, id))
     }
     //#endregion
 
     //#region Fetch List
     public static list = async () => {
-        return Database.transform(this, await Database.query("SELECT * FROM genre;"))
+        return Database.transform(this, await Database.query(SQL.LIST))
     }
     //#endregion
 
     //#region Update
     public static updateMovieGenres = async (movieID: number, genres: number[]) => {
-        await Database.nonQuery("DELETE FROM movie_genre WHERE `movie_genre`.`movie_id` = ?;", movieID);
-        genres.forEach(async i => {
-            await Database.query("INSERT INTO `movie_genre` (`movie_id`, `genre_id`) VALUES (?, ?)", movieID, i);
-        });
+        await Database.nonQuery(SQL.DELETE, movieID);
+        await AsyncMap(genres, async (i: number) => Database.query(SQL.INSERT_movID_genID, movieID, i))
     }
     //#endregion
+}
+const SQL = {
+    INSERT_movID_genID: `INSERT INTO movie_genre (movie_id, genre_id) VALUES (?, ?)`,
+    SELECT_ID: `SELECT * FROM genre where id = ?`,
+    LIST: `SELECT * FROM genre`,
+    DELETE: `DELETE FROM movie_genre WHERE movie_id = ?`
 }

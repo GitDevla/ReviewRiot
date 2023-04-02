@@ -22,7 +22,7 @@ export class MovieModel {
 
     //#region Create
     public static create = async (name: string, release_date: Date) => {
-        return Database.nonQuery("INSERT INTO `movie` (`name`,`release_date`) VALUES (?,?);", name, release_date.toISOString());
+        return Database.nonQuery(SQL.INSERT, name, release_date.toISOString());
     }
     //#endregion
 
@@ -36,29 +36,19 @@ export class MovieModel {
 
     //#region Fetch Single
     public static getWithID = async (id: number) => {
-        const res = await Database.single(`SELECT movie.id,movie.name,movie.release_date,
-        movie.image_path,GROUP_CONCAT(DISTINCT CONCAT(genre.id, ';', genre.name)) as genres FROM movie left join movie_genre
-        on movie.id = movie_genre.movie_id
-    left join genre
-        on genre.id = movie_genre.genre_id WHERE movie.id = ?;`, id);
+        const res = await Database.single(SQL.SELECT_ID, id);
         if (!res) return null;
         return new MovieModel(res);
     }
 
     public static getWithName = async (name: string) => {
-        const res = await Database.single("SELECT * FROM `movie` WHERE `name` = ?;", name);
+        const res = await Database.single(SQL.SELECT_NAME, name);
         if (!res) return null;
         return new MovieModel(res);
     }
 
     public getData = async () => {
-        const res = await Database.single(`SELECT 
-        Avg(review.rating) AS avgRating,
-        COUNT(DISTINCT review.id) as number_of_reviews
-    FROM   \`movie\`
-            LEFT JOIN review
-                ON movie.id = review.movie_id
-    WHERE movie.id = ?;`, this.id);
+        const res = await Database.single(SQL.SELECT_DATA, this.id);
         return { rating: res.avgRating, NOReviews: res.number_of_reviews };
     }
     //#endregion
@@ -126,7 +116,7 @@ export class MovieModel {
     }
     ) => {
         if (!image_path) image_path = this.imagePath.split("/").at(-1)!;
-        return Database.nonQuery("UPDATE `movie` SET `name` = ?, `release_date` = ?, `image_path` = ? WHERE `movie`.`id` = ?", name, release.toString(), image_path, this.id);
+        return Database.nonQuery(SQL.UPDATE, name, release.toString(), image_path, this.id);
     }
     //#endregion
 
@@ -142,21 +132,67 @@ export class MovieModel {
     }
 
     private static filterByGenres = async (filterGenres: number[]) => {
-        return Database.format(`movie.id IN(
-            SELECT
-                movie_genre.movie_id
-            FROM
-                movie_genre
-            JOIN genre ON movie_genre.genre_id = genre.id
-            WHERE
-                genre.id IN(?)
-            GROUP BY
-                movie_genre.movie_id
-            HAVING
-                COUNT(DISTINCT genre.id) = ?)`, filterGenres, filterGenres.length
-        )
+        return Database.format(SQL.FILTER_GENRE, filterGenres, filterGenres.length)
     }
 }
+
+const SQL = {
+    INSERT: `INSERT INTO movie (name,release_date) VALUES (?,?);`,
+    SELECT_ID: `
+    SELECT
+        movie.id,
+        movie.name,
+        movie.release_date,
+        movie.image_path,
+        GROUP_CONCAT(
+            DISTINCT CONCAT(genre.id, ';', genre.name)
+        ) AS genres
+    FROM
+        movie
+    LEFT JOIN movie_genre ON movie.id = movie_genre.movie_id
+    LEFT JOIN genre ON genre.id = movie_genre.genre_id
+    WHERE
+        movie.id = ?;`,
+    SELECT_NAME: `
+    SELECT
+        movie.id,
+        movie.name,
+        movie.release_date,
+        movie.image_path,
+        GROUP_CONCAT(
+            DISTINCT CONCAT(genre.id, ';', genre.name)
+        ) AS genres
+    FROM
+        movie
+    LEFT JOIN movie_genre ON movie.id = movie_genre.movie_id
+    LEFT JOIN genre ON genre.id = movie_genre.genre_id
+    WHERE
+        movie.name = ?;`,
+    SELECT_DATA: `
+    SELECT
+        AVG(review.rating) AS avgRating,
+        COUNT(DISTINCT review.id) AS number_of_reviews
+    FROM
+        movie
+    LEFT JOIN review ON movie.id = review.movie_id
+    WHERE
+        movie.id = ?;`,
+    UPDATE: `UPDATE movie SET name = ?, release_date = ?, image_path = ? WHERE id = ?`,
+    FILTER_GENRE: `
+    movie.id IN(
+    SELECT
+        movie_genre.movie_id
+    FROM
+        movie_genre
+    JOIN genre ON movie_genre.genre_id = genre.id
+    WHERE
+        genre.id IN(?)
+    GROUP BY
+        movie_genre.movie_id
+    HAVING
+        COUNT(DISTINCT genre.id) = ?)`,
+}
+
 
 export interface MovieFilter {
     name: string;

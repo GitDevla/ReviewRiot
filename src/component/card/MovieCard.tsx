@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from '@/styles/movieCard.module.scss';
 import router from 'next/router';
-import { MovieWithData } from '@/interface/MovieWithData';
+import { MovieWithDataModel } from '@/interface/MovieWithData';
 
-function MovieCard({ movie }: { movie: MovieWithData }) {
+function MovieCard({ movie }: { movie: MovieWithDataModel }) {
     function open() {
         router.push("/movie/" + movie.id)
     }

@@ -5,13 +5,13 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Title from '@/component/Title';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
-import { ReviewWithUser } from '@/interface/ReviewWithUser';
+import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
 import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
 
 function MovieFeed() {
     const { query: { id } } = useRouter();
     const [movie, setMovie] = useState(null as MovieModel | null);
-    const [reviews, setReviews] = useState([] as ReviewWithUser[]);
+    const [reviews, setReviews] = useState([] as ReviewWithUserModel[]);
 
     useEffect(() => {
         if (!id) return;

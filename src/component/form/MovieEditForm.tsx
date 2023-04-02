@@ -4,6 +4,8 @@ import Router from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import GenreSelector from '../GenreSelector'
 import style from "@/styles/editForm.module.scss"
+import { validateMovieCreate } from '@/validator/movieValidator'
+import { Validate } from '@/validator/Validator'
 
 function MovieEditForm({ movie }: { movie: MovieModel }) {
     const [genres, setGenres] = useState([] as GenreModel[])
@@ -30,8 +32,15 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        sendRequest().catch(i =>
-            setErrorMessage(i.message));
+        TestInput()
+            .then(() => sendRequest())
+            .catch(i => setErrorMessage(i.message));
+    }
+
+    async function TestInput() {
+        validateMovieCreate({ name: newName.current!, date: newRelease.current! })
+        if (newImage.current)
+            Validate(newImage.current).fileSizeMax(1 * 1024 * 1024, "Megadott kép nagyobb mint 1mb");
     }
 
     const sendRequest = async () => {
