@@ -49,7 +49,7 @@ export class MovieModel {
 
     public getData = async () => {
         const res = await Database.single(SQL.SELECT_DATA, this.id);
-        return { rating: res.avgRating, NOReviews: res.number_of_reviews };
+        return { rating: parseFloat(res.avgRating), NOReviews: parseInt(res.number_of_reviews) };
     }
     //#endregion
 

@@ -1,0 +1,28 @@
+ul.list {
+    padding: 0;
+
+    &>* {
+        display: block;
+        background-color: var(--a1);
+        border: 1px solid var(--a1);
+    }
+
+    * {
+        margin: 10px 0px;
+        list-style-type: none;
+        padding: 15px;
+        border-radius: 10px;
+        transition: all .1s ease-in-out;
+        text-decoration: none;
+        color: var(--fg);
+
+        &:hover {
+            box-shadow: 0 0 10px 5px var(--a2);
+            background-size: contain;
+            font-size: 1.1rem;
+            font-weight: bolder;
+            color: var(--a2);
+            transform: scale(1.01);
+        }
+    }
+}

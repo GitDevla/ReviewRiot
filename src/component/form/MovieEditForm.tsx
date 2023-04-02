@@ -4,7 +4,7 @@ import Router from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 import GenreSelector from '../GenreSelector'
 import style from "@/styles/editForm.module.scss"
-import { validateMovieCreate } from '@/validator/movieValidator'
+import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator'
 import { Validate } from '@/validator/Validator'
 
 function MovieEditForm({ movie }: { movie: MovieModel }) {
@@ -38,7 +38,12 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     }
 
     async function TestInput() {
-        validateMovieCreate({ name: newName.current!, date: newRelease.current! })
+        if (newName.current)
+            validateMovieName(newName.current!)
+
+        if (newRelease.current)
+            validateMovieRelease(newRelease.current!)
+
         if (newImage.current)
             Validate(newImage.current).fileSizeMax(1 * 1024 * 1024, "Megadott kép nagyobb mint 1mb");
     }

@@ -2,9 +2,10 @@ import Layout from '@/component/Layout'
 import SettingsNavbar from '@/component/SettingsNavbar'
 import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
-import { isAdmin } from '@/util/frontend/isAdmin';
+import { getUserPermission } from '@/util/frontend/isAdmin';
 import Link from 'next/link';
 import router from 'next/router';
+import style from '@/styles/prettyList.module.scss';
 import React, { useEffect, useState } from 'react'
 
 function SettingsMoviePage() {
@@ -16,7 +17,7 @@ function SettingsMoviePage() {
             setMovies(data.movies);
         }
 
-        isAdmin().catch(() => router.push("/auth"));
+        getUserPermission().catch(() => router.push("/auth"));
         fetchMovies();
     }, [])
 
@@ -25,9 +26,9 @@ function SettingsMoviePage() {
             <Title>Filmek beállításai</Title>
             <SettingsNavbar />
             <div>
-                <ul>
-                    <li><Link href="movies/new">Új Film</Link></li>
-                    {movies.map(i => <li key={i.id}><Link href={"movies/" + i.id}>{i.name}</Link></li>)}
+                <ul className={style.list}>
+                    <Link href="movies/new">Új Film</Link>
+                    {movies.map(i => <Link key={i.id} href={"movies/" + i.id}>{i.name}</Link>)}
                 </ul>
             </div>
         </Layout>

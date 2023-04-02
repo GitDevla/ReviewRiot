@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "@/styles/starRating.module.scss"
 
 function StarRating({ value = 1, readOnly = true, onClick = (value: number) => { } }) {
-    const [rating, setRating] = useState(value);
+    const [rating, setRating] = useState(Math.round(value));
     const [hover, setHover] = useState(0);
+
+    useEffect(() => {
+        setRating(value)
+    }, [value])
+
     return (
         <span className={style.rating}>
             {[...Array(5)].map((_, index) => {
@@ -23,7 +28,7 @@ function StarRating({ value = 1, readOnly = true, onClick = (value: number) => {
                     </span>
                 );
             })}
-            <span>{rating}/5</span>
+            <span>{value}/5</span>
         </span>
     );
 };

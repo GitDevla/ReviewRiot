@@ -5,7 +5,7 @@ function RateLimitedInput({ value, onChange, timeout }: { value: React.MutableRe
     const timeoutId = useRef(null as NodeJS.Timeout | null);
 
     useEffect(() => {
-        if (!inputValue) return;
+        // if (!inputValue) return;
         clearTimeout(timeoutId.current!);
         const newTimeoutId = setTimeout(() => {
             onChange();

@@ -4,9 +4,11 @@ import Title from '@/component/Title';
 import { PermissionModel } from '@/model/PermissionModel';
 import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
-import { isAdmin } from '@/util/frontend/isAdmin';
+import { getUserPermission } from '@/util/frontend/isAdmin';
 import router from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react'
+import style from '@/styles/prettyList.module.scss';
+
 
 function SettingsProfilePage() {
     const [users, setUsers] = useState([] as UserModel[]);
@@ -19,7 +21,7 @@ function SettingsProfilePage() {
             setPerms((await res.json()).perms);
         }
 
-        isAdmin().then(() => fetch()).catch(() => router.push("/auth"));
+        getUserPermission().then(() => fetch()).catch(() => router.push("/auth"));
     }, [])
 
     async function handleClick(e: ChangeEvent<HTMLSelectElement>) {
@@ -38,7 +40,7 @@ function SettingsProfilePage() {
         <Layout>
             <Title>Felhasználók beállításai</Title>
             <SettingsNavbar />
-            <ul>
+            <ul className={style.list}>
                 {users.map(i => <li key={i.id} value={i.id}>{i.name}
                     <select defaultValue={i.permissionID} onChange={handleClick} >
                         {perms.map(j => <option key={j.id} selected={j.id === i.permissionID} value={j.id}>{j.name}</option>)}

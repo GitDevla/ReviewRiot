@@ -7,3 +7,10 @@ export const isAdmin = async () => {
     const json = await res.json();
     if (json.level < PermissionLevel.admin) throw Error();
 }
+
+export const getUserPermission = async () => {
+    const res = await Fetch.GET("/api/permission");
+    if (!res.ok) return -1;
+    const json = await res.json();
+    return json.level;
+}

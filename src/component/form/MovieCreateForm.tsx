@@ -1,7 +1,7 @@
 import { GenreModel } from '@/model/GenreModel'
 import { ExpectedError } from '@/util/Errors';
 import { Fetch } from '@/util/frontend/Fetch';
-import { validateMovieCreate } from '@/validator/movieValidator';
+import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator';
 import { Validate } from '@/validator/Validator';
 import Router from 'next/router';
 import React, { useRef, useState } from 'react'
@@ -33,8 +33,11 @@ function MovieCreateForm() {
     }
 
     async function TestInput() {
-        validateMovieCreate({ name: newName.current!, date: newRelease.current! })
-        console.log(newImage.current);
+        if (newName.current)
+            validateMovieName(newName.current!)
+
+        if (newRelease.current)
+            validateMovieRelease(newRelease.current!)
 
         if (newImage.current)
             Validate(newImage.current).fileSizeMax(1 * 1024 * 1024, "Megadott kép nagyobb mint 1mb");
