@@ -4,7 +4,7 @@ import SettingsNavbar from '@/component/SettingsNavbar'
 import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
 import { Fetch } from '@/util/frontend/Fetch';
-import { getUserPermission } from '@/util/frontend/isAdmin';
+import { getIsAdmin } from '@/util/frontend/isAdmin';
 import router, { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
@@ -20,7 +20,7 @@ function MovieEditPage() {
             setMovie(json.movie)
         }
 
-        getUserPermission().catch(() => router.push("/auth"));
+        getIsAdmin().catch(() => router.push("/auth"));
         getMovie();
     }, [id])
 

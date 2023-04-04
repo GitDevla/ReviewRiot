@@ -2,7 +2,7 @@ import { GenreModel } from '@/model/GenreModel'
 import { MovieModel } from '@/model/MovieModel'
 import Router from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
-import GenreSelector from '../GenreSelector'
+import GenreSelector from '../input/GenreSelector'
 import style from "@/styles/editForm.module.scss"
 import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator'
 import { Validate } from '@/validator/Validator'

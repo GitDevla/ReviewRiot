@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Fetch } from '@/util/frontend/Fetch'
 import { PermissionLevel } from '@/util/PermissionLevels'
 import style from "@/styles/feedCard.module.scss"
-import StarRating from '../StarRating'
+import StarRating from '../input/StarRating'
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { SafeUserModel } from '@/interface/SafeUserModel'
 

@@ -1,5 +1,4 @@
 import Layout from '@/component/Layout';
-import { MovieModel } from '@/model/MovieModel';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -8,7 +7,7 @@ import MovieReviewCard from '@/component/card/MovieReviewCard';
 import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
 import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
-import StarRating from '@/component/StarRating';
+import StarRating from '@/component/input/StarRating';
 import { getUserPermission } from '@/util/frontend/isAdmin';
 import { PermissionLevel } from '@/util/PermissionLevels';
 import Link from 'next/link';

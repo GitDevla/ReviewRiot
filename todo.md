@@ -1,3 +1,0 @@
-- design
-- feed/review pageing
-- movie filters

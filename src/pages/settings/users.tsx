@@ -4,7 +4,7 @@ import Title from '@/component/Title';
 import { PermissionModel } from '@/model/PermissionModel';
 import { UserModel } from '@/model/UserModel';
 import { Fetch } from '@/util/frontend/Fetch';
-import { getUserPermission } from '@/util/frontend/isAdmin';
+import { getIsAdmin } from '@/util/frontend/isAdmin';
 import router from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import style from '@/styles/prettyList.module.scss';
@@ -21,7 +21,7 @@ function SettingsProfilePage() {
             setPerms((await res.json()).perms);
         }
 
-        getUserPermission().then(() => fetch()).catch(() => router.push("/auth"));
+        getIsAdmin().then(() => fetch()).catch(() => router.push("/auth"));
     }, [])
 
     async function handleClick(e: ChangeEvent<HTMLSelectElement>) {

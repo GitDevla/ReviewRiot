@@ -2,7 +2,7 @@ import Layout from '@/component/Layout'
 import SettingsNavbar from '@/component/SettingsNavbar'
 import Title from '@/component/Title';
 import { MovieModel } from '@/model/MovieModel';
-import { getUserPermission } from '@/util/frontend/isAdmin';
+import { getIsAdmin } from '@/util/frontend/isAdmin';
 import Link from 'next/link';
 import router from 'next/router';
 import style from '@/styles/prettyList.module.scss';
@@ -17,7 +17,7 @@ function SettingsMoviePage() {
             setMovies(data.movies);
         }
 
-        getUserPermission().catch(() => router.push("/auth"));
+        getIsAdmin().catch(() => router.push("/auth"));
         fetchMovies();
     }, [])
 

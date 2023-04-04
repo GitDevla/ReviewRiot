@@ -5,7 +5,7 @@ import { validateMovieName, validateMovieRelease } from '@/validator/movieValida
 import { Validate } from '@/validator/Validator';
 import Router from 'next/router';
 import React, { useRef, useState } from 'react'
-import GenreSelector from '../GenreSelector'
+import GenreSelector from '../input/GenreSelector'
 
 function MovieCreateForm() {
     const [genres, setGenres] = useState([] as GenreModel[])

@@ -3,7 +3,7 @@ import { ExpectedError, HTTPError } from '@/util/Errors';
 import { Fetch } from '@/util/frontend/Fetch';
 import React from 'react'
 import { useState } from 'react'
-import StarRating from '../StarRating';
+import StarRating from '../input/StarRating';
 import style from "@/styles/feedCard.module.scss"
 
 function ReviewFormForMovie({ onSubmit = () => { }, movie }: { onSubmit: Function, movie: MovieModel }) {

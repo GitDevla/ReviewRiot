@@ -3,9 +3,11 @@ import { GenreModel } from '@/model/GenreModel';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import Layout from '@/component/Layout';
 import Title from '@/component/Title';
-import GenreSelector from '@/component/GenreSelector';
-import RateLimitedInput from '@/component/RateLimitedInput';
+import GenreSelector from '@/component/input/GenreSelector';
+import RateLimitedInput from '@/component/input/RateLimitedInput';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
+import style from "@/styles/prettyList.module.scss";
+import Bean from '@/component/Bean';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieWithDataModel[]);
@@ -17,8 +19,6 @@ function MoviesPage() {
     const sort = useRef("name");
     const filterName = useRef("");
     const filterGenre = useRef([] as GenreModel[]);
-
-
 
     useEffect(() => {
         fetchMovies();
@@ -81,9 +81,9 @@ function MoviesPage() {
         <Layout>
             <Title>Filmek</Title>
             <div>
-                <div style={{ marginBottom: "30px", display: "flex", justifyContent: "space-evenly" }}>
-                    <span>
-                        <label>Rendezés:</label><br />
+                <div style={{ display: "grid", gridTemplateColumns: 'repeat(3,1fr)' }}>
+                    <span className={style.filter}>
+                        <label>Rendezés</label><br />
                         <select name="sort" onChange={handleSortChange}>
                             <option value="name" defaultChecked>Név növekvő</option>
                             <option value="dname">Név csökkenő</option>
@@ -93,17 +93,17 @@ function MoviesPage() {
                             <option value="hot">Felkapottak</option>
                         </select>
                     </span>
-                    <span>
-                        <label>Név:</label><br />
+                    <span className={style.filter}>
+                        <label>Név</label><br />
                         <RateLimitedInput value={filterName} timeout={300} onChange={handleFilterChange} />
                     </span>
-                    <span>
-                        <label>Műfajok: </label><br />
+                    <span className={style.filter}>
+                        <label>Műfajok </label><br />
                         <GenreSelector onValueChange={handleGenreAdd} />
                     </span>
                 </div>
-                <div>
-                    {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
+                <div style={{ minHeight: "2rem" }}>
+                    {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>{i.name} X</Bean>)}
                 </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr ))', gap: "30px", justifyContent: "space-evenly" }}>

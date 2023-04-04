@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Fetch } from '@/util/frontend/Fetch';
 import Link from 'next/link';
 import Title from '@/component/Title';
-import RateLimitedInput from '@/component/RateLimitedInput';
+import RateLimitedInput from '@/component/input/RateLimitedInput';
 import style from '@/styles/prettyList.module.scss';
 type searchModel = { id: number, name: string, picture: string, type: string }
 
@@ -26,13 +26,16 @@ function SearchPage() {
     return (
         <Layout>
             <Title>Keresés</Title>
-            <RateLimitedInput value={inputValue} timeout={300} onChange={query} />
+            <div className={style.filter}>
+                <label>Név</label><br />
+                <RateLimitedInput value={inputValue} timeout={300} onChange={query} />
+            </div>
             <ul className={style.list}>
                 {result.map((i, id) => {
                     return <Link key={id} href={`/${i.type}/${i.id}`}>{i.type == "movie" ? "Film" : "Felhasználó"}: {i.name}</Link>
                 })}
             </ul>
-        </Layout>
+        </Layout >
     )
 }
 
