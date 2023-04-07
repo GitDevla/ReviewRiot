@@ -17,7 +17,7 @@ function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel,
 
     const handleDelete = async () => {
         await Fetch.DELETE("/api/review/" + feed.id)
-        onDelete();
+        onDelete(feed.id);
     }
 
     return (

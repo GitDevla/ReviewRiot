@@ -15,6 +15,7 @@ function GenreSelector({ onValueChange }: { onValueChange: Function }) {
 
     function handleChange(e: ChangeEvent<HTMLSelectElement>) {
         onValueChange(genres[parseInt(e.target.value)])
+        e.target.selectedIndex = 0;
     }
 
     return (

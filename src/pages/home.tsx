@@ -1,13 +1,13 @@
 import MovieCard from '@/component/card/MovieCard';
 import Layout from '@/component/Layout';
 import Title from '@/component/Title';
-import { MovieModel } from '@/model/MovieModel';
+import { MovieWithDataModel } from '@/interface/MovieWithData';
 import { Fetch } from '@/util/frontend/Fetch';
 import React, { useEffect, useState } from 'react'
 
 function HomePage() {
-    const [hotMovies, setHotMovies] = useState([] as MovieModel[])
-    const [topMovies, setTopMovies] = useState([] as MovieModel[])
+    const [hotMovies, setHotMovies] = useState([] as MovieWithDataModel[])
+    const [topMovies, setTopMovies] = useState([] as MovieWithDataModel[])
 
     useEffect(() => {
         async function getHotMovies() {

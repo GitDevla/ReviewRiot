@@ -66,6 +66,7 @@ function MoviesPage() {
     }
 
     function handleGenreAdd(e: GenreModel) {
+        if (genres.some(i => i.id == e.id)) return;
         filterGenre.current = [...genres, e];
         setGenres(filterGenre.current);
         handleFilterChange();
@@ -74,6 +75,11 @@ function MoviesPage() {
     function handleGenreRemove(e: number) {
         filterGenre.current = genres.filter(i => i.id != e);
         setGenres(filterGenre.current);
+        handleFilterChange()
+    }
+
+    function handleNameRemove() {
+        filterName.current = "";
         handleFilterChange()
     }
 
@@ -102,8 +108,10 @@ function MoviesPage() {
                         <GenreSelector onValueChange={handleGenreAdd} />
                     </span>
                 </div>
-                <div style={{ minHeight: "2rem" }}>
-                    {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>{i.name} X</Bean>)}
+                <div style={{ minHeight: "2.5rem", padding: "auto" }}>
+                    <span>Filterek:</span>
+                    {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>Műfaj: {i.name} ❌</Bean>)}
+                    {filterName.current && <Bean onClick={() => handleNameRemove()}>Név: {filterName.current} ❌</Bean>}
                 </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr ))', gap: "30px", justifyContent: "space-evenly" }}>

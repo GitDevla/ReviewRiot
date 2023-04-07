@@ -52,7 +52,7 @@ ul.list {
         &:focus-within {
             box-shadow: 0px 0px 6px 2px var(--a2);
             // outline: solid 2px var(--a2) !important;
-            transform: scale(1.05);
+            transform: scale(1.01);
         }
     }
 }
@@ -71,7 +71,7 @@ ul.list {
     &:focus-within {
         box-shadow: 0px 0px 6px 2px var(--a2);
         // outline: solid 2px var(--a2) !important;
-        transform: scale(1.05);
+        transform: scale(1.01);
     }
 
     option {

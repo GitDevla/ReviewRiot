@@ -13,10 +13,16 @@ function RateLimitedInput({ value, onChange, timeout }: { value: React.MutableRe
         timeoutId.current = newTimeoutId;
     }, [inputValue]);
 
+    useEffect(() => {
+        setInputValue(value.current)
+    }, [value.current])
+
+
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         value.current = event.target.value;
         setInputValue(value.current);
     }
+
     return (
         <input type="text" value={inputValue} onChange={handleInputChange} />
     )

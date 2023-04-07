@@ -23,6 +23,7 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
     }, [movie])
 
     function handleGenreAdd(e: GenreModel) {
+        if (genres.some(i => i.id == e.id)) return;
         setGenres([...genres, e])
     }
 
