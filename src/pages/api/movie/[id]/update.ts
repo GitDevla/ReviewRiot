@@ -43,17 +43,15 @@ async function movieUpdateHandler(
     if (release) validateMovieRelease(release);
     if (files.file) validateMovieCoverPhoto(files.file[0])
 
-    let tasks = [];
-    if (name) tasks.push(updateMovieName(movieID, name[0]));
-    if (release) tasks.push(updateMovieRelease(movieID, release[0]));
+    if (name) await updateMovieName(movieID, name[0]);
+    if (release) await updateMovieRelease(movieID, release[0]);
     if (genres) {
         const numbers: number[] = genres.map((i: string) => parseInt(i));
         const unique = [...new Set(numbers)];
-        tasks.push(updateMovieGenres(movieID, unique));
+        await updateMovieGenres(movieID, unique);
     }
-    if (files.file) tasks.push(updateMovieCoverPhoto(movieID, files.file[0].path));
+    if (files.file) await updateMovieCoverPhoto(movieID, files.file[0].path);
 
-    const succesful = await Promise.allSettled(tasks);
-    return returnResponse(res, { message: succesful.length + " attribútum változtatva" })
+    return returnResponse(res, { message: "Jó" })
 
 }

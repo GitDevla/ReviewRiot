@@ -1,3 +1,4 @@
+import { MovieData } from "@/interface/MovieWithData";
 import Database from "@/util/backend/Database"
 import { GenreModel } from "./GenreModel";
 
@@ -47,9 +48,14 @@ export class MovieModel {
         return new MovieModel(res);
     }
 
-    public getData = async () => {
+    public getData = async (): Promise<MovieData> => {
         const res = await Database.single(SQL.SELECT_DATA, this.id);
-        return { rating: parseFloat(res.avgRating), NOReviews: parseInt(res.number_of_reviews) };
+        return {
+            rating: parseFloat(res.avgRating),
+            NOReviews: parseInt(res.number_of_reviews),
+            NOReviewsLastWeek: parseInt(res.reviews_last_7_days),
+            rank: parseInt(res.rank)
+        };
     }
     //#endregion
 
@@ -104,7 +110,7 @@ export class MovieModel {
         const filterString = await MovieModel.filter(filter);
         const lastWeekFilter = "review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
         const whereString = filterString + " AND " + lastWeekFilter;
-        return MovieModel.listMovies("Avg(review.rating) DESC", page, max, whereString)
+        return MovieModel.listMovies("COUNT(DISTINCT review.id) DESC", page, max, whereString)
     }
     //#endregion
 
@@ -152,7 +158,8 @@ const SQL = {
     LEFT JOIN movie_genre ON movie.id = movie_genre.movie_id
     LEFT JOIN genre ON genre.id = movie_genre.genre_id
     WHERE
-        movie.id = ?;`,
+        movie.id = ?
+    GROUP BY movie.id;`,
     SELECT_NAME: `
     SELECT
         movie.id,
@@ -167,11 +174,14 @@ const SQL = {
     LEFT JOIN movie_genre ON movie.id = movie_genre.movie_id
     LEFT JOIN genre ON genre.id = movie_genre.genre_id
     WHERE
-        movie.name = ?;`,
+        movie.name = ?
+    GROUP BY movie.id;`,
     SELECT_DATA: `
     SELECT
         AVG(review.rating) AS avgRating,
-        COUNT(DISTINCT review.id) AS number_of_reviews
+        COUNT(DISTINCT review.id) AS number_of_reviews,
+        COUNT(DISTINCT CASE WHEN review.create_date >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN review.id END) AS reviews_last_7_days,
+        FIND_IN_SET(AVG(review.rating),(SELECT GROUP_CONCAT(avrg) from (SELECT avg(rating) as avrg from review GROUP by movie_id order by avrg desc) as _)) AS rank
     FROM
         movie
     LEFT JOIN review ON movie.id = review.movie_id

@@ -18,6 +18,7 @@ function RegisterForm({ next }: { next: Function }) {
 
             if (!response.ok)
                 throw new ExpectedError((await response.json()).error);
+            alert("Sikeres regisztráció!")
             next();
         } catch (error) {
             if (error instanceof ExpectedError || error instanceof HTTPError)

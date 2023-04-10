@@ -7,4 +7,6 @@ export interface MovieWithDataModel extends MovieModel {
 export interface MovieData {
     rating: number;
     NOReviews: number;
+    NOReviewsLastWeek: number;
+    rank: number;
 }

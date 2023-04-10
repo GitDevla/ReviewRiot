@@ -10,8 +10,8 @@ import { ConflictError, NotFoundError } from "@/util/Errors";
 
 //#region CREATE
 export const createMovie = async (name: string, date: Date) => {
-    const userWithSameName = await MovieModel.getWithName(name);
-    if (userWithSameName) throw new ConflictError("Ez a film már létezik");
+    const movieWithSameName = await MovieModel.getWithName(name);
+    if (movieWithSameName) throw new ConflictError("Ez a film már létezik");
 
     return MovieModel.create(name, date);
 }
@@ -27,7 +27,7 @@ export const getMovieReviews = async (id: number) => {
     return { movie, reviews };
 }
 
-export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: number[]) => {
+export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: any[]) => {
     let movies;
     switch (order) {
         case "name":
@@ -74,8 +74,9 @@ export const updateMovieCoverPhoto = async (movieID: number, path: string) => {
 export const updateMovieName = async (movieID: number, newName: string) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
-    const userWithSameName = await MovieModel.getWithName(newName);
-    if (userWithSameName) throw new ConflictError("Ez a film már létezik");
+
+    const movieWithSameName = await MovieModel.getWithName(newName);
+    if (movieWithSameName) throw new ConflictError("Ez a film már létezik");
     movie.update({ name: newName });
 }
 

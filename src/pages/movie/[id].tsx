@@ -4,6 +4,9 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Title from '@/component/Title';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
+import styleCard from "@/styles/feedCard.module.scss"
+import style from "@/styles/movie.module.scss"
+
 import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
 import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
@@ -36,20 +39,25 @@ function MovieFeed() {
     return (
         <Layout>
             <Title>{movie?.name} értékelések</Title>
-            <div>
-                <h2>{movie?.name}</h2>
+            <div className={`${styleCard.card} ${style.movie}`}>
                 <div>
-                    <p><>Kiadás: {movie?.release}</></p>
-                    <p>Műfajok: {movie?.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}</p>
-                    <p>Értékelés: <StarRating value={movie?.data.rating} /></p>
-                    <p>Értékelések száma: {movie?.data.NOReviews}</p>
+                    <h2>Név: {movie?.name}</h2>
+                    <div>
+                        {movie?.data.rank && <p>Top #{movie?.data.rank}</p>}
+                        <p><>Kiadás: {movie?.release}</></p>
+                        <p>Műfajok: {movie?.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}</p>
+                        <h3>Értékelés adatok:</h3>
+                        <p>Értékelés: <StarRating value={movie?.data.rating} /></p>
+                        <p>Értékelések száma: {movie?.data.NOReviews}</p>
+                        <p>Utolsó hétben történt értékelések száma: {movie?.data.NOReviewsLastWeek}</p>
+                    </div>
+                    {permLevel >= PermissionLevel.admin && <Link href={"/settings/movies/" + id}><button>Módosítás</button></Link>}
                 </div>
-                {permLevel >= PermissionLevel.admin && <Link href={"/settings/movies/" + id}>Beállitások</Link>}
                 <img src={movie?.imagePath} alt="Borítókép" width={330} height={440} />
             </div>
             <div>
                 <h2>Vélemények</h2>
-                {movie && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
+                {(movie && permLevel != -1) && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
                 {reviews.map(i => <MovieReviewCard key={i.id} review={i} permsLevel={permLevel} />)}
             </div>
         </Layout >

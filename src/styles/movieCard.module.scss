@@ -3,8 +3,20 @@
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 0 0px 0px var(--a2);
-    transition: box-shadow 0.25s ease-in-out,
-        transform 0.25s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    &>span {
+        display: block;
+        text-overflow: ellipsis;
+        width: 100%;
+        padding: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &:hover>span {
+        display: none !important;
+    }
 
     img {
         display: block;
@@ -14,7 +26,7 @@
     }
 
     &:hover {
-        box-shadow: 0 0 40px 5px var(--a2);
+        box-shadow: 0 0 30px 5px var(--a2);
         transform: scale(1.05);
         cursor: pointer;
 
@@ -22,6 +34,7 @@
             opacity: 1;
         }
     }
+
 }
 
 .card_hover {
@@ -30,9 +43,11 @@
     position: absolute;
     border-radius: 10px;
     padding: 5%;
-    background-color: rgba(#1a1818, 0.85);
+    background-color: rgba(#1a1818, 0.95);
     top: 0;
     left: 0;
     opacity: 0;
     transition: opacity 0.25s ease-in-out;
+
+
 }

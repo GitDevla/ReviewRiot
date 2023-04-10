@@ -110,6 +110,7 @@ function MoviesPage() {
                 </div>
                 <div style={{ minHeight: "2.5rem", padding: "auto" }}>
                     <span>Filterek:</span>
+                    {(!genres.length && !filterName.current) && "Nincs"}
                     {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>Műfaj: {i.name} ❌</Bean>)}
                     {filterName.current && <Bean onClick={() => handleNameRemove()}>Név: {filterName.current} ❌</Bean>}
                 </div>

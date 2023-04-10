@@ -8,6 +8,7 @@ import HeartSVG from '@/../public/icon/heart.svg';
 import UserReviewCard from '@/component/card/UserReviewCard';
 import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie';
 import { SafeUserModel } from '@/interface/SafeUserModel';
+import styleCard from "@/styles/feedCard.module.scss"
 
 
 function UserFeed() {
@@ -54,16 +55,17 @@ function UserFeed() {
             <Head>
                 <title>{user?.name} profilja</title>
             </Head>
-            {user && < div >
+            <div className={styleCard.card}>
                 <h2>{user.name}</h2>
                 <p>{user.description}</p>
                 <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
-            </div>}
-            <div>{isLoggedIn && !ownProfile && <>
-                {isFollowed ?
-                    <span className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
-                    : <span className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
-            </>}</div>
+                <div>{isLoggedIn && !ownProfile && <>
+                    {isFollowed ?
+                        <span style={{ cursor: "pointer" }} className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
+                        : <span style={{ cursor: "pointer" }} className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
+                </>}</div>
+            </div>
+
             <div>
                 <h2>Vélemények</h2>
                 {reviews.map(i => <UserReviewCard key={i.id} review={i} permsLevel={-1} />)}

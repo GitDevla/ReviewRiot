@@ -16,7 +16,7 @@ ul.list {
         text-decoration: none;
         color: var(--fg);
 
-        &:hover {
+        &:hover:not([disabled]) {
             box-shadow: 0 0 10px 5px var(--a2);
             background-size: contain;
             font-size: 1.1rem;
@@ -39,6 +39,7 @@ ul.list {
 
     input,
     select {
+        color: var(--fg);
         background-color: var(--a1);
         padding: 15px;
         // font-size: 1em;
@@ -58,6 +59,7 @@ ul.list {
 }
 
 .select {
+    color: var(--fg);
     background-color: var(--a1);
     padding: 15px;
     // font-size: 1em;
@@ -72,9 +74,5 @@ ul.list {
         box-shadow: 0px 0px 6px 2px var(--a2);
         // outline: solid 2px var(--a2) !important;
         transform: scale(1.01);
-    }
-
-    option {
-        background-color: red;
     }
 }

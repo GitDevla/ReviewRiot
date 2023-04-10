@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 function SettingsNavbar() {
     let { pathname } = useRouter();
     pathname = pathname.split("/")[2]!;
-    console.log(pathname);
-
 
     return (
         <nav className={style.nav}>

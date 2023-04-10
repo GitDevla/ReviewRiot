@@ -6,7 +6,7 @@ import { PermissionModel } from '@/model/PermissionModel';
 import { validateUserPermUpdate } from '@/validator/userValidator';
 import { changeUserPermission, checkPermission } from '@/service/UserService';
 import { PermissionLevel } from '@/util/PermissionLevels';
-import { ForbiddenError } from '@/util/Errors';
+import { BadRequestError, ForbiddenError } from '@/util/Errors';
 
 export default async (
     req: NextApiRequest,
@@ -42,6 +42,7 @@ async function permissionPutHandler(
     if (!(await checkPermission(user!, PermissionLevel.admin))) throw new ForbiddenError();
     validateUserPermUpdate(req.body);
     const { whom, permID } = req.body;
+    if (user!.id == whom) throw new BadRequestError("Saját jogaidat nem tudod változtatni")
     await changeUserPermission(whom, permID);
     return returnResponse(res, { message: "Sikeres válzotatás" })
 }

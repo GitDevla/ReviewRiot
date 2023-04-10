@@ -5,6 +5,7 @@ import React, { ChangeEvent, useEffect, useRef } from 'react'
 import { useState } from 'react'
 import StarRating from '../input/StarRating';
 import style from "@/styles/feedCard.module.scss"
+import styleList from "@/styles/prettyList.module.scss"
 
 function ReviewForm({ onSubmit = () => { } }) {
     const [rating, setRating] = useState(0)
@@ -54,7 +55,7 @@ function ReviewForm({ onSubmit = () => { } }) {
     return (
         <form className={style.card} onSubmit={handleSubmit}>
             <label>Ezt a filmet láttam: </label>
-            <select onChange={handleOptionSelect} required>
+            <select className={styleList.select} style={{ border: "1px solid var(--fg)" }} onChange={handleOptionSelect} required>
                 <option disabled selected>--- Válasszon egy filmet ---</option>
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
             </select><br />

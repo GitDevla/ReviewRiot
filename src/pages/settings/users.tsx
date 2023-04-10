@@ -8,11 +8,13 @@ import { getIsAdmin } from '@/util/frontend/isAdmin';
 import router from 'next/router';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import style from '@/styles/prettyList.module.scss';
+import { getLoggedIn } from '@/util/frontend/getLoggedIn';
 
 
 function SettingsProfilePage() {
     const [users, setUsers] = useState([] as UserModel[]);
     const [perms, setPerms] = useState([] as PermissionModel[]);
+    const [loggedIn, setLoggedIn] = useState(null as UserModel | null)
     useEffect(() => {
         async function fetch() {
             let res = await Fetch.GET("/api/user");
@@ -21,7 +23,11 @@ function SettingsProfilePage() {
             setPerms((await res.json()).perms);
         }
 
-        getIsAdmin().then(() => fetch()).catch(() => router.push("/auth"));
+        getIsAdmin()
+            .then(() => getLoggedIn())
+            .then(i => setLoggedIn(i))
+            .then(() => fetch())
+            .catch(() => router.push("/auth"));
     }, [])
 
     async function handleClick(e: ChangeEvent<HTMLSelectElement>) {
@@ -41,9 +47,11 @@ function SettingsProfilePage() {
             <Title>Felhasználók beállításai</Title>
             <SettingsNavbar />
             <ul className={style.list}>
-                {users.map(i => <li key={i.id} value={i.id}>{i.name}
-                    <select defaultValue={i.permissionID} onChange={handleClick} >
-                        {perms.map(j => <option key={j.id} selected={j.id === i.permissionID} value={j.id}>{j.name}</option>)}
+                {users.map(i => <li key={i.id} value={i.id}>{i.name}:<br />
+                    <select disabled={i.id == loggedIn!.id} defaultValue={i.permissionID} onChange={handleClick} >
+                        {perms.map(j =>
+                            <option key={j.id} selected={j.id === i.permissionID} value={j.id}>{j.name}</option>
+                        )}
                     </select>
                 </li>)}
             </ul>

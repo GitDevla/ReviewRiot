@@ -45,8 +45,7 @@ async function movieGetHandler(
     if (isNaN(maxId)) maxId = 20;
     if (typeof filterGenres == "string" && filterGenres) filterGenres = filterGenres.split(",");
     filterName = filterName as string;
-    filterGenres = filterGenres as string[];
-
+    filterGenres = filterGenres as any[];
     let orderBy = order as string;
     const movies = await listMovies(pageId, maxId, orderBy, filterName, filterGenres);
 
