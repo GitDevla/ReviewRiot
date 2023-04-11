@@ -64,8 +64,8 @@ export class UserModel {
         return Database.transform(this, res);
     }
 
-    public static listReviews = async (who: number) => {
-        const res = await Database.query(SQL.LIST_REVIEW, who);
+    public static listReviews = async (who: number, page: number, max: number) => {
+        const res = await Database.query(SQL.LIST_REVIEW, who, page * max, max);
         return Database.transform(ReviewModel, res);
     }
     //#endregion
@@ -120,7 +120,11 @@ const SQL = {
         review
     JOIN user ON review.author_id = user.id
     WHERE
-        author_id = ?`,
+        author_id = ?
+    ORDER BY
+        review.create_date
+    DESC
+    LIMIT ?, ?`,
     UPDATE_AUTH: `
     UPDATE
         auth

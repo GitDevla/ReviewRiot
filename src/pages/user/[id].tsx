@@ -1,7 +1,7 @@
 import Layout from '@/component/Layout';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn';
 import HeartSVG from '@/../public/icon/heart.svg';
@@ -15,13 +15,17 @@ function UserFeed() {
     const [reviews, setReviews] = useState([] as ReviewWithMovieModel[]);
     const [ownProfile, setOwnProfile] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+    const page = useRef(0);
+    const flag = useRef(true);
 
     useEffect(() => {
         if (!id) return;
         async function fetchUser() {
             const loggedIn = await tryGetLoggedIn();
-            const res = await Fetch.GET("/api/user/" + id);
+            const res = await Fetch.GET(`/api/user/${id}?page=${page.current}&max=5`);
             const json = await res.json();
             setIsLoggedIn(loggedIn != null);
             setUser(json.user)
@@ -30,10 +34,41 @@ function UserFeed() {
             const res2 = await Fetch.GET("/api/user/follow?id=" + id)
             const json2 = await res2.json();
             setIsFollowed(json2.exists);
+            page.current++;
             //TODODODO
         }
         fetchUser();
+        window.addEventListener('scroll', handleScrollUserReview);
+
+        return () => {
+            window.removeEventListener('scroll', handleScrollUserReview);
+        };
     }, [id])
+
+
+
+    async function fetchReviews() {
+        setLoading(true);
+        const response = await Fetch.GET(`/api/user/${id}?page=${page.current}&max=5`);
+        const data = await response.json();
+        if (data.reviews.length < 5) window.removeEventListener('scroll', handleScrollUserReview);
+        setReviews((prevReviews) => [...prevReviews, ...(data.reviews)]);
+        setLoading(false);
+        flag.current = true;
+        page.current += 1;
+    }
+
+    function handleScrollUserReview() {
+        const offset = 900;
+        if (
+            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
+        ) {
+            if (flag.current && !loading) {
+                flag.current = false;
+                fetchReviews();
+            }
+        }
+    }
 
     async function handleFollow() {
         const res = await Fetch.POST("/api/user/follow", { whom: user.id });

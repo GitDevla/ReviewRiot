@@ -37,8 +37,8 @@ export class ReviewModel {
     //#endregion
 
     //#region Fetch List
-    public static listReviewsForMovie = async (movie: MovieModel) => {
-        const res = await Database.query(SQL.LIST, movie.id);
+    public static listReviewsForMovie = async (movie: MovieModel, page: number, max: number) => {
+        const res = await Database.query(SQL.LIST, movie.id, page * max, max);
         return Database.transform(this, res);
     }
     //#endregion
@@ -53,6 +53,6 @@ export class ReviewModel {
 const SQL = {
     INSERT: `INSERT INTO review (author_id, movie_id, rating, description) VALUES (?, ?, ?, ?)`,
     SELECT_ID: `SELECT * FROM review WHERE id = ?`,
-    LIST: `SELECT * FROM review WHERE movie_id = ? ORDER by create_date DESC`,
+    LIST: `SELECT * FROM review WHERE movie_id = ? ORDER by create_date DESC LIMIT ?, ?`,
     DELETE: `DELETE FROM review WHERE id = ?`,
 }

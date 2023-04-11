@@ -8,6 +8,7 @@ import RateLimitedInput from '@/component/input/RateLimitedInput';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
 import style from "@/styles/prettyList.module.scss";
 import Bean from '@/component/Bean';
+import { Fetch } from '@/util/frontend/Fetch';
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieWithDataModel[]);
@@ -21,7 +22,6 @@ function MoviesPage() {
     const filterGenre = useRef([] as GenreModel[]);
 
     useEffect(() => {
-        fetchMovies();
         window.addEventListener('scroll', handleScrollMovie);
 
         return () => {
@@ -33,7 +33,7 @@ function MoviesPage() {
     async function fetchMovies() {
         setLoading(true);
         const genreFilter = filterGenre.current.map(i => i.id);
-        const response = await fetch(`/api/movie?page=${page.current}&max=30&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
+        const response = await Fetch.GET(`/api/movie?page=${page.current}&max=30&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
         if (data.movies.length < 30) window.removeEventListener('scroll', handleScrollMovie);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);

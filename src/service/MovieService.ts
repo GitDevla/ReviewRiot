@@ -18,11 +18,11 @@ export const createMovie = async (name: string, date: Date) => {
 //#endregion
 
 //#region READ
-export const getMovieReviews = async (id: number) => {
+export const getMovieReviews = async (id: number, page: number, max: number) => {
     const movie = await MovieModel.getWithID(id) as MovieWithDataModel;
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
     movie.data = await movie.getData();
-    let reviews = await ReviewModel.listReviewsForMovie(movie) as ReviewWithUserModel[];
+    let reviews = await ReviewModel.listReviewsForMovie(movie, page, max) as ReviewWithUserModel[];
     reviews = await AsyncMap(reviews, async (i: ReviewWithUserModel) => { i.author = (await UserModel.getWithID(i.authorID))!; return i; })
     return { movie, reviews };
 }

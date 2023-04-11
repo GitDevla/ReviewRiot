@@ -1,7 +1,7 @@
 import Layout from '@/component/Layout';
 import { Fetch } from '@/util/frontend/Fetch';
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Title from '@/component/Title';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
 import style from "@/styles/movieProfile.module.scss"
@@ -20,20 +20,54 @@ function MovieFeed() {
     const [reviews, setReviews] = useState([] as ReviewWithUserModel[]);
     const [permLevel, setPermLevel] = useState(-1);
 
+    const [loading, setLoading] = useState(false);
+    const page = useRef(0);
+    const flag = useRef(true);
+
     useEffect(() => {
         if (!id) return;
         async function getMovie() {
-            const res = await Fetch.GET("/api/movie/" + id);
+            const res = await Fetch.GET(`/api/movie/${id}?page=${page.current}&max=5`);
             const json = await res.json();
             setMovie(json.movie)
-            setReviews(json.reviews)
+            setReviews(json.reviews);
+            page.current++;
         }
         async function getUser() {
             setPermLevel(await getUserPermission())
         }
         getUser();
         getMovie();
+        window.addEventListener('scroll', handleScrollMovieReviews);
+        return () => {
+            window.removeEventListener('scroll', handleScrollMovieReviews);
+        };
     }, [id])
+
+
+
+    async function fetchMovies() {
+        setLoading(true);
+        const response = await Fetch.GET(`/api/movie/${id}?page=${page.current}&max=5`);
+        const data = await response.json();
+        if (data.reviews.length < 5) window.removeEventListener('scroll', handleScrollMovieReviews);
+        setReviews((prevReviews) => [...prevReviews, ...(data.reviews)]);
+        setLoading(false);
+        flag.current = true;
+        page.current += 1;
+    }
+
+    function handleScrollMovieReviews() {
+        const offset = 900;
+        if (
+            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
+        ) {
+            if (flag.current && !loading) {
+                flag.current = false;
+                fetchMovies();
+            }
+        }
+    }
 
     return (
         <Layout>

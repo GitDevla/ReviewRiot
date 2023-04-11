@@ -28,7 +28,7 @@ function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUserModel, 
             <div className={style.info}>
                 <img className='round' src={review.author.picturePath} width={50} height={50} alt='Profilkép' />
                 <p style={{ margin: "0" }}><>
-                    <Link href={"/user/" + review.author.id}>{review.author.name}</Link> megnézte a filemt {new Date(review.create).toLocaleString()}
+                    <Link href={"/user/" + review.author.id}>{review.author.name}</Link> megnézte a filmet {new Date(review.create).toLocaleString()}
                     {
                         (user?.id == review.author.id || permsLevel >= PermissionLevel.moderator) &&
                         <Bean onClick={handleDelete}>Törlés ❌</Bean>

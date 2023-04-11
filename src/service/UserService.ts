@@ -26,10 +26,10 @@ export const listUsers = async () => {
     return UserModel.list();
 }
 
-export const getUserReviews = async (id: number) => {
+export const getUserReviews = async (id: number, page: number, max: number) => {
     const user = await UserModel.getWithID(id);
     if (!user) throw new NotFoundError("Ez a film nem létezik");
-    const reviews = await UserModel.listReviews(user.id) as ReviewWithMovieModel[];
+    const reviews = await UserModel.listReviews(user.id, page, max) as ReviewWithMovieModel[];
     for (const i of reviews) {
         i.movie = (await MovieModel.getWithID(i.movieID))!;
     }
