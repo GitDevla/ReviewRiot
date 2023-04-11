@@ -28,6 +28,10 @@
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 
+    &>* {
+        min-width: 0px;
+    }
+
     .cover {
         grid-area: 1 / 2 / 3 / 3;
         display: flex;
@@ -46,6 +50,11 @@
 
     .review {
         grid-area: 2 / 1 / 3 / 2;
+
+        p {
+            word-wrap: break-word;
+        }
+
     }
 }
 

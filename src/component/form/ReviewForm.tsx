@@ -13,6 +13,7 @@ function ReviewForm({ onSubmit = () => { } }) {
     const [errorMessage, setErrorMessage] = useState('');
     const [movies, setMovies] = useState([] as MovieModel[]);
     const selectedMovieId = useRef(0 as number);
+    const selectorDOM = useRef(null as HTMLSelectElement | null);
 
     useEffect(() => {
         async function fetchAllMovies() {
@@ -39,6 +40,7 @@ function ReviewForm({ onSubmit = () => { } }) {
             setRating(0);
             setDescription("");
             selectedMovieId.current = 0;
+            selectorDOM.current!.selectedIndex = 0
             onSubmit();
         } catch (error) {
             if (error instanceof ExpectedError || error instanceof HTTPError)
@@ -55,7 +57,7 @@ function ReviewForm({ onSubmit = () => { } }) {
     return (
         <form className={style.card} onSubmit={handleSubmit}>
             <label>Ezt a filmet láttam: </label>
-            <select className={styleList.select} style={{ border: "1px solid var(--fg)" }} onChange={handleOptionSelect} required>
+            <select className={styleList.select} ref={selectorDOM} style={{ border: "1px solid var(--fg)" }} onChange={handleOptionSelect} required>
                 <option disabled selected>--- Válasszon egy filmet ---</option>
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
             </select><br />

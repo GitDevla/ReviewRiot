@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import style from "@/styles/starRating.module.scss"
 
-function StarRating({ value = 0, readOnly = true, onClick = (value: number) => { } }) {
+function StarRating({ value = 0, readOnly = true, onClick = (value: number) => { value = value } }) {
     value = value ?? 0;
     value = Math.round(value * 10) / 10;
     const [rating, setRating] = useState(Math.round(value));
@@ -9,6 +9,7 @@ function StarRating({ value = 0, readOnly = true, onClick = (value: number) => {
 
     useEffect(() => {
         setRating(value)
+        setHover(value);
     }, [value])
 
     return (
