@@ -57,12 +57,12 @@ function ReviewForm({ onSubmit = () => { } }) {
     return (
         <form className={style.card} onSubmit={handleSubmit}>
             <label>Ezt a filmet láttam: </label>
-            <select className={styleList.select} ref={selectorDOM} style={{ border: "1px solid var(--fg)" }} onChange={handleOptionSelect} required>
-                <option disabled selected>--- Válasszon egy filmet ---</option>
+            <select defaultValue={-1} className={styleList.select} ref={selectorDOM} style={{ border: "1px solid var(--fg)" }} onChange={handleOptionSelect} required>
+                <option disabled value={-1}>--- Válasszon egy filmet ---</option>
                 {movies.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
             </select><br />
             <label>Értékelés:</label><StarRating value={rating} readOnly={false} onClick={e => setRating(e)} /> <br />
-            <textarea placeholder='Vélemény (nem kötelező)' value={description!} onChange={(e) => setDescription(e.target.value)} />
+            <textarea placeholder='Vélemény (nem kötelező)' value={description ?? ""} onChange={(e) => setDescription(e.target.value)} />
             <br />
             <input type="submit" value="Értékelés" />
             {errorMessage && <span className='error'>{errorMessage}</span>}

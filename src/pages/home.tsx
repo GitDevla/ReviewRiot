@@ -28,7 +28,7 @@ function HomePage() {
 
     function transformScroll(event: any) {
         event.currentTarget.scrollBy({
-            left: event.deltaY < 0 ? -50 : 50,
+            left: event.deltaY < 0 ? -30 : 30,
         });
     }
 
@@ -44,13 +44,13 @@ function HomePage() {
                 </div>
                 <div>
                     <h2>Felkapott filmek 🔥</h2>
-                    <div style={{ display: "flex", width: "100%", padding: "45px", overflow: "hidden", whiteSpace: "nowrap" }} onWheel={transformScroll}>
+                    <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "scroll", whiteSpace: "nowrap" }} onWheel={transformScroll}>
                         {hotMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
                     </div>
                 </div>
                 <div>
                     <h2>Top filmek ⭐</h2>
-                    <div style={{ display: "flex", width: "100%", padding: "45px", overflow: "hidden", whiteSpace: "nowrap" }} onWheelCapture={transformScroll}>
+                    <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "scroll", whiteSpace: "nowrap" }} onWheel={transformScroll}>
                         {topMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
                     </div>
                 </div>

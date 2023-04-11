@@ -24,7 +24,8 @@ export class FeedModel {
 
     //#region Fetch List
     public static listFeed = async (user: UserModel, page: number, max: number) => {
-        const res = await Database.query(SQL.LIST, user.id, user.id, page, max)
+
+        const res = await Database.query(SQL.LIST, user.id, user.id, page * max, max)
         return Database.transform(this, res);
     }
     //#endregion

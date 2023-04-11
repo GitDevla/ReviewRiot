@@ -22,10 +22,10 @@ function MoviesPage() {
 
     useEffect(() => {
         fetchMovies();
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScrollMovie);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScrollMovie);
         };
     }, []);
 
@@ -35,14 +35,14 @@ function MoviesPage() {
         const genreFilter = filterGenre.current.map(i => i.id);
         const response = await fetch(`/api/movie?page=${page.current}&max=30&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
-        if (data.movies.length < 30) window.removeEventListener('scroll', handleScroll);
+        if (data.movies.length < 30) window.removeEventListener('scroll', handleScrollMovie);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
         setLoading(false);
         flag.current = true;
         page.current += 1;
     }
 
-    function handleScroll() {
+    function handleScrollMovie() {
         const offset = 900;
         if (
             window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset

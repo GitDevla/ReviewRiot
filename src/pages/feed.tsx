@@ -16,11 +16,63 @@ function FeedPage() {
     const interval = useRef(null as any);
     const cd = 10000;
 
-    async function getFeed() {
-        const res = await Fetch.GET('/api/feed');
-        if (!res.ok) throw new Error()
-        setFeed((await res.json()).feed)
+    const [loading, setLoading] = useState(false);
+    const page = useRef(0);
+    const flag = useRef(true);
+    const offset = useRef(0);
+    const perPage = 1;
+
+    async function getNewFeed() {
+        const res = await Fetch.GET(`/api/feed?page=0&max=10`);
+        if (!res.ok) throw new Error();
+        let newFeed = (await res.json()).feed;
+
+        setFeed((prevFeed => {
+            if (prevFeed.length == 0) {
+                offset.current = newFeed.length;
+                return newFeed;
+            }
+
+            let startOfNewFeed = -1;
+            for (let i = 0; i < newFeed.length; i++) {
+                if (newFeed[i].id == prevFeed[0]?.id) {
+                    startOfNewFeed = i;
+                    break;
+                }
+            }
+            if (startOfNewFeed != 0) {
+                let newFeeds = newFeed.splice(0, startOfNewFeed);
+                offset.current += startOfNewFeed;
+                return [...newFeeds, ...prevFeed];
+            }
+            return prevFeed;
+        }))
     }
+
+
+    async function fetchscrollFeed() {
+        setLoading(true);
+        const response = await fetch(`/api/feed?page=${page.current + Math.ceil(offset.current / perPage)}&max=${perPage}`);
+        const data = await response.json();
+        if (data.feed.length < perPage) window.removeEventListener('scroll', handleScrollFeed);
+        setFeed((prevFeed) => [...prevFeed, ...(data.feed)]);
+        setLoading(false);
+        flag.current = true;
+        page.current += 1;
+    }
+
+    function handleScrollFeed() {
+        const offset = 900;
+        if (
+            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
+        ) {
+            if (flag.current && !loading) {
+                flag.current = false;
+                fetchscrollFeed();
+            }
+        }
+    }
+
 
     useEffect(() => {
         async function getPerms() {
@@ -30,12 +82,15 @@ function FeedPage() {
         }
 
         getLoggedIn().then(() => getPerms())
-            .then(() => getFeed())
+            .then(() => getNewFeed())
+            .then(() => {
+                interval.current = setInterval(getNewFeed, cd)
+                window.addEventListener('scroll', handleScrollFeed);
+            })
             .catch(() => router.push("/auth"));
 
-        interval.current = setInterval(getFeed, cd)
-
         return () => {
+            window.removeEventListener('scroll', handleScrollFeed);
             clearInterval(interval.current);
         }
     }, []);
@@ -44,10 +99,11 @@ function FeedPage() {
         <Layout>
             <Title>Bejegyzéslista</Title>
             <div>
-                <ReviewForm onSubmit={getFeed} />
+                <ReviewForm onSubmit={getNewFeed} />
             </div>
             <div id='feed'>
-                {feed.map(i => <FeedCard onDelete={getFeed} feed={i} key={i.id} permsLevel={permissionLevel} />)}
+                {feed.map(i => <FeedCard onDelete={getNewFeed} feed={i} key={i.id} permsLevel={permissionLevel} />)}
+                {loading && <div>Töltés...</div>}
             </div>
         </Layout>
     )

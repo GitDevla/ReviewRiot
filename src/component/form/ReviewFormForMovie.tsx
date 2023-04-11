@@ -37,7 +37,7 @@ function ReviewFormForMovie({ onSubmit = () => { }, movie }: { onSubmit: Functio
     return (
         <form className={style.card} onSubmit={handleSubmit}>
             <label>Értékelés:</label><StarRating value={rating} readOnly={false} onClick={e => setRating(e)} /> <br />
-            <textarea placeholder='Vélemény (nem kötelező)' value={description!} onChange={(e) => setDescription(e.target.value)} />
+            <textarea placeholder='Vélemény (nem kötelező)' value={description! ?? ""} onChange={(e) => setDescription(e.target.value)} />
             <br />
             <input type="submit" value="Értékelés" />
             {errorMessage && <span className='error'>{errorMessage}</span>}
