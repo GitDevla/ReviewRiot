@@ -101,6 +101,7 @@ function UserFeed() {
 
             <div>
                 <h2>Vélemények</h2>
+                {reviews.length == 0 && <p>Ennek a felhasználónak még nincs értékelése!</p>}
                 {reviews.map(i => <UserReviewCard key={i.id} review={i} permsLevel={-1} />)}
             </div>
         </Layout >

@@ -39,7 +39,7 @@ function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovieModel, 
             </div>
             {review.description && <div className={style.review}>
                 <b>Vélemény:</b>
-                <p style={{ whiteSpace: "pre-wrap", maxHeight: "8em", overflowY: 'scroll' }}>{review.description}</p>
+                <p>{review.description}</p>
             </div>}
 
         </div >

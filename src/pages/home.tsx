@@ -44,15 +44,15 @@ function HomePage() {
                 </div>
                 <div>
                     <h2>Felkapott filmek 🔥</h2>
-                    <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "scroll", whiteSpace: "nowrap" }} onWheel={transformScroll}>
+                    {hotMovies.length != 0 ? <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "auto", whiteSpace: "nowrap" }} onWheel={transformScroll}>
                         {hotMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
-                    </div>
+                    </div> : <p>Még nincs</p>}
                 </div>
                 <div>
                     <h2>Top filmek ⭐</h2>
-                    <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "scroll", whiteSpace: "nowrap" }} onWheel={transformScroll}>
+                    {topMovies.length != 0 ? <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "auto", whiteSpace: "nowrap" }} onWheel={transformScroll}>
                         {topMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
-                    </div>
+                    </div> : <p>Még nincs</p>}
                 </div>
                 <footer style={{ textAlign: 'center' }}>
                     <p><Link href={"/dev"}>Fejlesztő vagyok</Link></p>

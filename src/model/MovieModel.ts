@@ -23,7 +23,7 @@ export class MovieModel {
 
     //#region Create
     public static create = async (name: string, release_date: Date) => {
-        return Database.nonQuery(SQL.INSERT, name, release_date.toISOString());
+        return Database.nonQuery(SQL.INSERT, name, release_date.getFullYear());
     }
     //#endregion
 

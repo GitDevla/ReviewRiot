@@ -91,6 +91,7 @@ function MovieFeed() {
             <div>
                 <h2>Vélemények</h2>
                 {(movie && permLevel != -1) && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
+                {reviews.length == 0 && <p>Még nincs értékelés ezen a filmen, legyél te az első!</p>}
                 {reviews.map(i => <MovieReviewCard key={i.id} review={i} permsLevel={permLevel} />)}
             </div>
         </Layout >

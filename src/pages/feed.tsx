@@ -73,7 +73,6 @@ function FeedPage() {
         }
     }
 
-
     useEffect(() => {
         async function getPerms() {
             let res = await Fetch.GET("/api/permission");
@@ -102,6 +101,7 @@ function FeedPage() {
                 <ReviewForm onSubmit={getNewFeed} />
             </div>
             <div id='feed'>
+                {feed.length == 0 && <p>Nincs semmilyen értéklés 🤔, próbáljunk meg bekövetni másokat!</p>}
                 {feed.map(i => <FeedCard onDelete={getNewFeed} feed={i} key={i.id} permsLevel={permissionLevel} />)}
                 {loading && <div>Töltés...</div>}
             </div>
