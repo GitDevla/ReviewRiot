@@ -3,6 +3,7 @@ import Layout from '@/component/Layout';
 import Title from '@/component/Title';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
 import { Fetch } from '@/util/frontend/Fetch';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
 function HomePage() {
@@ -26,12 +27,8 @@ function HomePage() {
     }, [])
 
     function transformScroll(event: any) {
-        const scrollAmount = event.deltaY * 4;
-        const currentScrollLeft = event.currentTarget.scrollLeft;
-        const newScrollLeft = currentScrollLeft + scrollAmount;
-        event.currentTarget.scrollTo({
-            left: newScrollLeft,
-            behavior: 'smooth',
+        event.currentTarget.scrollBy({
+            left: event.deltaY < 0 ? -50 : 50,
         });
     }
 
@@ -40,9 +37,10 @@ function HomePage() {
             <Title>Főoldal</Title>
             <div>
                 <div>
-                    <h1>Hello World!</h1>
-                    <p>A backend teszteléséhez használjon <a href="https://insomnia.rest/">Insomnia</a> vagy <a href="https://www.postman.com/">Postman</a> nevezetű API tesztelő programokat.</p>
-                    <p>A backend a <a href="http://localhost:3000/api">localhost:3000/api</a> URL-en találhatóak</p>
+                    <h1>Üdvözöllek a ReviewRiot film értékelő honlapon!</h1>
+                    <p>Az oldalunkon a legnépszerűbb filmeket, valamint az általunk legjobban ajánlott alkotásokat gyűjtöttük össze, hogy segítsünk neked megtalálni azokat a filmeket, amelyeket érdemes megnézni.</p>
+                    <p>Az oldalunk folyamatosan frissülő tartalommal vár, és célunk az, hogy minél szélesebb körű információkkal szolgáljunk a legkülönfélébb filmekkel kapcsolatban. Olvass el értékeléseket és írj te is véleményt a kedvenc filmjeidről, vagy fedezz fel új, izgalmas alkotásokat! Böngéssz az általunk ajánlott filmek között, vagy keress konkrét címeket a keresőmező segítségével.</p>
+                    <p>Köszönjük, hogy velünk tartasz!</p>
                 </div>
                 <div>
                     <h2>Felkapott filmek 🔥</h2>
@@ -52,12 +50,16 @@ function HomePage() {
                 </div>
                 <div>
                     <h2>Top filmek ⭐</h2>
-                    <div style={{ display: "flex", width: "100%", padding: "45px", overflow: "hidden", whiteSpace: "nowrap" }} onWheel={transformScroll}>
+                    <div style={{ display: "flex", width: "100%", padding: "45px", overflow: "hidden", whiteSpace: "nowrap" }} onWheelCapture={transformScroll}>
                         {topMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
                     </div>
                 </div>
+                <footer style={{ textAlign: 'center' }}>
+                    <p><Link href={"/dev"}>Fejlesztő vagyok</Link></p>
+                    <p>Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
+                </footer>
             </div>
-        </Layout>
+        </Layout >
     )
 }
 

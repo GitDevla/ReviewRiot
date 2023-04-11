@@ -8,8 +8,6 @@ import HeartSVG from '@/../public/icon/heart.svg';
 import UserReviewCard from '@/component/card/UserReviewCard';
 import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie';
 import { SafeUserModel } from '@/interface/SafeUserModel';
-import styleCard from "@/styles/feedCard.module.scss"
-
 
 function UserFeed() {
     const { query: { id } } = useRouter();
@@ -20,7 +18,7 @@ function UserFeed() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
-        if (!id) return
+        if (!id) return;
         async function fetchUser() {
             const loggedIn = await tryGetLoggedIn();
             const res = await Fetch.GET("/api/user/" + id);
@@ -39,13 +37,13 @@ function UserFeed() {
 
     async function handleFollow() {
         const res = await Fetch.POST("/api/user/follow", { whom: user.id });
-        if (!res.ok) alert("XDDDDDDDD");
+        if (!res.ok) alert("Valami hiba történt");
         setIsFollowed(true);
     }
 
     async function handleUnfollow() {
         const res = await Fetch.POST("/api/user/unfollow", { whom: user.id });
-        if (!res.ok) alert("XDDDDDDDD");
+        if (!res.ok) alert("Valami hiba történt");
         setIsFollowed(false);
     }
 
@@ -55,8 +53,8 @@ function UserFeed() {
             <Head>
                 <title>{user?.name} profilja</title>
             </Head>
-            <div className={styleCard.card}>
-                <h2>{user.name}</h2>
+            <div className="card">
+                <h2>{user.name} {ownProfile && <>(ön profilja)</>}</h2>
                 <p>{user.description}</p>
                 <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
                 <div>{isLoggedIn && !ownProfile && <>

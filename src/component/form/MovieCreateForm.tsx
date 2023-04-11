@@ -7,6 +7,7 @@ import Router from 'next/router';
 import React, { useRef, useState } from 'react'
 import GenreSelector from '../input/GenreSelector'
 import style from "@/styles/editForm.module.scss"
+import Bean from '../Bean';
 
 
 function MovieCreateForm() {
@@ -95,16 +96,16 @@ function MovieCreateForm() {
             </div>
             <div>
                 <label>Név: </label><br />
-                <input type="text" placeholder='Film név' onChange={i => newName.current = i.target.value} />
+                <input type="text" placeholder='Film név' required onChange={i => newName.current = i.target.value} />
             </div>
             <div>
                 <label>Kiadási dátum: </label><br />
-                <input type="number" min={1900} max={new Date().getFullYear() + 2} placeholder='Kiadási dátum' onChange={i => newRelease.current = i.target.value} />
+                <input type="number" min={1900} required max={new Date().getFullYear() + 2} placeholder='Kiadási dátum' onChange={i => newRelease.current = i.target.value} />
             </div>
             <div>
                 <label>Műfajok: </label><br />
-                <GenreSelector onValueChange={handleGenreAdd} />
-                {genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}<button onClick={() => handleGenreRemove(i.id)}>X</button></div>)}
+                <GenreSelector onValueChange={handleGenreAdd} /><br />
+                {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>Műfaj: {i.name} ❌</Bean>)}
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />

@@ -28,7 +28,8 @@ export class GenreModel {
     //#region Update
     public static updateMovieGenres = async (movieID: number, genres: number[]) => {
         await Database.nonQuery(SQL.DELETE, movieID);
-        await AsyncMap(genres, async (i: number) => Database.query(SQL.INSERT_movID_genID, movieID, i))
+        if (genres[0] != 0)
+            await AsyncMap(genres, async (i: number) => Database.query(SQL.INSERT_movID_genID, movieID, i))
     }
     //#endregion
 }

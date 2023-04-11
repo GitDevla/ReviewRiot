@@ -4,8 +4,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Title from '@/component/Title';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
-import styleCard from "@/styles/feedCard.module.scss"
-import style from "@/styles/movie.module.scss"
+import style from "@/styles/movieProfile.module.scss"
 
 import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
 import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
@@ -39,13 +38,13 @@ function MovieFeed() {
     return (
         <Layout>
             <Title>{movie?.name} értékelések</Title>
-            <div className={`${styleCard.card} ${style.movie}`}>
+            <div className={`card ${style.movieProfile}`}>
                 <div>
                     <h2>Név: {movie?.name}</h2>
                     <div>
                         {movie?.data.rank && <p>Top #{movie?.data.rank}</p>}
                         <p><>Kiadás: {movie?.release}</></p>
-                        <p>Műfajok: {movie?.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}</p>
+                        {movie?.genres.length != 0 && <p>Műfajok: {movie?.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}</p>}
                         <h3>Értékelés adatok:</h3>
                         <p>Értékelés: <StarRating value={movie?.data.rating} /></p>
                         <p>Értékelések száma: {movie?.data.NOReviews}</p>

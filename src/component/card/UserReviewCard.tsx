@@ -7,6 +7,7 @@ import StarRating from '../input/StarRating'
 import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie'
 import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { SafeUserModel } from '@/interface/SafeUserModel'
+import Bean from '../Bean'
 
 function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovieModel, permsLevel: number }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
@@ -20,24 +21,27 @@ function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovieModel, 
     }
 
     return (
-        <div className={style.card}>
-            <div className="flex">
-                <p><>
-                    <Link href={"/movie/" + review.movie.id} >{review.movie.name}</Link> filmet nézte meg {new Date(review.create).toLocaleString()}
-                    <br />
-                    <StarRating value={review.rating} />
-                </></p>
-            </div>
-            <div>
-                <p style={{ whiteSpace: "pre-wrap" }}>{review.description}</p>
-            </div>
+        <div className={`${style.card} ${style.grid}`} >
             <div className={style.cover}>
                 <img src={review.movie.imagePath} width={50} height={50} alt='Filmkép' />
             </div>
-            {
-                (user?.id == review.authorID || permsLevel >= PermissionLevel.moderator) && <div>
-                    <button onClick={handleDelete}>Törlés</button></div>
-            }
+            <div className={style.info}>
+                <p style={{ margin: "0" }}><>
+                    <Link href={"/movie/" + review.movie.id} >{review.movie.name}</Link> filmet nézte meg {new Date(review.create).toLocaleString()}
+                    {
+                        (user?.id == review.authorID || permsLevel >= PermissionLevel.moderator) &&
+                        <Bean onClick={handleDelete}>Törlés ❌</Bean>
+                    }</></p>
+                <div>
+                    <StarRating value={review.rating} />
+                </div>
+
+            </div>
+            {review.description && <div className={style.review}>
+                <b>Vélemény:</b>
+                <p style={{ whiteSpace: "pre-wrap", maxHeight: "8em", overflowY: 'scroll' }}>{review.description}</p>
+            </div>}
+
         </div >
     )
 }
