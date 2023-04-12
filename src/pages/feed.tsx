@@ -94,6 +94,10 @@ function FeedPage() {
         }
     }, []);
 
+    async function handeDelete(id: number) {
+        setFeed((prevFeed) => prevFeed.filter(i => i.id != id));
+    }
+
     return (
         <Layout>
             <Title>Bejegyzéslista</Title>
@@ -102,7 +106,7 @@ function FeedPage() {
             </div>
             <div id='feed'>
                 {feed.length == 0 && <p>Nincs semmilyen értéklés 🤔, próbáljunk meg bekövetni másokat!</p>}
-                {feed.map(i => <FeedCard onDelete={getNewFeed} feed={i} key={i.id} permsLevel={permissionLevel} />)}
+                {feed.map(i => <FeedCard onDelete={handeDelete} feed={i} key={i.id} permsLevel={permissionLevel} />)}
                 {loading && <div>Töltés...</div>}
             </div>
         </Layout>

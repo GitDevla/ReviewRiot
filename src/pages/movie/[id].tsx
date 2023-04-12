@@ -24,6 +24,30 @@ function MovieFeed() {
     const page = useRef(0);
     const flag = useRef(true);
 
+    async function getNewReviews() {
+        const res = await Fetch.GET(`/api/movie/${id}?page=0&max=5`);
+        if (!res.ok) throw new Error();
+        let newReviews = (await res.json()).reviews;
+
+        setReviews((prevReviews => {
+            if (prevReviews.length == 0) {
+                return newReviews;
+            }
+            let startOfNewFeed = -1;
+            for (let i = 0; i < newReviews.length; i++) {
+                if (newReviews[i].id == prevReviews[0]?.id) {
+                    startOfNewFeed = i;
+                    break;
+                }
+            }
+            if (startOfNewFeed != 0) {
+                let newFeeds = newReviews.splice(0, startOfNewFeed);
+                return [...newFeeds, ...prevReviews];
+            }
+            return prevReviews;
+        }))
+    }
+
     useEffect(() => {
         if (!id) return;
         async function getMovie() {
@@ -43,8 +67,6 @@ function MovieFeed() {
             window.removeEventListener('scroll', handleScrollMovieReviews);
         };
     }, [id])
-
-
 
     async function fetchMovies() {
         setLoading(true);
@@ -69,6 +91,10 @@ function MovieFeed() {
         }
     }
 
+    async function handeDelete(id: number) {
+        setReviews((prevReviews) => prevReviews.filter(i => i.id != id));
+    }
+
     return (
         <Layout>
             <Title>{movie?.name} értékelések</Title>
@@ -86,13 +112,13 @@ function MovieFeed() {
                     </div>
                     {permLevel >= PermissionLevel.admin && <Link href={"/settings/movies/" + id}><button>Módosítás</button></Link>}
                 </div>
-                <img src={movie?.imagePath} alt="Borítókép" width={330} height={440} />
+                <img src={movie?.imagePath} className="movieCover" alt="Borítókép" />
             </div>
             <div>
                 <h2>Vélemények</h2>
-                {(movie && permLevel != -1) && <ReviewFormForMovie onSubmit={() => { }} movie={movie} />}
+                {(movie && permLevel != -1) && <ReviewFormForMovie onSubmit={getNewReviews} movie={movie} />}
                 {reviews.length == 0 && <p>Még nincs értékelés ezen a filmen, legyél te az első!</p>}
-                {reviews.map(i => <MovieReviewCard key={i.id} review={i} permsLevel={permLevel} />)}
+                {reviews.map(i => <MovieReviewCard onDelete={handeDelete} key={i.id} review={i} permsLevel={permLevel} />)}
             </div>
         </Layout >
     )

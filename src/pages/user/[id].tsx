@@ -82,6 +82,9 @@ function UserFeed() {
         setIsFollowed(false);
     }
 
+    async function handeDelete(id: number) {
+        setReviews((prevReviews) => prevReviews.filter(i => i.id != id));
+    }
 
     return (
         <Layout>
@@ -102,7 +105,7 @@ function UserFeed() {
             <div>
                 <h2>Vélemények</h2>
                 {reviews.length == 0 && <p>Ennek a felhasználónak még nincs értékelése!</p>}
-                {reviews.map(i => <UserReviewCard key={i.id} review={i} permsLevel={-1} />)}
+                {reviews.map(i => <UserReviewCard onDelete={handeDelete} key={i.id} review={i} permsLevel={-1} />)}
             </div>
         </Layout >
     )

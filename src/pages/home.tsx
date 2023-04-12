@@ -39,7 +39,7 @@ function HomePage() {
                 <div>
                     <h1>Üdvözöllek a ReviewRiot film értékelő honlapon!</h1>
                     <p>Az oldalunkon a legnépszerűbb filmeket, valamint az általunk legjobban ajánlott alkotásokat gyűjtöttük össze, hogy segítsünk neked megtalálni azokat a filmeket, amelyeket érdemes megnézni.</p>
-                    <p>Az oldalunk folyamatosan frissülő tartalommal vár, és célunk az, hogy minél szélesebb körű információkkal szolgáljunk a legkülönfélébb filmekkel kapcsolatban. Olvass el értékeléseket és írj te is véleményt a kedvenc filmjeidről, vagy fedezz fel új, izgalmas alkotásokat! Böngéssz az általunk ajánlott filmek között, vagy keress konkrét címeket a keresőmező segítségével.</p>
+                    <p>Az oldalunk folyamatosan frissülő tartalommal vár és célunk az, hogy minél szélesebb körű információkkal szolgáljunk a legkülönfélébb filmekkel kapcsolatban. Olvass el értékeléseket és írj te is véleményt a kedvenc filmjeidről, vagy fedezz fel új, izgalmas alkotásokat! Böngéssz az általunk ajánlott filmek között, vagy keress konkrét címeket a keresőmező segítségével.</p>
                     <p>Köszönjük, hogy velünk tartasz!</p>
                 </div>
                 <div>

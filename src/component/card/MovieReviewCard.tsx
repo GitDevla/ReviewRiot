@@ -11,7 +11,7 @@ import style from "@/styles/feedCard.module.scss"
 import Bean from '../Bean'
 
 
-function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUserModel, permsLevel: number }) {
+function MovieReviewCard({ review, permsLevel, onDelete = (i: number) => { } }: { review: ReviewWithUserModel, permsLevel: number, onDelete: Function }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
@@ -20,7 +20,9 @@ function MovieReviewCard({ review, permsLevel }: { review: ReviewWithUserModel, 
 
 
     const handleDelete = async () => {
+        if (!confirm("Biztosan törölni akarja ez a posztot?")) return;
         await Fetch.DELETE("/api/review/" + review.id)
+        onDelete(review.id);
     }
 
     return (

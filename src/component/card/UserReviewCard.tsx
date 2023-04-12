@@ -9,7 +9,7 @@ import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { SafeUserModel } from '@/interface/SafeUserModel'
 import Bean from '../Bean'
 
-function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovieModel, permsLevel: number }) {
+function UserReviewCard({ review, permsLevel, onDelete = (i: number) => { } }: { review: ReviewWithMovieModel, permsLevel: number, onDelete: Function }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
@@ -17,7 +17,9 @@ function UserReviewCard({ review, permsLevel }: { review: ReviewWithMovieModel, 
     }, [])
 
     const handleDelete = async () => {
+        if (!confirm("Biztosan törölni akarja ez a posztot?")) return;
         await Fetch.DELETE("/api/review/" + review.id)
+        onDelete(review.id);
     }
 
     return (

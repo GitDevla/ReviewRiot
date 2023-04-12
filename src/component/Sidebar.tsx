@@ -20,10 +20,17 @@ function Sidebar() {
             .then(res => setUser(res))
     }, [])
 
+    function logoutConfirm() {
+        if (!confirm("Biztos ki akar lépni?")) return;
+        logout();
+    }
+
     return (
         <div className='sidebar'>
             <div>
-                <img src="/icon/logo.png" alt="" width={75} className="hide_phone" />
+                <Link href="/home">
+                    <img src="/icon/logo.png" alt="" width={75} className="hide_phone" />
+                </Link>
             </div>
             <nav>
                 <ul>
@@ -33,9 +40,9 @@ function Sidebar() {
                     <li className={pathname == "search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
                     {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings/profile"><SettingsSVG /><span>Beállítások</span></Link></li>}
-                    <li className='bottom'>{!user ?
+                    <li className='bottom' style={{ width: "100%" }}>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
-                        <div onClick={() => logout()} className="flex center hover">
+                        <div onClick={logoutConfirm} className="flex center hover">
                             <div className='hover_inside'>
                                 <p style={{ color: "var(--a2)" }}>Kilépés X</p>
                             </div>

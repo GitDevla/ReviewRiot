@@ -9,7 +9,7 @@ import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { SafeUserModel } from '@/interface/SafeUserModel'
 import Bean from '../Bean'
 
-function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel, permsLevel: number, onDelete: Function }) {
+function FeedCard({ feed, permsLevel, onDelete = (i: number) => { } }: { feed: FeedModel, permsLevel: number, onDelete: Function }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
@@ -17,6 +17,7 @@ function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel,
     }, [])
 
     const handleDelete = async () => {
+        if (!confirm("Biztosan törölni akarja ez a posztot?")) return;
         await Fetch.DELETE("/api/review/" + feed.id)
         onDelete(feed.id);
     }
@@ -24,7 +25,7 @@ function FeedCard({ feed, permsLevel, onDelete = () => { } }: { feed: FeedModel,
     return (
         <div className={`${style.card} ${style.grid}`} >
             <div className={style.cover}>
-                <img src={feed.movie.imagePath} width={50} height={50} alt='Filmkép' />
+                <img src={feed.movie.imagePath} className="movieCover" alt='Filmkép' />
             </div>
             <div className={style.info}>
                 <img className='round' src={feed.author.picturePath} width={50} height={50} alt='Profilkép' />
