@@ -1,11 +1,11 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import useEffectMounted from '@/util/frontend/useEffectMounted';
+import React, { ChangeEvent, useRef, useState } from 'react'
 
 function RateLimitedInput({ value, onChange, timeout }: { value: React.MutableRefObject<any>, onChange: Function, timeout: number }) {
     const [inputValue, setInputValue] = useState("")
     const timeoutId = useRef(null as NodeJS.Timeout | null);
 
-    useEffect(() => {
-        // if (!inputValue) return;
+    useEffectMounted(() => {
         clearTimeout(timeoutId.current!);
         const newTimeoutId = setTimeout(() => {
             onChange();
@@ -13,7 +13,7 @@ function RateLimitedInput({ value, onChange, timeout }: { value: React.MutableRe
         timeoutId.current = newTimeoutId;
     }, [inputValue]);
 
-    useEffect(() => {
+    useEffectMounted(() => {
         setInputValue(value.current)
     }, [value.current])
 

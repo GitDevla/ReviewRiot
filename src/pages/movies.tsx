@@ -22,6 +22,7 @@ function MoviesPage() {
     const filterGenre = useRef([] as GenreModel[]);
 
     useEffect(() => {
+        fetchMovies()
         window.addEventListener('scroll', handleScrollMovie);
 
         return () => {
