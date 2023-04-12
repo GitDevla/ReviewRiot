@@ -115,7 +115,7 @@ function MoviesPage() {
                     {filterName.current && <Bean onClick={() => handleNameRemove()}>Név: {filterName.current} ❌</Bean>}
                 </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(175px, 1fr ))', gap: "30px", justifyContent: "space-evenly" }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 15% ))', gap: "30px", justifyContent: "space-evenly" }}>
                 {movies.map(i => <MovieCard key={i.id} movie={i} />)}
                 {loading && <div>Loading...</div>}
             </div >

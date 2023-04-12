@@ -131,7 +131,7 @@ const SQL = {
     SET
         password_hash = ?
     WHERE
-        auth.user_id = ? = ?`,
+        auth.user_id = ?`,
     UPDATE_USER: `
     UPDATE
         user

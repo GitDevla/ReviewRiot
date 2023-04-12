@@ -32,16 +32,17 @@ async function userUpdateHandler(
     const { fields, files } = await FormParse(req);
 
     const { username, password, description } = fields;
+    console.log({ fields, files });
+
     if (username) validateUsername(username[0]);
     if (password) validatePassword(password[0]);
     if (files.file) validateUserProfilePicture(files.file[0]);
 
-    let tasks = [];
-    if (username) tasks.push(changeUsername(user!, username[0]));
-    if (description) tasks.push(changeDescription(user!, description[0]));
-    if (password) tasks.push(changePassword(user!, password[0]));
-    if (files.file) tasks.push(changeProfilePicture(user!, files.file[0].path));
 
-    const succesful = (await Promise.allSettled(tasks)).filter(i => i.status == "fulfilled");
-    return returnResponse(res, { message: succesful.length + " attribútum változtatva" })
+    if (username) await changeUsername(user!, username[0]);
+    if (description) await changeDescription(user!, description[0]);
+    if (password) await changePassword(user!, password[0]);
+    if (files.file) await changeProfilePicture(user!, files.file[0].path);
+
+    return returnResponse(res, { message: "Sikeres attribútum változtatva" })
 }
