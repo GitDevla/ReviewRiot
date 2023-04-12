@@ -27,6 +27,10 @@ export const getMovieReviews = async (id: number, page: number, max: number) => 
     return { movie, reviews };
 }
 
+export const listMovieNames = async () => {
+    return MovieModel.listOnlyName();
+}
+
 export const listMovies = async (page: number, max: number, order: string, filterName: string, filterGenres: any[]) => {
     let movies;
     switch (order) {

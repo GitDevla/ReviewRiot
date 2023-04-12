@@ -81,6 +81,11 @@ export class MovieModel {
         return Database.transform(this, res);
     }
 
+    public static listOnlyName = async () => {
+        const res = await Database.query("SELECT id,name from movie;");
+        return Database.transform(this, res);
+    }
+
     public static listByName = async (page: number, max: number, filter: MovieFilter) => {
         const whereString = await MovieModel.filter(filter)
         return MovieModel.listMovies("movie.name ASC", page, max, whereString)

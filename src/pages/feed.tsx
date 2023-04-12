@@ -80,13 +80,16 @@ function FeedPage() {
             setPermissionLevel((await res.json()).level);
         }
 
-        getLoggedIn().then(() => getPerms())
-            .then(() => getNewFeed())
+        getLoggedIn()
+            .catch(() => router.push("/auth"))
+            .then(() => {
+                getNewFeed();
+                getPerms();
+            })
             .then(() => {
                 interval.current = setInterval(getNewFeed, cd)
                 window.addEventListener('scroll', handleScrollFeed);
             })
-            .catch(() => router.push("/auth"));
 
         return () => {
             window.removeEventListener('scroll', handleScrollFeed);

@@ -17,7 +17,7 @@ function ReviewForm({ onSubmit = () => { } }) {
 
     useEffect(() => {
         async function fetchAllMovies() {
-            const response = await fetch(`/api/movie?page=0&max=-1&order=name`);
+            const response = await fetch(`/api/movie?onlyName=true`);
             const data = await response.json();
             setMovies(data.movies);
         }

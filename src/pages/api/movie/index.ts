@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { returnResponse } from '@/util/backend/ApiResponses';
 import LoginRequired from '@/util/backend/LoginRequired';
 import { ForbiddenError } from '@/util/Errors';
-import { createMovie, listMovies } from '@/service/MovieService';
+import { createMovie, listMovieNames, listMovies } from '@/service/MovieService';
 import { validateMovieCreate } from '@/validator/movieValidator';
 import { PermissionLevel } from '@/util/PermissionLevels';
 
@@ -38,7 +38,8 @@ async function movieGetHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    let { page, max, order, filterName, filterGenres } = req.query;
+    let { page, max, order, filterName, filterGenres, onlyName } = req.query;
+    if (onlyName) return returnResponse(res, { movies: (await listMovieNames()) })
     let pageId = parseInt(page as string);
     if (isNaN(pageId)) pageId = 0;
     let maxId = parseInt(max as string);
