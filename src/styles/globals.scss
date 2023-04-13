@@ -297,3 +297,47 @@ select {
 h2 {
     margin-bottom: 0;
 }
+
+.code {
+    background-color: var(--bg);
+    padding: 10px;
+    border-radius: 5px;
+
+    span {
+        font-weight: bold;
+        color: var(--a2)
+    }
+
+    pre {
+        font-family: consolias;
+        line-height: 1em;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+}
+
+
+details>summary span.icon {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s;
+    margin-left: auto;
+}
+
+details[open] summary span.icon {
+    transform: rotate(180deg);
+}
+
+summary {
+    display: flex;
+    cursor: pointer;
+    align-items: flex-end;
+
+    hr {
+        width: 100%;
+    }
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}

@@ -38,8 +38,7 @@ function SettingsProfilePage() {
         await Fetch.PUT("/api/permission", {
             whom: userID,
             permID: parseInt(e.target.value)
-        })
-        router.reload();
+        });
     }
 
     return (

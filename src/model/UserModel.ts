@@ -5,7 +5,7 @@ import { ReviewModel } from "./ReviewModel";
 
 export class UserModel {
     //#region Properties
-    public static readonly defaultProfilePicture = "default.png";
+    public static readonly defaultProfilePicture = "default.webp";
     public readonly id: number;
     public readonly name: string;
     public readonly created: Date;
