@@ -15,7 +15,7 @@
 .form {
     padding: 0 25px;
 
-    input:not([type=submit]),
+    input:not([type=submit]):not([type=reset]),
     select,
     textarea {
         width: 40%;

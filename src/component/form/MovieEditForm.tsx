@@ -7,6 +7,7 @@ import style from "@/styles/editForm.module.scss"
 import { validateMovieName, validateMovieRelease } from '@/validator/movieValidator'
 import { Validate } from '@/validator/Validator'
 import Bean from '../Bean'
+import router from 'next/router'
 
 function MovieEditForm({ movie }: { movie: MovieModel }) {
     const [genres, setGenres] = useState([] as GenreModel[])
@@ -111,6 +112,7 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
 
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
+            <input type="reset" onClick={() => router.back()} value="Mégse" />
         </form >
     )
 }

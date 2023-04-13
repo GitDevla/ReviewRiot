@@ -255,7 +255,8 @@ textarea {
     }
 }
 
-input[type=submit] {
+input[type=submit],
+input[type=reset] {
     background-color: var(--a2);
     border: none;
     padding: 4px 10px;

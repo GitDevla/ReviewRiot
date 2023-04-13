@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react'
 import GenreSelector from '../input/GenreSelector'
 import style from "@/styles/editForm.module.scss"
 import Bean from '../Bean';
+import router from 'next/router';
 
 
 function MovieCreateForm() {
@@ -109,6 +110,7 @@ function MovieCreateForm() {
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
+            <input type="reset" onClick={() => router.back()} value="Mégse" />
         </form>
     )
 }

@@ -100,7 +100,7 @@ function ProfileEditForm() {
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
-            <input type="submit" onClick={() => router.reload()} value="Mégse" />
+            <input type="reset" onClick={() => router.back()} value="Mégse" />
         </form>
     )
 }
