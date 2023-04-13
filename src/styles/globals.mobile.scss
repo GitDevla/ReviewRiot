@@ -41,6 +41,10 @@ $medium: 900px;
             align-items: center;
             justify-content: space-evenly;
 
+            li {
+                width: fit-content !important;
+            }
+
             li svg {
                 margin: 0;
             }

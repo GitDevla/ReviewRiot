@@ -82,7 +82,7 @@ export class MovieModel {
     }
 
     public static listOnlyName = async () => {
-        const res = await Database.query("SELECT id,name from movie;");
+        const res = await Database.query("SELECT id,name from movie order by name;");
         return Database.transform(this, res);
     }
 

@@ -20,7 +20,7 @@ export const validateMovieRelease = (release: string) => Validate(release)
     .date("Dátum (date) nem valódi");
 
 
-const size1mb = 1 * 1024 * 1024;
+const size2mb = 2 * 1024 * 1024;
 export const validateMovieCoverPhoto = (img: any) => Validate(img)
     .image("Megadott file nem kép")
-    .fileSizeMax(size1mb, "Megadott kép nagyobb mint 1mb");
+    .fileSizeMax(size2mb, "Megadott kép nagyobb mint 2mb");
