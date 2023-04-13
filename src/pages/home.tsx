@@ -55,7 +55,7 @@ function HomePage() {
                     </div> : <p>Még nincs</p>}
                 </div>
                 <footer style={{ textAlign: 'center' }}>
-                    <p><Link href={"/dev"}>Fejlesztő vagyok</Link></p>
+                    <p><Link href={"/dev"}>Fejlesztő vagyok</Link> | <Link href={"/docs.pdf"}>Dokumentáció</Link></p>
                     <p>Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
                 </footer>
             </div>
