@@ -32,7 +32,6 @@ async function userUpdateHandler(
     const { fields, files } = await FormParse(req);
 
     const { username, password, description } = fields;
-    console.log({ fields, files });
 
     if (username) validateUsername(username[0]);
     if (password) validatePassword(password[0]);

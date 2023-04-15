@@ -35,7 +35,6 @@ function UserFeed() {
             const json2 = await res2.json();
             setIsFollowed(json2.exists);
             page.current++;
-            //TODODODO
         }
         fetchUser();
         window.addEventListener('scroll', handleScrollUserReview);

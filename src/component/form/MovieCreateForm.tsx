@@ -46,7 +46,7 @@ function MovieCreateForm() {
             validateMovieRelease(newRelease.current!)
 
         if (newImage.current)
-            Validate(newImage.current).fileSizeMax(2 * 1024 * 1024, "Megadott kép nagyobb mint 2mb");
+            Validate(newImage.current).fileSizeMax(2 * 1024 * 1024, "A kép túl nagy, 1 megabájt alatt legyen, jelenlegi méret: " + Math.round(newImage.current.size / 1024 / 1024 * 10) / 10 + "Mb");
     }
 
     const sendRequest = async () => {

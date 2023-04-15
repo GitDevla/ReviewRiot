@@ -1,5 +1,6 @@
 import Layout from '@/component/Layout'
 import Title from '@/component/Title'
+import Link from 'next/link';
 import React from 'react'
 
 function DevPage() {
@@ -12,7 +13,7 @@ function DevPage() {
             <div>
                 <h1>/api/</h1>
                 <p>Ez az oldal programozóknak van akik fel akarják használni az adatbázisban található adatokat.</p>
-                <p>A backend teszteléséhez használjon <a href="https://insomnia.rest/">Insomnia</a> vagy <a href="https://www.postman.com/">Postman</a> nevezetű API tesztelő programokat.</p>
+                <p>A backend teszteléséhez használjon <a href="https://insomnia.rest/" target={'_blank'}>Insomnia</a> vagy <a href="https://www.postman.com/" target={'_blank'}>Postman</a> nevezetű API tesztelő programokat.</p>
                 <p>A backend a <a href="/api">/api</a> URL-en található</p>
                 <details>
                     <summary>
@@ -35,9 +36,18 @@ function DevPage() {
                         <p>A <b>body</b> adatait ezzel szemben egy JSON objektumban küldjük át a kérés "body" paraméterében.</p>
                         <p>Amikor <b>form</b> paraméterről beszélek akkor pedig a "multipart/form-data" paramétereiről van szó.</p>
                     </div>
+                    <div>
+                        <h3>Válasz formája</h3>
+                        <p>Az api válasza minding egy JSON objektum. Hiba esetén mindig hasonló a válasz teste.</p>
+                        <pre>
+                            {format(
+                                {
+                                    "error": "Mi a hiba"
+                                })}
+                        </pre>
+                        <p>A válasz küldésekor a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target={'_blank'}>HTTP status codes</a>-által meghatározott státusz kódok be vannak tartva.</p>
+                    </div>
                 </details>
-
-
                 <hr />
                 <details>
                     <summary>
@@ -50,8 +60,11 @@ function DevPage() {
                         <div className="card">
                             <p>A felhasználó bejelentkezéséért szolgál</p>
                             <p><b>Body</b>:</p>
-                            <ul><b>username</b>: felhasználónév</ul>
-                            <ul><b>password</b>: jelszó</ul>
+                            <ul>
+                                <li><b>username</b>: felhasználónév</li>
+                                <li><b>password</b>: jelszó</li>
+                            </ul>
+
                             <p><b>Válasz</b>: Token, ez set-cookie-val be is kerül a sütik közzé</p>
                         </div>
                     </div>
@@ -71,7 +84,7 @@ function DevPage() {
                                             "picturePath": "Profilkép"
                                         }
                                     }
-                                )}[]
+                                )}
                             </pre>
                         </div>
                     </div>
@@ -87,8 +100,10 @@ function DevPage() {
                         <div className='card'>
                             <p>A bejelentkezett felhasználó bejegyzéslistája. Ez lehetőseg "oldalakra" van tördelve</p>
                             <p><b>Paraméterek</b>:</p>
-                            <ul><b>page</b>: oldal száma (alapból:0)</ul>
-                            <ul><b>max</b>: egy oldalon mennyi bejegyzés legyen (alapból:20) (-1 megadása esetén mindent kiír)</ul>
+                            <ul>
+                                <li><b>page</b>: oldal száma (alapból:0)</li>
+                                <li><b>max</b>: egy oldalon mennyi bejegyzés legyen (alapból:20) (-1 megadása esetén mindent kiír)</li>
+                            </ul>
                             <p><b>Válasz</b>: Objektum tömb</p>
                             <pre>
                                 {format(
@@ -111,6 +126,7 @@ function DevPage() {
                                     }
                                 )}[]
                             </pre>
+                            <p><b>Példa:</b></p>
                             <div className='code'>
                                 <span>/api/feed?page=0&max=1</span>
                                 <pre>{
@@ -160,8 +176,188 @@ function DevPage() {
                         <hr />
                         <span className="icon">👇</span>
                     </summary>
-                    <div>
-                        TODO
+                    <h3>GET /movie</h3>
+                    <div className='card'>
+                        <p>Filmek listázása és filterezése</p>
+                        <p><b>Paraméterek</b>:</p>
+                        <ul>
+                            <li><b>page</b>: oldal száma (alapból:0)</li>
+                            <li><b>max</b>: egy oldalon mennyi film legyen (alapból:20) (-1 megadása esetén mindent kiír)</li>
+                            <li><b>order</b>: milyen sorrendben írja ki a filmeket:
+                                <ol>
+                                    <li><b>name</b>: ABC sorrend (alap)</li>
+                                    <li><b>dname</b>: ABC sorrend visszafele</li>
+                                    <li><b>new</b>: legújabak szerint</li>
+                                    <li><b>old</b>: legrégebbiek szerint</li>
+                                    <li><b>top</b>: toplista szerint</li>
+                                    <li><b>hot</b>: legfelkapottak szerint</li>
+                                </ol>
+                            </li>
+                            <li><b>filterName</b>: Milyen szónak kell benne lennie a filmben</li>
+                            <li><b>filterGenres</b>: Egy szám tömb ami meghatározza milyen műfajainak kell lennie a filmnek</li>
+                            <li><b>onlyName</b>: Ha igaz, akkor az összes film nevét és id-jét kapjuk vissza csak</li>
+                        </ul>
+
+                        <p><b>Válasz</b>: Komplex objektum</p>
+                        <pre>
+                            {format(
+                                {
+                                    "movies": [
+                                        {
+                                            "id": "ID",
+                                            "name": "Film név",
+                                            "release": "Kijövetélen éve",
+                                            "genres": ["Műfaj tömb"],
+                                            "imagePath": "Borítókép",
+                                            "data": {
+                                                "rating": "Átlag értékelés",
+                                                "NOReviews": "Értéklések száma",
+                                                "NOReviewsLastWeek": "Értéklések az utolsó hétben",
+                                                "rank": "Hanyadik a toplistán"
+                                            }
+                                        }
+                                    ]
+                                })}
+                        </pre>
+                        <p><b>Példa:</b></p>
+                        <div className='code'>
+                            <span>/api/movie?page=0&max=1&order=name&filterName=12&filterGenres=10</span>
+                            <pre>{
+                                format({
+                                    "movies": [
+                                        {
+                                            "id": 5,
+                                            "name": "12 Angry Men",
+                                            "release": 1957,
+                                            "genres": [
+                                                {
+                                                    "id": "10",
+                                                    "name": "Krimi"
+                                                },
+                                                {
+                                                    "id": "3",
+                                                    "name": "Dráma"
+                                                }
+                                            ],
+                                            "imagePath": "/image/movie/78e437e3-1050-4542-ab72-00a5e897e446.jpg",
+                                            "data": {
+                                                "rating": null,
+                                                "NOReviews": 0,
+                                                "NOReviewsLastWeek": 0,
+                                                "rank": null
+                                            }
+                                        }
+                                    ]
+                                })}
+                            </pre>
+                        </div>
+                    </div>
+                    <h3>GET /movie/[id]</h3>
+                    <div className='card'>
+                        <p>Egy film lekérése és értékeléseinek listázása</p>
+                        <p><b>Paraméterek</b>:</p>
+                        <ul>
+                            <li><b>page</b>: oldal száma (alapból:0)</li>
+                            <li><b>max</b>: egy oldalon mennyi értékelés legyen (alapból:20) (-1 megadása esetén mindent kiír)</li>
+                        </ul>
+
+                        <p><b>Válasz</b>: Komplex objektum</p>
+                        <pre>
+                            {format(
+                                {
+                                    "movie": {
+                                        "id": "ID",
+                                        "name": "Film név",
+                                        "release": "Kijövetélen éve",
+                                        "genres": ["Műfaj tömb"],
+                                        "imagePath": "Borítókép",
+                                        "data": {
+                                            "rating": "Átlag értékelés",
+                                            "NOReviews": "Értéklések száma",
+                                            "NOReviewsLastWeek": "Értéklések az utolsó hétben",
+                                            "rank": "Hanyadik a toplistán"
+                                        }
+                                    },
+                                    "reviews": [
+                                        {
+                                            "id": "ID",
+                                            "rating": "Értékelés 1-5",
+                                            "description": "Értéklés szövege",
+                                            "create": "Értéklés létrehozásának dátuma",
+                                            "author": {
+                                                "id": "Szerző ID",
+                                                "name": "Fehasználónév",
+                                                "picturePath": "Profilkép"
+                                            },
+                                        }
+                                    ]
+                                })}
+                        </pre>
+                        <p><b>Példa:</b></p>
+                        <div className='code'>
+                            <span>/api/movie/180?page=0&max=1</span>
+                            <pre>{
+                                format({
+                                    "movie": {
+                                        "id": 180,
+                                        "name": "12 Years a Slave",
+                                        "release": 2013,
+                                        "genres": [
+                                            {
+                                                "id": "34",
+                                                "name": "Disztópia"
+                                            },
+                                            {
+                                                "id": "3",
+                                                "name": "Dráma"
+                                            }
+                                        ],
+                                        "imagePath": "/image/movie/7e690b44-206c-4da6-80d5-9fabcd906d7b.jpg",
+                                        "data": {
+                                            "rating": 3,
+                                            "NOReviews": 1,
+                                            "NOReviewsLastWeek": 1,
+                                            "rank": 2
+                                        }
+                                    },
+                                    "reviews": [
+                                        {
+                                            "id": 12,
+                                            "authorID": 1,
+                                            "movieID": 180,
+                                            "rating": 3,
+                                            "description": "Nagyon ajánlom mindenkinek!",
+                                            "create": "2023-04-12T18:17:27.000Z",
+                                            "author": {
+                                                "id": 1,
+                                                "name": "admin",
+                                                "picturePath": "/image/user/default.webp",
+                                            }
+                                        }
+                                    ]
+                                })}
+                            </pre>
+                        </div>
+                    </div>
+                    <h3>POST /movie</h3>
+                    <div className='card'>
+                        <p>Új film készítése</p>
+                        <p><b>Body</b>:</p>
+                        <ul>
+                            <li><b>name</b>: Film neve</li>
+                            <li><b>date</b>: Film kíjövetelének éve</li>
+                        </ul>
+                    </div>
+                    <h3>PUT /movie/[id]</h3>
+                    <div className='card'>
+                        <p>Film frissitése</p>
+                        <p><b>Form</b>:</p>
+                        <ul>
+                            <li><b>name</b>: Film neve</li>
+                            <li><b>release</b>: Film kíjövetelének éve</li>
+                            <li><b>genres</b>: Műfaj, számtömb</li>
+                            <li><b>file</b>: Borítókép, kép fájl 2mb alatt</li>
+                        </ul>
                     </div>
                 </details>
                 <details>
@@ -189,8 +385,10 @@ function DevPage() {
                         <div className='card'>
                             <p>Más fiókok jogi szintjének változatása</p>
                             <p><b>Paraméterek</b>:</p>
-                            <ul><b>whom</b>: melyik felhasználót akarjuk módosítani</ul>
-                            <ul><b>permID</b>: milyen szinte akarjuk emelni</ul>
+                            <ul>
+                                <li><b>whom</b>: melyik felhasználót akarjuk módosítani</li>
+                                <li><b>permID</b>: milyen szinte akarjuk emelni</li>
+                            </ul>
                         </div>
                     </div>
                 </details>
@@ -215,9 +413,11 @@ function DevPage() {
                         <div className='card'>
                             <p>A keresett szövegre hasonló felhasználókat és filmek listázza</p>
                             <p><b>Paraméterek</b>:</p>
-                            <ul><b>name</b>: a keresés szövege</ul>
+                            <ul>
+                                <li><b>name</b>: a keresés szövege</li>
+                            </ul>
                             <p><b>Válasz</b>: Objektum tömb {format({ "id": "ID", "name": "Név", "picture": "Kép", "type": "Felhasználó vagy film" })}[]</p>
-                            <p><b>Példa</b>:</p>
+                            <p><b>Példa:</b></p>
                             <div className='code'>
                                 <span>/api/search?name=12</span>
                                 <pre>{

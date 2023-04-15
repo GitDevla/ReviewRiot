@@ -30,9 +30,9 @@ function RegisterForm({ next }: { next: Function }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
+            <input type="text" minLength={5} maxLength={32} placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
             <input type="email" placeholder='E-mail' required onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" minLength={8} maxLength={55} placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Regisztráció" />
         </form>

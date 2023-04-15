@@ -43,8 +43,8 @@ function ProfileEditForm() {
             body.append("password", newPassword.current!);
         }
         if (newImage.current) {
-            if (newImage.current.size > 1024 * 1024)
-                throw Error("A kép túl nagy");
+            if (newImage.current.size > 1 * 1024 * 1024)
+                throw Error("A kép túl nagy, 1 megabájt alatt legyen, jelenlegi méret: " + Math.round(newImage.current.size / 1024 / 1024 * 10) / 10 + "Mb");
 
             body.append("file", newImage.current);
         }
@@ -86,17 +86,17 @@ function ProfileEditForm() {
             </div>
             <div>
                 <label>Fehasználónév</label><br />
-                <input type="text" autoComplete='username' placeholder='Fehasználónév' required defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
+                <input type="text" minLength={5} maxLength={32} autoComplete='username' placeholder='Fehasználónév' required defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
             </div>
             <div>
                 <label>Jelszó változtatás</label><br />
                 <input type="password" autoComplete='current-password' placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
-                <input type="password" autoComplete='new-password' placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
+                <input type="password" autoComplete='new-password' minLength={8} maxLength={55} placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
             </div>
 
             <div>
                 <label>Leírás</label><br />
-                <textarea defaultValue={user?.description ?? ""} rows={5} onChange={i => newDescription.current = i.target.value}></textarea>
+                <textarea maxLength={255} defaultValue={user?.description ?? ""} rows={5} onChange={i => newDescription.current = i.target.value}></textarea>
             </div>
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Mentés" />
