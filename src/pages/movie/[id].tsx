@@ -13,6 +13,7 @@ import StarRating from '@/component/input/StarRating';
 import { getUserPermission } from '@/util/frontend/isAdmin';
 import { PermissionLevel } from '@/util/PermissionLevels';
 import Link from 'next/link';
+import Bean from '@/component/Bean';
 
 function MovieFeed() {
     const { query: { id } } = useRouter();
@@ -110,7 +111,7 @@ function MovieFeed() {
                         <p>Értékelések száma: {movie?.data.NOReviews}</p>
                         <p>Utolsó hétben történt értékelések száma: {movie?.data.NOReviewsLastWeek}</p>
                     </div>
-                    {permLevel >= PermissionLevel.admin && <Link href={"/settings/movies/" + id}><button>Módosítás</button></Link>}
+                    {permLevel >= PermissionLevel.admin && <Link href={"/settings/movies/" + id}><Bean>🔧 Módosítás</Bean></Link>}
                 </div>
                 <img src={movie?.imagePath} className="movieCover" alt="Borítókép" />
             </div>

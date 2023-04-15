@@ -108,7 +108,7 @@ export class MovieModel {
 
     public static listByTop = async (page: number, max: number, filter: MovieFilter) => {
         const whereString = await MovieModel.filter(filter)
-        return await MovieModel.listMovies("Avg(review.rating) DESC", page, max, whereString)
+        return await MovieModel.listMovies("Avg(review.rating) DESC, COUNT(DISTINCT review.id) DESC", page, max, whereString)
     }
 
     public static listByHot = async (page: number, max: number, filter: MovieFilter) => {

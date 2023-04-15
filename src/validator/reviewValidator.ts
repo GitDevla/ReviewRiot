@@ -17,5 +17,5 @@ export const validateReviewCreate = ({ movieID, rating, description }: IReviewCr
         .valueBetween(0, 10, "Értékelésnek (rating) 0 és 10 között kell lennie");
     Validate(description)
         .nonRequired()?.string("Leírás (description) szöveg típusunak kell lennie")
-        .lengthBetween(16, 255, "Leírás (description) hosszának 16 és 255 között kell lennie");
+        .lengthBetween(16, 1000, "Leírás (description) hosszának 16 és 1000 között kell lennie");
 }
