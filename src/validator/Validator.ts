@@ -52,12 +52,12 @@ class ValidatorMonad {
 
     // Value Check
     lengthBetween(min: number, max: number, error: string) {
-        if (this.value.length >= min && max > this.value.length) return this;
+        if (this.value.length >= min && max >= this.value.length) return this;
         throw new BadRequestError(error);
     }
 
     valueBetween(min: number, max: number, error: string) {
-        if (this.value >= min && max > this.value) return this;
+        if (this.value >= min && max >= this.value) return this;
         throw new BadRequestError(error);
     }
 

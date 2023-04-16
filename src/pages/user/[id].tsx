@@ -8,6 +8,7 @@ import HeartSVG from '@/../public/icon/heart.svg';
 import UserReviewCard from '@/component/card/UserReviewCard';
 import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie';
 import { SafeUserModel } from '@/interface/SafeUserModel';
+import style from "@/styles/movieProfile.module.scss"
 
 function UserFeed() {
     const { query: { id } } = useRouter();
@@ -90,15 +91,18 @@ function UserFeed() {
             <Head>
                 <title>{user?.name} profilja</title>
             </Head>
-            <div className="card">
-                <h2>{user.name} {ownProfile && <>(ön profilja)</>}</h2>
-                <p>{user.description}</p>
-                <img src={user.picturePath} alt="Profilkép" width={100} height={100} />
-                <div>{isLoggedIn && !ownProfile && <>
-                    {isFollowed ?
-                        <span style={{ cursor: "pointer" }} className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
-                        : <span style={{ cursor: "pointer" }} className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
-                </>}</div>
+            <div className={`card ${style.movieProfile}`}>
+                <div style={{ whiteSpace: "pre-wrap", lineBreak: "anywhere", wordBreak: "break-word" }}>
+                    <h2>{user.name} {ownProfile && <>(ön profilja)</>}</h2>
+                    <span>{isLoggedIn && !ownProfile && <>
+                        {isFollowed ?
+                            <span style={{ cursor: "pointer" }} className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
+                            : <span style={{ cursor: "pointer" }} className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
+                    </>}</span>
+                    <p><b>Leírás</b>: {!user.description && "Nincs"}</p>
+                    <p>{user.description}</p>
+                </div>
+                <img className='round' src={user.picturePath} alt="Profilkép" />
             </div>
 
             <div>

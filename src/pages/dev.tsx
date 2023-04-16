@@ -1,6 +1,5 @@
 import Layout from '@/component/Layout'
 import Title from '@/component/Title'
-import Link from 'next/link';
 import React from 'react'
 
 function DevPage() {
@@ -399,7 +398,22 @@ function DevPage() {
                         <span className="icon">👇</span>
                     </summary>
                     <div>
-                        TODO
+                        <h3>POST /review 👤</h3>
+                        <div className='card'>
+                            <p>Értékelés létrehozása</p>
+                            <p><b>Body</b>:</p>
+                            <ul>
+                                <li><b>movieID</b>: az értékelt film ID-je</li>
+                                <li><b>rating</b>: értékelés 1-től 5-ig</li>
+                                <li><b>description</b>: értékelés szövege (min:16, max:1000 karakter)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>DELETE /review/[id] 👤</h3>
+                        <div className='card'>
+                            <p>Értékelés törlése ha te vagy a értéklés tulajdonosa vagy moderátornál nagyobb rankod van</p>
+                        </div>
                     </div>
                 </details>
                 <details>
@@ -437,10 +451,103 @@ function DevPage() {
                         <span className="icon">👇</span>
                     </summary>
                     <div>
-                        TODO
+                        <h3>GET /user 🛠️</h3>
+                        <div className='card'>
+                            <p>Összes fiók kilistázása</p>
+                            <p><b>Válasz</b>: Objektum tömb </p>
+                            <pre>{format(
+                                {
+                                    "id": "ID",
+                                    "name": "felhasználónév",
+                                    "created": "létrehozás dátuma",
+                                    "description": "Leírás",
+                                    "picturePath": "Profilkép",
+                                    "permissionID": "Jogi szint ID"
+                                })}[]
+                            </pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>GET /user/[id]</h3>
+                        <div className='card'>
+                            <p>TODOOOOOOOO</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>POST /user</h3>
+                        <div className='card'>
+                            <p>Regisztrálás</p>
+                            <p><b>Body</b>:</p>
+                            <ul>
+                                <li><b>username</b>: felhasználónév</li>
+                                <li><b>password</b>: jelszó</li>
+                                <li><b>email</b>: email cím</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>PUT /user/[id] 👤</h3>
+                        <div className='card'>
+                            <p>Felhasználói profil frissités</p>
+                            <p><b>Form</b>:</p>
+                            <ul>
+                                <li><b>username</b>: Felhasználónév</li>
+                                <li><b>password</b>: Jelszó</li>
+                                <li><b>description</b>: Leírás</li>
+                                <li><b>file</b>: Profilkép, 1 mb alatt</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>GET /user/follow 👤</h3>
+                        <div className='card'>
+                            <p>Bekövetett felhasználók listázása/megjelölt felsználó be van e követve</p>
+                            <p><b>Paraméterek</b>:</p>
+                            <ul>
+                                <li><b>id</b>: Felhasználó id akit tudni akarunk (nem kötelező)</li>
+                            </ul>
+                            <p><b>Válasz</b>: Objektum vagy Objektum tömb </p>
+                            <pre>
+                                {format({
+                                    "exists": "Igaz hamis változó hogy létezik e a követés"
+                                }
+                                )}
+                            </pre>
+                            vagy
+                            <pre>
+                                {format({
+                                    "id": "ID",
+                                    "name": "Felhasználónév",
+                                    "created": "Létrehozás dátuma",
+                                    "description": "Leírás",
+                                    "picturePath": "Profilkép"
+                                }
+                                )}[]
+                            </pre>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>POST /user/follow 👤</h3>
+                        <div className='card'>
+                            <p>Új követés létrehozása</p>
+                            <p><b>Body</b>:</p>
+                            <ul>
+                                <li><b>whom</b>: Felhasználó ID, akit be akarunk követni</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>POST /user/unfollow 👤</h3>
+                        <div className='card'>
+                            <p>Követés abbahagyása</p>
+                            <p><b>Body</b>:</p>
+                            <ul>
+                                <li><b>whom</b>: Felhasználó ID, akit abba akarunk hagyni követni</li>
+                            </ul>
+                        </div>
                     </div>
                 </details>
-            </div>
+            </div >
         </Layout >
     )
 }

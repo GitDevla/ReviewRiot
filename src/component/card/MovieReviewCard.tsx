@@ -11,7 +11,7 @@ import style from "@/styles/feedCard.module.scss"
 import Bean from '../Bean'
 
 
-function MovieReviewCard({ review, permsLevel, onDelete = (i: number) => { } }: { review: ReviewWithUserModel, permsLevel: number, onDelete: Function }) {
+function MovieReviewCard({ review, permsLevel, onDelete = (i: number) => i }: { review: ReviewWithUserModel, permsLevel: number, onDelete: Function }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {

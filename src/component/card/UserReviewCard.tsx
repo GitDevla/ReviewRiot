@@ -9,7 +9,7 @@ import { tryGetLoggedIn } from '@/util/frontend/getLoggedIn'
 import { SafeUserModel } from '@/interface/SafeUserModel'
 import Bean from '../Bean'
 
-function UserReviewCard({ review, permsLevel, onDelete = (i: number) => { } }: { review: ReviewWithMovieModel, permsLevel: number, onDelete: Function }) {
+function UserReviewCard({ review, permsLevel, onDelete = (i: number) => i }: { review: ReviewWithMovieModel, permsLevel: number, onDelete: Function }) {
     const [user, setUser] = useState(null as SafeUserModel | null);
 
     useEffect(() => {
