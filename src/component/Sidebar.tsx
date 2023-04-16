@@ -44,11 +44,11 @@ function Sidebar() {
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={logoutConfirm} className="flex center hover">
                             <div className='hover_inside'>
-                                <p style={{ color: "var(--a2)" }}>Kilépés X</p>
+                                <p style={{ color: "var(--a2)" }}>❌ Kilépés ❌</p>
                             </div>
                             <img className='round'
                                 src={user.picturePath} alt='Profilkép' width={50} height={50} />
-                            <span>{user.name}</span>
+                            <span style={{ overflow: "hidden", textOverflow: 'ellipsis' }}>{user.name}</span>
                         </div>
                     }</li>
                 </ul>

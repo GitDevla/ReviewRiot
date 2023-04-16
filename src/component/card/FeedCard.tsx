@@ -24,12 +24,12 @@ function FeedCard({ feed, permsLevel, onDelete = (i: number) => { } }: { feed: F
 
     return (
         <div className={`${style.card} ${style.grid}`} >
-            <div className={style.cover}>
-                <img src={feed.movie.imagePath} className="movieCover" alt='Filmkép' />
+            <div className={`${style.cover}`}>
+                <img src={feed.movie.imagePath} className="movieCove hide_phone" alt='Filmkép' />
             </div>
             <div className={style.info}>
                 <img className='round' src={feed.author.picturePath} width={50} height={50} alt='Profilkép' />
-                <p style={{ margin: "0" }}><>
+                <p style={{ margin: "0", overflow: 'hidden' }}><>
                     <Link href={"/user/" + feed.author.id}>{feed.author.name}</Link> a <Link href={"/movie/" + feed.movie.id} >{feed.movie.name}</Link> filmet nézte meg {new Date(feed.createDate).toLocaleString()}
                     {
                         (user?.id == feed.author.id || permsLevel >= PermissionLevel.moderator) &&

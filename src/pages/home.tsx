@@ -55,8 +55,8 @@ function HomePage() {
                     </div> : <p>Még nincs</p>}
                 </div>
                 <footer style={{ textAlign: 'center' }}>
-                    <p><Link href={"/dev"}>Fejlesztő vagyok</Link> | <Link href={"/docs.pdf"}>Dokumentáció</Link></p>
-                    <p>Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
+                    <p><Link href={"/dev"}>Fejlesztő vagyok</Link> | <Link href={"/docs.pdf"} target={'_blank'}>Dokumentáció</Link> | <Link href={"https://github.com/GitDevla/ReviewRiot"} target={'_blank'}>GitHub</Link></p>
+                    < p > Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
                 </footer>
             </div>
         </Layout >

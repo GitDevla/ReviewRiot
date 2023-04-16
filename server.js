@@ -9,8 +9,7 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
     const server = express()
 
-    if (!dev)
-        server.use("/", express.static(__dirname + "/public"));
+    server.use("/image", express.static(__dirname + "/public/image"));
 
     server.all('*', (req, res) => {
         return handle(req, res)

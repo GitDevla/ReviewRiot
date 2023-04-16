@@ -31,14 +31,23 @@ function SettingsProfilePage() {
     }, [])
 
     async function handleClick(e: ChangeEvent<HTMLSelectElement>) {
+        const username = e.target.parentElement?.innerText.split("\n")[0];
+        const permname = e.target.selectedOptions[0].innerText;
         e.preventDefault();
-        // @ts-ignore: Unreachable code error
+        if (!confirm(`Biztosan ${permname}-á akarja tenni ${username}-t?`)) {
+            // @ts-ignore
+            e.target.selectedIndex = null;
+            return;
+        }
+        // @ts-ignore
         const userID = e.target.parentElement.value;
 
         await Fetch.PUT("/api/permission", {
             whom: userID,
             permID: parseInt(e.target.value)
         });
+
+        alert(`${username} mostantol ${permname}!`);
     }
 
     return (
@@ -46,8 +55,9 @@ function SettingsProfilePage() {
             <Title>Felhasználók beállításai</Title>
             <SettingsNavbar />
             <ul className={style.list}>
-                {users.map(i => <li key={i.id} value={i.id}>{i.name}:<br />
-                    <select disabled={i.id == loggedIn!.id} defaultValue={i.permissionID} onChange={handleClick} >
+                {users.map(i => <li style={{ display: "flex", alignItems: "center" }} key={i.id} value={i.id}>
+                    {i.name}:
+                    <select style={{ marginLeft: "40px" }} disabled={i.id == loggedIn!.id} defaultValue={i.permissionID} onChange={handleClick} >
                         {perms.map(j =>
                             <option key={j.id} selected={j.id === i.permissionID} value={j.id}>{j.name}</option>
                         )}
