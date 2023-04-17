@@ -26,8 +26,8 @@ function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" autoComplete='username' minLength={5} maxLength={32} placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" autoComplete='current-password' minLength={8} maxLength={55} placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
+            <input type="text" pattern='[a-zA-Z0-9]+' title='(csak betű és szám, minimum 5, maximum 32 karakter)' autoComplete='username' minLength={5} maxLength={32} placeholder='Felhasználónév' required onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" pattern='\S*' title='(szóköz nélkül, minimum 8, maximum 55 karakter)' autoComplete='current-password' minLength={8} maxLength={55} placeholder='Jelszó' required onChange={(e) => setPassword(e.target.value)} />
             {errorMessage && <p className='error'>{errorMessage}</p>}
             <input type="submit" value="Belépés" />
         </form >

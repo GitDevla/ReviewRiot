@@ -92,19 +92,18 @@ function UserFeed() {
                 <title>{user?.name} profilja</title>
             </Head>
             <div className={`card ${style.movieProfile}`}>
-                <div style={{ whiteSpace: "pre-wrap", lineBreak: "anywhere", wordBreak: "break-word" }}>
+                <div className='overflow-break'>
                     <h2>{user.name} {ownProfile && <>(ön profilja)</>}</h2>
                     <span>{isLoggedIn && !ownProfile && <>
                         {isFollowed ?
-                            <span style={{ cursor: "pointer" }} className='heart fill' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
-                            : <span style={{ cursor: "pointer" }} className='heart' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
+                            <span className='heart fill pointer' onClick={() => handleUnfollow()}><HeartSVG />Követve</span>
+                            : <span className='heart pointer' onClick={() => handleFollow()}><HeartSVG />Követés</span>}
                     </>}</span>
                     <p><b>Leírás</b>: {!user.description && "Nincs"}</p>
                     <p>{user.description}</p>
                 </div>
-                <img className='round' style={{ aspectRatio: "1/1" }} src={user.picturePath} alt="Profilkép" />
+                <img className='pfp' src={user.picturePath} alt="Profilkép" />
             </div>
-
             <div>
                 <h2>Vélemények</h2>
                 {reviews.length == 0 && <p>Ennek a felhasználónak még nincs értékelése!</p>}

@@ -10,18 +10,16 @@ function MovieCardFr2({ movie }: { movie: MovieWithDataModel }) {
     }
 
     return (
-        <div key={movie.id} className={`${styles.card} card`} style={{ boxSizing: "border-box", position: "relative", textAlign: "center", display: "flex", height: "100%", margin: 0, maxWidth: "400px" }} onClick={() => open()}>
-            <div style={{ width: "fit-content", maxWidth: "80%", position: "relative", display: "flex", flexDirection: "column", padding: "5px" }}>
-                <div style={{ whiteSpace: "normal" }}><b>{movie.name}</b></div>
+        <div key={movie.id} className={`${styles.card} card flex h-100 m-0`} style={{ textAlign: "center", maxWidth: "400px" }} onClick={() => open()}>
+            <div className='flex' style={{ width: "fit-content", maxWidth: "80%", flexDirection: "column", padding: "5px" }}>
+                <div className='overflow-break'><b>{movie.name}</b></div>
                 <div><>({movie.release})</></div>
-                <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-                    {movie.genres.map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}
+                <div className='flex center flex-wrap'>
+                    {movie.genres.slice(0, 3).map(i => <div className={"genreTag"} key={i.id}>{i.name}</div>)}
                 </div>
                 <div style={{ marginTop: "auto" }}><StarRating value={movie.data.rating} /></div>
             </div>
-            <div style={{ height: "100%" }}>
-                <img className='movieCover' style={{ height: "100%", width: "auto" }} src={movie.imagePath} alt={movie.name} width={880} height={640} />
-            </div>
+            <img className='movieCover h-100 w-auto' src={movie.imagePath} alt={movie.name} width={880} height={640} />
         </div >
     )
 }

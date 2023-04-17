@@ -81,17 +81,17 @@ function ProfileEditForm() {
                         <label>Kép feltötése</label>
                         <input type="file" ref={fileInput} accept="image/*" onChange={i => setImage(i.target.files![0])} hidden />
                     </div>
-                    <img src={previewPath} width={100} height={100} />
+                    <img src={previewPath} className="pfp" />
                 </div>
             </div>
             <div>
                 <label>Fehasználónév</label><br />
-                <input type="text" minLength={5} maxLength={32} autoComplete='username' placeholder='Fehasználónév' required defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
+                <input type="text" pattern='[a-zA-Z0-9]+' title='(csak betű és szám, minimum 5, maximum 32 karakter)' minLength={5} maxLength={32} autoComplete='username' placeholder='Fehasználónév' required defaultValue={user?.name} onChange={i => newUsername.current = i.target.value} />
             </div>
             <div>
                 <label>Jelszó változtatás</label><br />
                 <input type="password" autoComplete='current-password' placeholder='Jelenlegi jelszó' onChange={i => oldPassword.current = i.target.value} />
-                <input type="password" autoComplete='new-password' minLength={8} maxLength={55} placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
+                <input type="password" pattern='\S*' title='(szóköz nélkül, minimum 8, maximum 55 karakter)' autoComplete='new-password' minLength={8} maxLength={55} placeholder='Új jelszó' onChange={i => newPassword.current = i.target.value} />
             </div>
 
             <div>

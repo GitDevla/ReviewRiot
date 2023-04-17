@@ -25,10 +25,10 @@ function UserReviewCard({ review, permsLevel, onDelete = (i: number) => i }: { r
     return (
         <div className={`${style.card} ${style.grid}`} >
             <div className={style.cover}>
-                <img src={review.movie.imagePath} width={50} height={50} alt='Filmkép' />
+                <img className='movieCover' src={review.movie.imagePath} />
             </div>
             <div className={style.info}>
-                <p style={{ margin: "0" }}><>
+                <p className='m-0'><>
                     <Link href={"/movie/" + review.movie.id} >{review.movie.name}</Link> filmet nézte meg {new Date(review.create).toLocaleString()}
                     {
                         (user?.id == review.authorID || permsLevel >= PermissionLevel.moderator) &&

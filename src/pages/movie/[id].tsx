@@ -100,7 +100,7 @@ function MovieFeed() {
         <Layout>
             <Title>{movie?.name} értékelések</Title>
             <div className={`card ${style.movieProfile}`}>
-                <div style={{ whiteSpace: "pre-wrap", lineBreak: "anywhere", wordBreak: "break-word" }}>
+                <div className='overflow-break'>
                     <h2>Név: {movie?.name}</h2>
                     <div>
                         {movie?.data.rank && <p>Top #{movie?.data.rank}</p>}

@@ -1,5 +1,5 @@
-import MovieCardFr2 from '@/component/card/MovieCardFr2';
 import Layout from '@/component/Layout';
+import MovieBar from '@/component/MovieBar';
 import Title from '@/component/Title';
 import { MovieWithDataModel } from '@/interface/MovieWithData';
 import { Fetch } from '@/util/frontend/Fetch';
@@ -26,12 +26,6 @@ function HomePage() {
         getTopMovies();
     }, [])
 
-    function transformScroll(event: any) {
-        event.currentTarget.scrollBy({
-            left: event.deltaY < 0 ? -30 : 30,
-        });
-    }
-
     return (
         <Layout>
             <Title>Főoldal</Title>
@@ -44,19 +38,15 @@ function HomePage() {
                 </div>
                 <div>
                     <h2>Felkapott filmek 🔥</h2>
-                    {hotMovies.length != 0 ? <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "auto", whiteSpace: "nowrap" }} onWheel={transformScroll}>
-                        {hotMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
-                    </div> : <p>Még nincs</p>}
+                    <MovieBar movies={hotMovies} />
                 </div>
                 <div>
                     <h2>Top filmek ⭐</h2>
-                    {topMovies.length != 0 ? <div style={{ display: "flex", width: "100%", padding: "45px", overflowX: "auto", whiteSpace: "nowrap" }} onWheel={transformScroll}>
-                        {topMovies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
-                    </div> : <p>Még nincs</p>}
+                    <MovieBar movies={topMovies} />
                 </div>
-                <footer style={{ textAlign: 'center' }}>
+                <footer className='center'>
                     <p><Link href={"/dev"}>Fejlesztő vagyok</Link> | <Link href={"/docs.pdf"} target={'_blank'}>Dokumentáció</Link> | <Link href={"https://github.com/GitDevla/ReviewRiot"} target={'_blank'}>GitHub</Link></p>
-                    < p > Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
+                    <p> Copyright © 2023 Pataki Dávid Ferenc. Minden jog fenntartva.</p>
                 </footer>
             </div>
         </Layout >

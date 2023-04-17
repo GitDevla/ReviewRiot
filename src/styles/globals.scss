@@ -152,6 +152,8 @@ a {
 .bottom {
     position: absolute !important;
     bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 img {
@@ -180,16 +182,65 @@ img {
     aspect-ratio: 640/880;
 }
 
+.pfp {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.overflow-break {
+    white-space: pre-wrap;
+    line-break: loose;
+    word-break: break-word;
+}
+
+.overflow-hide {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.w-auto {
+    width: auto !important;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+.h-auto {
+    height: auto !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.c-a2 {
+    color: var(--a2);
+}
+
 .flex {
     display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
 }
 
 .center {
     align-items: center;
     align-content: center;
     justify-content: center;
+    text-align: center;
 }
-
 
 .hover {
     position: relative;
@@ -271,9 +322,9 @@ select {
     color: var(--fg);
     background-color: var(--a1);
     padding: 15px;
+    border: 1px solid var(--fg);
     // font-size: 1em;
     max-width: 100%;
-    border: none;
     outline: none;
     border-radius: 5px;
     transition: all .1s ease-in-out;
@@ -309,15 +360,14 @@ h2 {
         font-weight: bold;
         color: var(--a2)
     }
-
-    pre {
-        font-family: consolias;
-        line-height: 1em;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
 }
 
+pre {
+    font-family: consolias;
+    line-height: 1em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
 
 details>summary span.icon {
     width: 24px;

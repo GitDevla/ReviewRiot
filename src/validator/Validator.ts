@@ -35,6 +35,11 @@ class ValidatorMonad {
         throw new BadRequestError(error);
     }
 
+    regex(ex: RegExp, error: string) {
+        if (ex.test(this.value)) return this;
+        throw new BadRequestError(error);
+    }
+
     date(error: string) {
         if (new Date(this.value).toDateString() != "Invalid Date") return this;
         throw new BadRequestError(error);

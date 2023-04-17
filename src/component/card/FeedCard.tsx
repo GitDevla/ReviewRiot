@@ -25,25 +25,28 @@ function FeedCard({ feed, permsLevel, onDelete = (i: number) => i }: { feed: Fee
     return (
         <div className={`${style.card} ${style.grid}`} >
             <div className={`${style.cover}`}>
-                <img src={feed.movie.imagePath} className="movieCove hide_phone" alt='Filmkép' />
+                <img src={feed.movie.imagePath} className="movieCover hide_phone" alt='Filmkép' />
             </div>
             <div className={style.info}>
-                <img className='round' src={feed.author.picturePath} width={50} height={50} alt='Profilkép' />
-                <p style={{ margin: "0", overflow: 'hidden' }}><>
-                    <Link href={"/user/" + feed.author.id}>{feed.author.name}</Link> a <Link href={"/movie/" + feed.movie.id} >{feed.movie.name}</Link> filmet nézte meg {new Date(feed.createDate).toLocaleString()}
-                    {
-                        (user?.id == feed.author.id || permsLevel >= PermissionLevel.moderator) &&
-                        <Bean onClick={handleDelete}>Törlés ❌</Bean>
-                    }</></p>
+                <img className='pfp' src={feed.author.picturePath} width={50} alt='Profilkép' />
+                <p className='m-0'>
+                    <>
+                        <Link href={"/user/" + feed.author.id}>{feed.author.name}</Link> a <Link href={"/movie/" + feed.movie.id} >{feed.movie.name}</Link> filmet nézte meg {new Date(feed.createDate).toLocaleString()}
+                        {
+                            (user?.id == feed.author.id || permsLevel >= PermissionLevel.moderator) &&
+                            <Bean onClick={handleDelete}>Törlés ❌</Bean>
+                        }
+                    </>
+                </p>
                 <div>
                     <StarRating value={feed.rating} />
                 </div>
-
             </div>
-            {feed.description && <div className={style.review}>
-                <b>Vélemény:</b>
-                <p>{feed.description}</p>
-            </div>}
+            {feed.description &&
+                <div className={style.review}>
+                    <b>Vélemény:</b>
+                    <p>{feed.description}</p>
+                </div>}
 
         </div >
     )

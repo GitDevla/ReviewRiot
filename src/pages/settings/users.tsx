@@ -55,7 +55,7 @@ function SettingsProfilePage() {
             <Title>Felhasználók beállításai</Title>
             <SettingsNavbar />
             <ul className={style.list}>
-                {users.map(i => <li style={{ display: "flex", alignItems: "center" }} key={i.id} value={i.id}>
+                {users.map(i => <li key={i.id} value={i.id}>
                     {i.name}:
                     <select style={{ marginLeft: "40px" }} disabled={i.id == loggedIn!.id} defaultValue={i.permissionID} onChange={handleClick} >
                         {perms.map(j =>

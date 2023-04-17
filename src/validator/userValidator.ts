@@ -39,12 +39,14 @@ export const validateUsername = (username: string) =>
     Validate(username)
         .required("Felhasználónév (username) kötelező")
         .string("Felhasználónévnek (username) szöveg típúsúnak kell lennie")
+        .regex(/^[a-zA-Z0-9]+$/, "Felhasználónév (username) csak betűből és számokból állhat")
         .lengthBetween(5, 32, "Felhasználónév (username) hosszának 5 és 32 között kell lennie")
 
 export const validatePassword = (password: string) =>
     Validate(password)
         .required("Jelszó (password) kötelező")
         .string("Jelszó (password) szöveg típúsúnak kell lennie")
+        .regex(/^\S*$/, "Jelszó (password) nem tartalmazhat szóközt")
         .lengthBetween(8, 55, "Jelszó (password) hosszának 8 és 55 között kell lennie")
 
 

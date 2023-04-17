@@ -9,6 +9,7 @@ import SearchSVG from '@/../public/icon/search.svg';
 import SettingsSVG from '@/../public/icon/settings.svg';
 import UserSVG from '@/../public/icon/user.svg';
 import { SafeUserModel } from '@/interface/SafeUserModel'
+import Image from 'next/image';
 
 function Sidebar() {
     const [user, setUser] = useState(null as SafeUserModel | null)
@@ -29,7 +30,7 @@ function Sidebar() {
         <div className='sidebar'>
             <div>
                 <Link href="/home">
-                    <img src="/icon/logo.png" alt="" width={75} className="hide_phone" />
+                    <Image src="/icon/logo.png" alt="Logo" width={75} height={75} className="hide_phone" />
                 </Link>
             </div>
             <nav>
@@ -40,15 +41,14 @@ function Sidebar() {
                     <li className={pathname == "search" ? "active" : ""}><Link href="/search"><SearchSVG /><span>Keresés</span></Link></li>
                     <hr />
                     {user && <li className={pathname == "settings" ? "active" : ""}><Link href="/settings/profile"><SettingsSVG /><span>Beállítások</span></Link></li>}
-                    <li className='bottom' style={{ width: "100%" }}>{!user ?
+                    <li className='bottom w-100'>{!user ?
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={logoutConfirm} className="flex center hover">
                             <div className='hover_inside'>
-                                <p style={{ color: "var(--a2)" }}>❌ Kilépés ❌</p>
+                                <p className='c-a2'>❌ Kilépés ❌</p>
                             </div>
-                            <img className='round'
-                                src={user.picturePath} alt='Profilkép' width={50} height={50} />
-                            <span style={{ overflow: "hidden", textOverflow: 'ellipsis' }}>{user.name}</span>
+                            <img className='pfp' src={user.picturePath} alt='Profilkép' width={50} />
+                            <span className='overflow-hide'>{user.name}</span>
                         </div>
                     }</li>
                 </ul>

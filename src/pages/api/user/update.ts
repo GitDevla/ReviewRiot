@@ -36,7 +36,6 @@ async function userUpdateHandler(
     if (username) validateUsername(username[0]);
     if (password) validatePassword(password[0]);
     if (files.file) validateUserProfilePicture(files.file[0]);
-    console.log({ username, password, description });
 
 
     if (username) await changeUsername(user!, username[0]);
