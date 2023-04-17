@@ -30,7 +30,7 @@ function Sidebar() {
         <div className='sidebar'>
             <div>
                 <Link href="/home">
-                    <Image src="/icon/logo.png" alt="Logo" width={75} height={75} className="hide_phone" />
+                    <Image priority src="/icon/logo.png" alt="Logo" width={75} height={75} className="hide_phone" />
                 </Link>
             </div>
             <nav>
