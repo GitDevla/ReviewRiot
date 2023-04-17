@@ -102,7 +102,7 @@ function UserFeed() {
                     <p><b>Leírás</b>: {!user.description && "Nincs"}</p>
                     <p>{user.description}</p>
                 </div>
-                <img className='round' src={user.picturePath} alt="Profilkép" />
+                <img className='round' style={{ aspectRatio: "1/1" }} src={user.picturePath} alt="Profilkép" />
             </div>
 
             <div>

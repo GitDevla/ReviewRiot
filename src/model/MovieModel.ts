@@ -6,10 +6,10 @@ export class MovieModel {
     //#region Properties
     public static readonly defaultCoverImage = "default.jpg";
     public readonly id: number;
-    public readonly name: string;
-    public readonly release: Date;
-    public readonly imagePath: string;
-    public readonly genres: GenreModel[];
+    public name: string;
+    public release: Date;
+    public imagePath: string;
+    public genres: GenreModel[];
 
     constructor(dbRes: any) {
         const { id, name, release_date, image_path, genres } = dbRes;

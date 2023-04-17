@@ -43,21 +43,24 @@ export const changeProfilePicture = async (user: UserModel, path: string) => {
     if (filename != UserModel.defaultProfilePicture)
         Filesystem.remove("user/" + filename!);
     const newFile = await Filesystem.saveImage(path, "user");
-    user.update({ picture_path: newFile });
+    await user.update({ picture_path: newFile });
+    user.picturePath = "/image/user/" + newFile;
 }
 
 export const changeUsername = async (user: UserModel, newName: string) => {
     const userWithSameName = await UserModel.getWithName(newName);
     if (userWithSameName) throw new ConflictError("Ez a felhasználónév már létezik");
-    user.update({ username: newName });
+    await user.update({ username: newName });
+    user.name = newName;
 }
 
 export const changePassword = async (user: UserModel, newPassword: string) => {
-    user.update({ password: newPassword });
+    await user.update({ password: newPassword });
 }
 
 export const changeDescription = async (user: UserModel, newDescription: string) => {
-    user.update({ description: newDescription });
+    await user.update({ description: newDescription });
+    user.description = newDescription;
 }
 
 export const changeUserPermission = async (userID: number, permID: number) => {

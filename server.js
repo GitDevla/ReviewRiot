@@ -12,7 +12,13 @@ app.prepare().then(() => {
     server.use("/image", express.static(__dirname + "/public/image"));
 
     server.all('*', (req, res) => {
-        return handle(req, res)
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        const ip = req.headers["x-real-ip"] || req.connection.remoteAddress;
+        console.log(`${dateTime} ${ip}: ${req.path}`);
+        return handle(req, res);
     })
 
     server.listen(port, (err) => {

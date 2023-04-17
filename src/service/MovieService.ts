@@ -72,7 +72,8 @@ export const updateMovieCoverPhoto = async (movieID: number, path: string) => {
     if (filename != MovieModel.defaultCoverImage)
         Filesystem.remove("movie/" + filename!);
     const newFile = await Filesystem.saveImage(path, "movie");
-    movie.update({ image_path: newFile });
+    await movie.update({ image_path: newFile });
+    movie.imagePath = "/image/movie/" + newFile;
 }
 
 export const updateMovieName = async (movieID: number, newName: string) => {
@@ -81,13 +82,15 @@ export const updateMovieName = async (movieID: number, newName: string) => {
 
     const movieWithSameName = await MovieModel.getWithName(newName);
     if (movieWithSameName) throw new ConflictError("Ez a film már létezik");
-    movie.update({ name: newName });
+    await movie.update({ name: newName });
+    movie.name = newName;
 }
 
 export const updateMovieRelease = async (movieID: number, newRelease: Date) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
-    movie.update({ release: newRelease });
+    await movie.update({ release: newRelease });
+    movie.release = newRelease;
 }
 
 export const updateMovieGenres = async (movieID: number, genres: number[]) => {

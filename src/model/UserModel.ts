@@ -7,10 +7,10 @@ export class UserModel {
     //#region Properties
     public static readonly defaultProfilePicture = "default.webp";
     public readonly id: number;
-    public readonly name: string;
+    public name: string;
     public readonly created: Date;
-    public readonly description: string;
-    public readonly picturePath: string;
+    public description: string;
+    public picturePath: string;
     public readonly permissionID: number;
 
     constructor(dbRes: any) {
