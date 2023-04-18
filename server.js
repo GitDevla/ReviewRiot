@@ -9,7 +9,7 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
     const server = express()
 
-    server.use("/image", express.static(__dirname + "/public/image"));
+    server.use("/image", express.static(__dirname + "/public/image", { maxAge: '1d' }));
 
     server.all('*', (req, res) => {
         var today = new Date();

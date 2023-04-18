@@ -20,6 +20,7 @@ function MoviesPage() {
     const sort = useRef("name");
     const filterName = useRef("");
     const filterGenre = useRef([] as GenreModel[]);
+    const maxPerPage = 20;
 
     useEffect(() => {
         fetchMovies()
@@ -34,9 +35,9 @@ function MoviesPage() {
     async function fetchMovies() {
         setLoading(true);
         const genreFilter = filterGenre.current.map(i => i.id);
-        const response = await Fetch.GET(`/api/movie?page=${page.current}&max=30&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
+        const response = await Fetch.GET(`/api/movie?page=${page.current}&max=${maxPerPage}&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
-        if (data.movies.length < 30) window.removeEventListener('scroll', handleScrollMovie);
+        if (data.movies.length < maxPerPage) window.removeEventListener('scroll', handleScrollMovie);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
         setLoading(false);
         flag.current = true;
