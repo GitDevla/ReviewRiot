@@ -59,8 +59,7 @@ export const listMovies = async (page: number, max: number, order: string, filte
             movies = await MovieModel.listByHot(page, max, { name: filterName, genres: filterGenres });
             break;
     }
-    movies = await AsyncMap(movies, async (i: MovieWithDataModel) => { i.data = await i.getData(); return i })
-    return movies;
+    return AsyncMap(movies, async (i: MovieWithDataModel) => { i.data = await i.getData(); return i })
 }
 //#endregion
 

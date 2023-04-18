@@ -10,7 +10,7 @@ function MovieBar({ movies }: { movies: MovieWithDataModel[] }) {
     }
     return (
         movies.length != 0 ?
-            <div className='flex w-100' style={{ padding: "45px", overflowX: "auto", whiteSpace: "nowrap" }} onWheel={transformScroll}>
+            <div className='flex w-100 overflow-hide' style={{ padding: "45px", overflowX: "auto" }} onWheel={transformScroll}>
                 {movies.map(i => <div key={i.id} style={{ height: "200px", margin: "0 20px" }}><MovieCardFr2 movie={i} /></div>)}
             </div> :
             <p>Még nincs</p>

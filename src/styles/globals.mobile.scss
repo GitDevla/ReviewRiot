@@ -13,9 +13,13 @@ $medium: 900px;
         display: none;
     }
 
+    .layout {
+        padding: 0;
+    }
+
     .content {
         margin-bottom: 150px;
-        padding: 0;
+        padding: 0 15px !important;
     }
 
     .sidebar {
@@ -68,5 +72,9 @@ $medium: 900px;
             position: relative !important;
         }
 
+    }
+
+    textarea {
+        width: 100% !important;
     }
 }

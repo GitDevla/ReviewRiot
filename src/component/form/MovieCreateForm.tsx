@@ -85,7 +85,7 @@ function MovieCreateForm() {
 
     return (
         <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
-            <div style={{ float: "right", width: "18%", aspectRatio: "640/880" }}>
+            <div className='image_change movieCover'>
                 <label>Boritókép</label><br />
                 <div className={style.image_change} onClick={() => fileInput.current?.click()}>
                     <div className={style.hover_inside}>

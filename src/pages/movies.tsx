@@ -20,9 +20,21 @@ function MoviesPage() {
     const sort = useRef("name");
     const filterName = useRef("");
     const filterGenre = useRef([] as GenreModel[]);
-    const maxPerPage = 20;
+    let maxPerPage = useRef(0)
 
     useEffect(() => {
+        function optimalPerPage() {
+            const width = document.getElementsByClassName("content")[0].clientWidth;
+            const height = window.innerHeight;
+            const max = width * 0.15;
+            const min = 150;
+            const cardwidth = (max < min ? min : max) + 30;
+            const cardHeight = cardwidth / 640 * 880;
+            const perRow = width / cardwidth;
+            const perCol = height / cardHeight;
+            return Math.floor(perRow * perCol);
+        }
+        maxPerPage.current = optimalPerPage();
         fetchMovies()
         window.addEventListener('scroll', handleScrollMovie);
 
@@ -35,9 +47,9 @@ function MoviesPage() {
     async function fetchMovies() {
         setLoading(true);
         const genreFilter = filterGenre.current.map(i => i.id);
-        const response = await Fetch.GET(`/api/movie?page=${page.current}&max=${maxPerPage}&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
+        const response = await Fetch.GET(`/api/movie?page=${page.current}&max=${maxPerPage.current}&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
-        if (data.movies.length < maxPerPage) window.removeEventListener('scroll', handleScrollMovie);
+        if (data.movies.length < maxPerPage.current) window.removeEventListener('scroll', handleScrollMovie);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
         setLoading(false);
         flag.current = true;
@@ -46,6 +58,7 @@ function MoviesPage() {
 
     function handleScrollMovie() {
         const offset = 900;
+
         if (
             window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
         ) {
@@ -89,7 +102,7 @@ function MoviesPage() {
         <Layout>
             <Title>Filmek</Title>
             <div>
-                <div style={{ display: "grid", gridTemplateColumns: 'repeat(3,1fr)' }}>
+                <div className='grid grid-col-3'>
                     <span className={style.filter}>
                         <label>Rendezés</label><br />
                         <select name="sort" onChange={handleSortChange}>
@@ -110,14 +123,14 @@ function MoviesPage() {
                         <GenreSelector onValueChange={handleGenreAdd} />
                     </span>
                 </div>
-                <div style={{ minHeight: "2.5rem", padding: "auto" }}>
+                <div style={{ minHeight: "2.5rem" }}>
                     <span>Filterek:</span>
                     {(!genres.length && !filterName.current) && "Nincs"}
                     {genres.map(i => <Bean onClick={() => handleGenreRemove(i.id)} key={i.id}>Műfaj: {i.name} ❌</Bean>)}
                     {filterName.current && <Bean onClick={() => handleNameRemove()}>Név: {filterName.current} ❌</Bean>}
                 </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 15% ))', gap: "30px", justifyContent: "space-evenly" }}>
+            <div className='movie_grid'>
                 {movies.map(i => <MovieCard key={i.id} movie={i} />)}
                 {loading && <div>Loading...</div>}
             </div >

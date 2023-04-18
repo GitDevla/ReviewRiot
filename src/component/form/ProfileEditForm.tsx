@@ -74,7 +74,7 @@ function ProfileEditForm() {
 
     return (
         <form className={style.form} onSubmit={handleSubmit} encType="multipart/form-data">
-            <div style={{ float: "right", width: "18%", aspectRatio: "1" }}>
+            <div className='image_change pfp'>
                 <label>Profilkép</label><br />
                 <div className={`${style.image_change} round`} onClick={() => fileInput.current?.click()}>
                     <div className={style.hover_inside}>
