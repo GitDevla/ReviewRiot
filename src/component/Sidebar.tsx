@@ -9,7 +9,6 @@ import SearchSVG from '@/../public/icon/search.svg';
 import SettingsSVG from '@/../public/icon/settings.svg';
 import UserSVG from '@/../public/icon/user.svg';
 import { SafeUserModel } from '@/interface/SafeUserModel'
-import Image from 'next/image';
 
 function Sidebar() {
     const [user, setUser] = useState(null as SafeUserModel | null)
@@ -30,7 +29,7 @@ function Sidebar() {
         <div className='sidebar'>
             <div>
                 <Link href="/home">
-                    <Image priority src="/icon/logo.png" alt="Logo" width={75} height={75} className="hide_phone" />
+                    <img src="/icon/logo.png" alt="Logo" width={75} height={75} className="hide_phone" />
                 </Link>
             </div>
             <nav>

@@ -10,13 +10,16 @@ type searchModel = { id: number, name: string, picture: string, type: string }
 function SearchPage() {
     const [result, setResult] = useState([] as searchModel[])
     const inputValue = useRef("");
+    const [loading, setLoading] = useState(true);
 
     async function query() {
+        setLoading(true);
         const res = await Fetch.GET("/api/search?name=" + inputValue.current);
         let sorted = await res.json() as searchModel[];
         if (inputValue.current != "")
             sorted = sorted.sort((a, b) => compareNames(a, b, inputValue.current));
         setResult(sorted);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -28,13 +31,15 @@ function SearchPage() {
             <Title>Keresés</Title>
             <div className={style.filter}>
                 <label>Név</label><br />
-                <RateLimitedInput value={inputValue} timeout={300} onChange={query} />
+                <RateLimitedInput value={inputValue} timeout={225} onChange={query} />
             </div>
             <ul className={style.list}>
                 {result.map((i, id) => {
                     return <Link key={id} href={`/${i.type}/${i.id}`}>{i.type == "movie" ? "Film" : "Felhasználó"}: {i.name}</Link>
                 })}
             </ul>
+            {loading && <p className='error'>Töltés...</p>}
+            {(!loading && result.length == 0) && <p className='error'>Nincs ilyen találat</p>}
         </Layout >
     )
 }

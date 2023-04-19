@@ -1,19 +1,20 @@
-import Layout from '@/component/Layout';
-import { Fetch } from '@/util/frontend/Fetch';
-import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState } from 'react'
-import Title from '@/component/Title';
+import Bean from '@/component/Bean';
 import MovieReviewCard from '@/component/card/MovieReviewCard';
-import style from "@/styles/movieProfile.module.scss"
-
-import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
 import ReviewFormForMovie from '@/component/form/ReviewFormForMovie';
-import { MovieWithDataModel } from '@/interface/MovieWithData';
 import StarRating from '@/component/input/StarRating';
+import Layout from '@/component/Layout';
+import Title from '@/component/Title';
+import { MovieWithDataModel } from '@/interface/MovieWithData';
+import { ReviewWithUserModel } from '@/interface/ReviewWithUser';
+import style from "@/styles/movieProfile.module.scss";
+import { Fetch } from '@/util/frontend/Fetch';
 import { getUserPermission } from '@/util/frontend/isAdmin';
+import { ScrollEventGen } from '@/util/frontend/ScrollEvent';
+import { useLoading } from '@/util/frontend/useLoading';
 import { PermissionLevel } from '@/util/PermissionLevels';
 import Link from 'next/link';
-import Bean from '@/component/Bean';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
 function MovieFeed() {
     const { query: { id } } = useRouter();
@@ -21,9 +22,8 @@ function MovieFeed() {
     const [reviews, setReviews] = useState([] as ReviewWithUserModel[]);
     const [permLevel, setPermLevel] = useState(-1);
 
-    const [loading, setLoading] = useState(false);
+    const load = useLoading();
     const page = useRef(0);
-    const flag = useRef(true);
 
     async function getNewReviews() {
         const res = await Fetch.GET(`/api/movie/${id}?page=0&max=5`);
@@ -70,27 +70,16 @@ function MovieFeed() {
     }, [id])
 
     async function fetchReviews() {
-        setLoading(true);
+        load.start();
         const response = await Fetch.GET(`/api/movie/${id}?page=${page.current}&max=5`);
         const data = await response.json();
         if (data.reviews.length < 5) window.removeEventListener('scroll', handleScrollMovieReviews);
         setReviews((prevReviews) => [...prevReviews, ...(data.reviews)]);
-        setLoading(false);
-        flag.current = true;
-        page.current += 1;
+        load.stop();
+        page.current++;
     }
 
-    function handleScrollMovieReviews() {
-        const offset = 900;
-        if (
-            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
-        ) {
-            if (flag.current && !loading) {
-                flag.current = false;
-                fetchReviews();
-            }
-        }
-    }
+    const handleScrollMovieReviews = ScrollEventGen(load.ref, fetchReviews);
 
     async function handeDelete(id: number) {
         setReviews((prevReviews) => prevReviews.filter(i => i.id != id));
@@ -118,9 +107,10 @@ function MovieFeed() {
             <div>
                 <h2>Vélemények</h2>
                 {(movie && permLevel != -1) && <ReviewFormForMovie onSubmit={getNewReviews} movie={movie} />}
-                {reviews.length == 0 && <p>Még nincs értékelés ezen a filmen, legyél te az első!</p>}
                 {reviews.map(i => <MovieReviewCard onDelete={handeDelete} key={i.id} review={i} permsLevel={permLevel} />)}
             </div>
+            {load.state && <p className='error'>Töltés...</p>}
+            {(!load.state && reviews.length == 0) && <p className='error'>Még nincs értékelés ezen a filmen, legyél te az első!</p>}
         </Layout >
     )
 }

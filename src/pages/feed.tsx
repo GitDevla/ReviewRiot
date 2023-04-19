@@ -8,7 +8,8 @@ import ReviewForm from '@/component/form/ReviewForm';
 import { getLoggedIn } from '@/util/frontend/getLoggedIn';
 import { PermissionLevel } from '@/util/PermissionLevels';
 import Title from '@/component/Title';
-
+import { ScrollEventGen } from '@/util/frontend/ScrollEvent';
+import { useLoading } from '@/util/frontend/useLoading';
 
 function FeedPage() {
     const [permissionLevel, setPermissionLevel] = useState(PermissionLevel.user)
@@ -16,10 +17,9 @@ function FeedPage() {
     const interval = useRef(null as any);
     const cd = 10000;
 
-    const [loading, setLoading] = useState(false);
-    const page = useRef(0);
-    const flag = useRef(true);
+    const load = useLoading();
     const offset = useRef(0);
+    const page = useRef(0);
     const perPage = 1;
 
     async function getNewFeed() {
@@ -49,29 +49,17 @@ function FeedPage() {
         }))
     }
 
-
     async function fetchscrollFeed() {
-        setLoading(true);
+        load.start();
         const response = await fetch(`/api/feed?page=${page.current + Math.ceil(offset.current / perPage)}&max=${perPage}`);
         const data = await response.json();
         if (data.feed.length < perPage) window.removeEventListener('scroll', handleScrollFeed);
         setFeed((prevFeed) => [...prevFeed, ...(data.feed)]);
-        setLoading(false);
-        flag.current = true;
-        page.current += 1;
+        load.stop();
+        page.current++;
     }
 
-    function handleScrollFeed() {
-        const offset = 900;
-        if (
-            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
-        ) {
-            if (flag.current && !loading) {
-                flag.current = false;
-                fetchscrollFeed();
-            }
-        }
-    }
+    const handleScrollFeed = ScrollEventGen(load.ref, fetchscrollFeed);
 
     useEffect(() => {
         async function getPerms() {
@@ -87,6 +75,7 @@ function FeedPage() {
                 getPerms();
             })
             .then(() => {
+                load.stop();
                 interval.current = setInterval(getNewFeed, cd)
                 window.addEventListener('scroll', handleScrollFeed);
             })
@@ -108,10 +97,10 @@ function FeedPage() {
                 <ReviewForm onSubmit={getNewFeed} />
             </div>
             <div id='feed'>
-                {feed.length == 0 && <p>Nincs semmilyen értéklés 🤔, próbáljunk meg bekövetni másokat!</p>}
                 {feed.map(i => <FeedCard onDelete={handeDelete} feed={i} key={i.id} permsLevel={permissionLevel} />)}
-                {loading && <div>Töltés...</div>}
             </div>
+            {(!load.state && feed.length == 0) && <p className='error'>Nincs semmilyen értéklés 🤔, próbáljunk meg bekövetni másokat!</p>}
+            {load.state && <p className='error'>Töltés...</p>}
         </Layout>
     )
 }

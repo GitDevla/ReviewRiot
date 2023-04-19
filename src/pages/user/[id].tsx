@@ -9,6 +9,8 @@ import UserReviewCard from '@/component/card/UserReviewCard';
 import { ReviewWithMovieModel } from '@/interface/ReviewWithMovie';
 import { SafeUserModel } from '@/interface/SafeUserModel';
 import style from "@/styles/movieProfile.module.scss"
+import { ScrollEventGen } from '@/util/frontend/ScrollEvent';
+import { useLoading } from '@/util/frontend/useLoading';
 
 function UserFeed() {
     const { query: { id } } = useRouter();
@@ -18,9 +20,8 @@ function UserFeed() {
     const [isFollowed, setIsFollowed] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+    const load = useLoading();
     const page = useRef(0);
-    const flag = useRef(true);
 
     useEffect(() => {
         if (!id) return;
@@ -48,27 +49,16 @@ function UserFeed() {
 
 
     async function fetchReviews() {
-        setLoading(true);
+        load.start();
         const response = await Fetch.GET(`/api/user/${id}?page=${page.current}&max=5`);
         const data = await response.json();
         if (data.reviews.length < 5) window.removeEventListener('scroll', handleScrollUserReview);
         setReviews((prevReviews) => [...prevReviews, ...(data.reviews)]);
-        setLoading(false);
-        flag.current = true;
+        load.stop();
         page.current += 1;
     }
 
-    function handleScrollUserReview() {
-        const offset = 900;
-        if (
-            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
-        ) {
-            if (flag.current && !loading) {
-                flag.current = false;
-                fetchReviews();
-            }
-        }
-    }
+    const handleScrollUserReview = ScrollEventGen(load.ref, fetchReviews);
 
     async function handleFollow() {
         const res = await Fetch.POST("/api/user/follow", { whom: user.id });
@@ -106,9 +96,10 @@ function UserFeed() {
             </div>
             <div>
                 <h2>Vélemények</h2>
-                {reviews.length == 0 && <p>Ennek a felhasználónak még nincs értékelése!</p>}
                 {reviews.map(i => <UserReviewCard onDelete={handeDelete} key={i.id} review={i} permsLevel={-1} />)}
             </div>
+            {(!load.state && reviews.length == 0) && <p className='error'>Ennek a felhasználónak még nincs értékelése!</p>}
+            {load.state && <p className='error'>Töltés...</p>}
         </Layout >
     )
 }

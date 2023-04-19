@@ -9,18 +9,21 @@ import { MovieWithDataModel } from '@/interface/MovieWithData';
 import style from "@/styles/prettyList.module.scss";
 import Bean from '@/component/Bean';
 import { Fetch } from '@/util/frontend/Fetch';
+import { ScrollEventGen } from '@/util/frontend/ScrollEvent';
+import { useLoading } from '@/util/frontend/useLoading';
+
 
 function MoviesPage() {
     const [movies, setMovies] = useState([] as MovieWithDataModel[]);
-    const [loading, setLoading] = useState(false);
     const [genres, setGenres] = useState([] as GenreModel[])
-    const page = useRef(0);
-    const flag = useRef(true);
 
     const sort = useRef("name");
     const filterName = useRef("");
     const filterGenre = useRef([] as GenreModel[]);
-    let maxPerPage = useRef(0)
+
+    const load = useLoading();
+    const maxPerPage = useRef(0);
+    const page = useRef(0);
 
     useEffect(() => {
         function optimalPerPage() {
@@ -39,7 +42,6 @@ function MoviesPage() {
             () => window.addEventListener('scroll', handleScrollMovie)
         );
 
-
         return () => {
             window.removeEventListener('scroll', handleScrollMovie);
         };
@@ -47,29 +49,17 @@ function MoviesPage() {
 
 
     async function fetchMovies() {
-        setLoading(true);
+        load.start();
         const genreFilter = filterGenre.current.map(i => i.id);
         const response = await Fetch.GET(`/api/movie?page=${page.current}&max=${maxPerPage.current}&order=${sort.current}&filterName=${filterName.current}&filterGenres=${genreFilter}`);
         const data = await response.json();
         if (data.movies.length < maxPerPage.current) window.removeEventListener('scroll', handleScrollMovie);
         setMovies((prevMovies) => [...prevMovies, ...(data.movies)]);
-        setLoading(false);
-        flag.current = true;
-        page.current += 1;
+        load.stop();
+        page.current++;
     }
 
-    function handleScrollMovie() {
-        const offset = 900;
-
-        if (
-            window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - offset
-        ) {
-            if (flag.current && !loading) {
-                flag.current = false;
-                fetchMovies();
-            }
-        }
-    }
+    const handleScrollMovie = ScrollEventGen(load.ref, fetchMovies);
 
     async function handleFilterChange() {
         setMovies([]);
@@ -118,7 +108,7 @@ function MoviesPage() {
                     </span>
                     <span className={style.filter}>
                         <label>Név</label><br />
-                        <RateLimitedInput value={filterName} timeout={300} onChange={handleFilterChange} />
+                        <RateLimitedInput value={filterName} timeout={225} onChange={handleFilterChange} />
                     </span>
                     <span className={style.filter}>
                         <label>Műfajok </label><br />
@@ -134,10 +124,10 @@ function MoviesPage() {
             </div>
             <div className='movie_grid'>
                 {movies.map(i => <MovieCard key={i.id} movie={i} />)}
-                {loading && <div>Loading...</div>}
             </div >
+            {load.state && <p className='error'>Töltés...</p>}
+            {(!load.state && movies.length == 0) && <p className='error'>Sajnos nincs ilyen film</p>}
         </Layout>
-
     );
 }
 
