@@ -35,8 +35,10 @@ function MoviesPage() {
             return Math.floor(perRow * perCol);
         }
         maxPerPage.current = optimalPerPage();
-        fetchMovies()
-        window.addEventListener('scroll', handleScrollMovie);
+        fetchMovies().then(
+            () => window.addEventListener('scroll', handleScrollMovie)
+        );
+
 
         return () => {
             window.removeEventListener('scroll', handleScrollMovie);

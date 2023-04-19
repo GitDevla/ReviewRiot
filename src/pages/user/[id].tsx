@@ -26,19 +26,19 @@ function UserFeed() {
         if (!id) return;
         async function fetchUser() {
             const loggedIn = await tryGetLoggedIn();
-            const res = await Fetch.GET(`/api/user/${id}?page=${page.current}&max=5`);
+            const res = await Fetch.GET(`/api/user/${id}?page=0&max=0`);
             const json = await res.json();
             setIsLoggedIn(loggedIn != null);
             setUser(json.user)
-            setReviews(json.reviews)
             setOwnProfile(json.user.name == loggedIn?.name)
             const res2 = await Fetch.GET("/api/user/follow?id=" + id)
             const json2 = await res2.json();
             setIsFollowed(json2.exists);
-            page.current++;
         }
         fetchUser();
-        window.addEventListener('scroll', handleScrollUserReview);
+        fetchReviews().then(
+            () => window.addEventListener('scroll', handleScrollUserReview)
+        );
 
         return () => {
             window.removeEventListener('scroll', handleScrollUserReview);

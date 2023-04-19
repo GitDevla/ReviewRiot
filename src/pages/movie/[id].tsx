@@ -52,24 +52,24 @@ function MovieFeed() {
     useEffect(() => {
         if (!id) return;
         async function getMovie() {
-            const res = await Fetch.GET(`/api/movie/${id}?page=${page.current}&max=5`);
+            const res = await Fetch.GET(`/api/movie/${id}?page=0&max=0`);
             const json = await res.json();
-            setMovie(json.movie)
-            setReviews(json.reviews);
-            page.current++;
+            setMovie(json.movie);
         }
         async function getUser() {
             setPermLevel(await getUserPermission())
         }
         getUser();
         getMovie();
-        window.addEventListener('scroll', handleScrollMovieReviews);
+        fetchReviews()
+            .then(() => window.addEventListener('scroll', handleScrollMovieReviews));
+
         return () => {
             window.removeEventListener('scroll', handleScrollMovieReviews);
         };
     }, [id])
 
-    async function fetchMovies() {
+    async function fetchReviews() {
         setLoading(true);
         const response = await Fetch.GET(`/api/movie/${id}?page=${page.current}&max=5`);
         const data = await response.json();
@@ -87,7 +87,7 @@ function MovieFeed() {
         ) {
             if (flag.current && !loading) {
                 flag.current = false;
-                fetchMovies();
+                fetchReviews();
             }
         }
     }
