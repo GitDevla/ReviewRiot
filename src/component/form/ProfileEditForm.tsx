@@ -83,6 +83,7 @@ function ProfileEditForm() {
                     </div>
                     <img src={previewPath} className="pfp" />
                 </div>
+                <p className='m-0'>Maximum méret: 1 Mb<br />Ajánlott felbontás: 400 x 400 px</p>
             </div>
             <div>
                 <label>Fehasználónév</label><br />

@@ -94,6 +94,7 @@ function MovieCreateForm() {
                     </div>
                     <img src={previewPath} width={640} height={880} />
                 </div>
+                <p className='m-0'>Maximum méret: 2 Mb<br />Ajánlott felbontás: 640 x 880 px</p>
             </div>
             <div>
                 <label>Név: </label><br />

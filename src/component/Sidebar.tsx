@@ -44,7 +44,7 @@ function Sidebar() {
                         <div><Link href="/auth"><UserSVG /><span>Bejelentkezés</span></Link></div> :
                         <div onClick={logoutConfirm} className="flex center hover">
                             <div className='hover_inside'>
-                                <p className='c-a2'>❌ Kilépés ❌</p>
+                                <p className='c-a2 hide_phone'>❌ Kilépés ❌</p>
                             </div>
                             <img className='pfp' src={user.picturePath} alt='Profilkép' width={50} />
                             <span className='overflow-hide'>{user.name}</span>

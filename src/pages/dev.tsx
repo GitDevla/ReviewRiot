@@ -470,7 +470,80 @@ function DevPage() {
                     <div>
                         <h3>GET /user/[id]</h3>
                         <div className='card'>
-                            <p>TODOOOOOOOO</p>
+                            <p>Egy felhasználó lekérése és értékeléseinek listázása</p>
+                            <p><b>Paraméterek</b>:</p>
+                            <ul>
+                                <li><b>page</b>: oldal száma (alapból:0)</li>
+                                <li><b>max</b>: egy oldalon mennyi értékelés legyen (alapból:20) (-1 megadása esetén mindent kiír)</li>
+                            </ul>
+                            <p><b>Válasz</b>: Komplex objektum</p>
+                            <pre>
+                                {format({
+                                    "user": {
+                                        "id": "ID",
+                                        "name": "Felhasználónév",
+                                        "created": "Létrehozás dátuma",
+                                        "description": "Leírás",
+                                        "picturePath": "Profilkép",
+                                    },
+                                    "reviews": [
+                                        {
+                                            "id": "ID",
+                                            "movieID": "Film ID",
+                                            "rating": "Értékelés",
+                                            "description": "Vélemény",
+                                            "create": "Létrehozás dátuma",
+                                            "movie": {
+                                                "id": "Film ID",
+                                                "name": "Film név",
+                                                "release": "Film kijövetelének éve",
+                                                "genres": ["Műfajok"],
+                                                "imagePath": "Filmborító"
+                                            }
+                                        }
+                                    ]
+                                })}
+                            </pre>
+                            <p><b>Példa:</b></p>
+                            <div className='code'>
+                                <span>/api/user/1?page=0&max=1</span>
+                                <pre>{
+                                    format({
+                                        "user": {
+                                            "id": 1,
+                                            "name": "admin",
+                                            "created": "2023-02-19T23:00:00.000Z",
+                                            "description": null,
+                                            "picturePath": "/image/user/default.webp",
+                                        },
+                                        "reviews": [
+                                            {
+                                                "id": 1,
+                                                "movieID": 321,
+                                                "rating": 5,
+                                                "description": null,
+                                                "create": "2023-04-21T16:42:00.000Z",
+                                                "movie": {
+                                                    "id": 321,
+                                                    "name": "80 for Brady",
+                                                    "release": 2023,
+                                                    "genres": [
+                                                        {
+                                                            "id": "2",
+                                                            "name": "Vígjáték"
+                                                        },
+                                                        {
+                                                            "id": "3",
+                                                            "name": "Dráma"
+                                                        }
+                                                    ],
+                                                    "imagePath": "/image/movie/c9bec61a-a540-4f39-95da-e577aeb18619.jpg"
+                                                }
+                                            }
+                                        ]
+                                    })}
+                                </pre>
+                            </div>
                         </div>
                     </div>
                     <div>
