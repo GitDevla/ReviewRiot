@@ -1,4 +1,4 @@
-## Telepítés
-A `scripts` mappában találhatóak a telepítéshez és inditáshoz való programok
+# ReviewRiot
+2023 záródolgozatom forráskódja.
 
-[http://localhost:3000](http://localhost:3000)-on érhető el
+Dokumentáció a [docs](https://github.com/GitDevla/ReviewRiot/tree/docs) ágban vagy a [honlapon](http://reviewriot.devla.xyz/docs.pdf) található.

@@ -48,10 +48,10 @@ function ProfileEditForm() {
 
             body.append("file", newImage.current);
         }
-        if (newDescription.current) {
+        if (newDescription.current && newDescription.current != user.description) {
             body.append("description", newDescription.current);
         }
-        if (newUsername.current) {
+        if (newUsername.current && newUsername.current != user.name) {
             validateUsername(newUsername.current);
             body.append("username", newUsername.current);
         }

@@ -36,6 +36,6 @@ export class GenreModel {
 const SQL = {
     INSERT_movID_genID: `INSERT INTO movie_genre (movie_id, genre_id) VALUES (?, ?)`,
     SELECT_ID: `SELECT * FROM genre where id = ?`,
-    LIST: `SELECT * FROM genre`,
+    LIST: `SELECT * FROM genre ORDER BY name`,
     DELETE: `DELETE FROM movie_genre WHERE movie_id = ?`
 }

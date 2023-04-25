@@ -64,10 +64,10 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
             body.append("genres", i.id.toString())
         });
 
-        if (newRelease.current) {
+        if (newRelease.current && parseInt(newRelease.current) != movie.release.getFullYear()) {
             body.append("release", newRelease.current);
         }
-        if (newName.current) {
+        if (newName.current && newName.current != movie.name) {
             body.append("name", newName.current);
         }
         const res = await fetch(`/api/movie/${movie.id}/update`, {
