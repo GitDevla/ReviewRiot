@@ -7,7 +7,7 @@ export class MovieModel {
     public static readonly defaultCoverImage = "default.jpg";
     public readonly id: number;
     public name: string;
-    public release: Date;
+    public release: number;
     public imagePath: string;
     public genres: GenreModel[];
 

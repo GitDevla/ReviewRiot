@@ -85,7 +85,7 @@ export const updateMovieName = async (movieID: number, newName: string) => {
     movie.name = newName;
 }
 
-export const updateMovieRelease = async (movieID: number, newRelease: Date) => {
+export const updateMovieRelease = async (movieID: number, newRelease: number) => {
     const movie = await MovieModel.getWithID(movieID);
     if (!movie) throw new NotFoundError("Ez a film nem létezik");
     await movie.update({ release: newRelease });

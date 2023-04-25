@@ -64,7 +64,7 @@ function MovieEditForm({ movie }: { movie: MovieModel }) {
             body.append("genres", i.id.toString())
         });
 
-        if (newRelease.current && parseInt(newRelease.current) != movie.release.getFullYear()) {
+        if (newRelease.current && parseInt(newRelease.current) != movie.release) {
             body.append("release", newRelease.current);
         }
         if (newName.current && newName.current != movie.name) {
