@@ -9,6 +9,7 @@ app.prepare().then(() => {
     const server = express()
 
     server.use("/image", express.static(__dirname + "/public/image", { maxAge: '1d' }));
+    server.use("/icon", express.static(__dirname + "/public/icon", { maxAge: '1y' }));
 
     server.all('*', (req, res) => {
         var today = new Date();
@@ -16,7 +17,7 @@ app.prepare().then(() => {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
         const ip = req.headers["x-real-ip"] || req.connection.remoteAddress;
-        console.log(`${dateTime} ${ip}: ${req.path}`);
+        console.log(`${dateTime} ${ip}: ${req.method} ${req.path}`);
         return handle(req, res);
     })
 
