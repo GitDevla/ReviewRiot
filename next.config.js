@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    databaseHost: "127.0.0.1",
+   env: {
+    databaseHost: "db",
     databaseUser: "root",
-    databasePassword: "",
+    databasePassword: "password",
     databaseDatabase: "reviewriot"
   },
 
