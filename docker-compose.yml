@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=password
+    networks:
+      - database
+    volumes:
+      - "./db:/var/lib/mysql"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - database
+    volumes:
+      - "./public/image:/app/public/image"
+    depends_on:
+      - db
+
+networks:
+  database:

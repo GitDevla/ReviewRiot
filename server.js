@@ -1,5 +1,19 @@
 const express = require('express')
 const next = require('next')
+const fs = require('fs');
+const crypto = require('crypto');
+
+async function generateSecret(name, strength = 32) {
+    console.log("Generating " + name + " secret");
+    const secret = crypto.randomBytes(strength).toString('hex');
+    fs.appendFileSync(".env.local", `${name}=${secret}`);
+}
+
+if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
+    process.on('SIGTERM', () => process.exit(0))
+    process.on('SIGINT', () => process.exit(0))
+}
+if (!process.env.JWT_TOKEN) generateSecret("JWT_TOKEN", 32);
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const app = next({ dev: false })
